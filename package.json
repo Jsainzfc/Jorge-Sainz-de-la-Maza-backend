@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Se ha creado una clase Product con un constructor que inicializa todas las variables necesarias al valor introducido al crear una instancia.\r Se ha creado una clase ProductManager. Su constructor no recibe parámetros e inicializa un array de prodcutos vacío. Tiene varios métodos: \r - addProduct: recibe todas las variables necesarias para la inicialización de un producto excepto el id. El id es una variable privada que crece secuencialmente. Verifica que todos los campos están incluidos y además que el código del producto sea único a través de un método privado.\r - getProducts: devuelve un array de productos o un array vacío si el manager no tiene productos aún.\r - getProductById: devuelve el producto con un id determinado si lo encuentra o indica un error por consola.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.js"
   },
   "keywords": [],
   "author": "Jorge Sainz de la Maza",
@@ -16,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/Jsainzfc/Jorge-Sainz-de-la-Maza-backend/issues"
   },
-  "homepage": "https://github.com/Jsainzfc/Jorge-Sainz-de-la-Maza-backend#readme"
+  "homepage": "https://github.com/Jsainzfc/Jorge-Sainz-de-la-Maza-backend#readme",
+  "dependencies": {
+    "express": "4.18.2"
+  }
 }
