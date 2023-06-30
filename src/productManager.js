@@ -1,6 +1,5 @@
 import fs from 'fs'
 // Module for managing files 
-import path  from 'path'
 
 class Product { // Class describing the product object which is stored in the ProductManager
   constructor (id, code, title, description, price, stock, thumbnail) {
@@ -17,7 +16,9 @@ class Product { // Class describing the product object which is stored in the Pr
 class ProductManager {
   constructor (path) { // Initializes an empty array of products and the filesystem with the path given
     this.path = path
-    this.#writeFile([])
+    if (!fs.existsSync(path)) {
+      this.#writeFile([])
+    }
   }
 
   #writeFile (products) {
@@ -109,34 +110,4 @@ class ProductManager {
   }
 }
 
-const testing = async () => {
-  const manager = new ProductManager(path.join(__dirname, 'products.json'))
-  let products = await manager.getProducts() 
-  console.log('Test 1: Expect an empty array => ', products)
-  await manager.addProduct ('abc123', 'producto prueba', 'Este es un product prueba', 200, 25, 'Sin imagen')
-  products = await manager.getProducts()
-  console.log('Test 2: Expect an array with only one item => ', products)
-  await manager.addProduct ('abc123', 'producto prueba', 'Este es un product prueba', 200, 25, 'Sin imagen') // Expect a not unique error
-  let product = await manager.getProductById(0)
-  console.log('Test 3: Expect product abc123 => ', product)
-  product = await manager.getProductById(1) // Expect not found error
-  console.log('Test 4: Expect undefined => ', product)
-  await manager.addProduct('abc123', 'producto prueba', 'Este es un product prueba', 200, 25) // Expect not all fields error
-  await manager.updateProduct(0, [{property: 'code', value: 'newCode'}])
-  product = await (manager.getProductById(0))
-  console.log('Test 5: Expect product with code changed:', product)
-  await manager.updateProduct(1, [{property: 'code', value: 'newCode'}]) // Expect not found error
-  await manager.updateProduct(0, [{property: 'code', value: 'newCode'}]) // Expect field not existing error
-  await manager.updateProduct(0, [{property: 'id', value: '14'}]) // Expect id cannot be modified error
-  await manager.addProduct ('code2', 'producto prueba', 'Este es un product prueba', 200, 25, 'Sin imagen')
-  products = await manager.getProducts()
-  console.log('Test 6: Expect an array with 2 items => ', products)
-  await manager.deleteProduct(2) // Expect product not found error
-  products = await manager.getProducts()
-  console.log('Test 7: Expect an array with 2 items => ', products)
-  await manager.deleteProduct(1)
-  products = await manager.getProducts()
-  console.log('Test 8: Expect an array with only one item => ', products)
-}
-
-export {ProductManager, testing}
+export {ProductManager}
