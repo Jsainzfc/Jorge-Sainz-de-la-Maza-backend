@@ -1,5 +1,6 @@
 const fs = require('fs')
 // Module for managing files 
+const path = require('path')
 
 class Product { // Class describing the product object which is stored in the ProductManager
   constructor (id, code, title, description, price, stock, thumbnail) {
@@ -109,7 +110,7 @@ class ProductManager {
 }
 
 testing = async () => {
-  const manager = new ProductManager('./productManager.json')
+  const manager = new ProductManager(path.join(__dirname, 'products.json'))
   let products = await manager.getProducts() 
   console.log('Test 1: Expect an empty array => ', products)
   await manager.addProduct ('abc123', 'producto prueba', 'Este es un product prueba', 200, 25, 'Sin imagen')
