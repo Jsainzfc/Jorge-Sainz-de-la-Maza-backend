@@ -23,9 +23,15 @@ app.get('/', (req, res) => {
 
 app.get('/products', async (req, res) => {
   let products = await productManager.getProducts()
-  const {limit} = req.query
+  let {limit} = req.query
+  try {
+    limit = parseInt(limit)
+  } catch {
+    res.status(400).send('limit must be a number')
+  }
+  
   if (limit) {
-    products = limit > products.length() ? products : products [0, limit-1] 
+    products = limit > products.length ? products : products.slice(0, limit-1) 
     // If limit is larger than the amount of items, return all of them
   }
   res.json(products)
