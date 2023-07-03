@@ -23,11 +23,15 @@ app.get('/', (req, res) => {
 
 app.get('/products', async (req, res) => {
   let products = await productManager.getProducts()
-  let {limit} = req.query
+  let limit
   try {
-    limit = parseInt(limit)
-  } catch {
-    res.status(400).send('limit must be a number')
+    if (isNaN(req.query.limit)) {
+      throw new Error('limit must be a number')
+    }
+    limit = parseInt(req.query.limit)
+  } catch (err){
+    res.status(400).send(err.message)
+    return
   }
   
   if (limit) {
@@ -41,9 +45,13 @@ app.get('/products', async (req, res) => {
 app.get('/products/:pid', async (req, res) => {
   let id
   try {
+    if (isNaN(req.params.pid)) {
+      throw new Error('id must be a number')
+    }
     id = parseInt(req.params.pid)
-  } catch {
-    res.status(400).send('Id must be a number')
+  } catch (err){
+    res.status(400).send(err.message)
+    return
   }
   const product = await productManager.getProductById(id)
   product 
