@@ -13,11 +13,11 @@ const createFileForTesting = async () => {
     const price = 20
     const stock = 25
 
-    if (fs.existsSync(path.join(__dirname, '../database/productsForTesting.json'))) {
-        fs.unlinkSync(path.join(__dirname, '../database/productsForTesting.json'))
+    if (fs.existsSync(path.join(__dirname, '../database/products.json'))) {
+        fs.unlinkSync(path.join(__dirname, '../database/products.json'))
         //file removed
     }
-    const manager = new ProductManager(path.join(__dirname, '../database/productsForTesting.json'))
+    const manager = new ProductManager(path.join(__dirname, '../database/products.json'))
     for (let i = 0; i<10; i++) {
         await manager.addProduct({code: `code_${i}`, title: `title_${i}`, description, price, stock})
     }

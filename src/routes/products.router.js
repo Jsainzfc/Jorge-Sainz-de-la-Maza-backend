@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const productManager = new ProductManager(path.join(__dirname, 'productsForTesting.json'))
+const productManager = new ProductManager(path.join(__dirname, '../database/products.json'))
 
 const router = Router()
 
@@ -19,10 +19,8 @@ router.get('/', async (req, res) => { // Endpoint for retrieving all of the prod
 })
   
 router.get('/:pid', async (req, res) => { // Endpoint for retrieving the product with id pid.
-    if (Number.isNaN(req.query.id)) return res.status(400).send('id must be a number')
-    const id = Number(req.query.id)
     try {
-        const product = await productManager.getProductById(id)
+        const product = await productManager.getProductById(req.query.id)
         return res.json(product) 
     } catch (err) {
         return res.status(404).send(err)
@@ -30,8 +28,32 @@ router.get('/:pid', async (req, res) => { // Endpoint for retrieving the product
 })
 
 router.post('/', async (req, res) => { // Endpoint for adding one product
-    let products = await productManager.getProducts()
     const product = request.body
+    try {
+        await productManager.addProduct(product)
+        return res.status(201).send('Product added correctly.')
+    } catch (err) {
+        return res.status(400).send(err)
+    }
+})
+
+router.put('/:pid', async (req, res) => { // Endpoint for updating a product
+    const product = request.body
+    try {
+        await productManager.updateProduct(req.query.id, product)
+        return res.send('Product updated.')
+    } catch (err) {
+        return res.status(404).send(err)
+    }
+})
+
+router.delete('/:pid', async (req, res) => {
+    try {
+        await productManager.deleteProduct(req.query.id)
+        return res.status(204).send('Product removed')
+    } catch(err) {
+        return res.status(404).send(err)
+    }
 })
 
 export default router
