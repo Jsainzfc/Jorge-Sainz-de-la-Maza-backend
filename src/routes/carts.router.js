@@ -9,7 +9,6 @@ const cartManager = new CartManager (path.join(__dirname, '../database/carts.jso
 
 const router = Router()
 
-
 router.get('/:cid', async (req, res) => {
     try {
         const products = await cartManager.getCartProductsById(req.query.id)
@@ -30,7 +29,7 @@ router.post('/', async (req, res) => {
 
 router.post('/:cid/products/:pid', async (req, res) => {
     try {
-        await cartManager.updateCart(req.query.cid, req.query.pid)
+        await cartManager.updateCart({id : req.query.cid, productId: req.query.pid})
     } catch(err) {
         return res.status(404).send(err)
     }

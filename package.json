@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "node src/testing/productManagerTesting.js",
+    "test": "node src/testing/testing.js",
     "dev": "nodemon src/app.js"
   },
   "keywords": [],

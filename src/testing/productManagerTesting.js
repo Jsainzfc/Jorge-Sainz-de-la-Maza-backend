@@ -128,4 +128,4 @@ const testing = async () => {
 }
 
 
-testing()
+export default testing

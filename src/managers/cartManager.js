@@ -1,3 +1,6 @@
+import fs from 'fs' // Module for managing files 
+import { v4 as uuidv4 } from 'uuid' // Module for generating unique identifiers
+
 class Cart {
     constructor() {
         this.id = uuidv4() // Id is automatically generated and unique
@@ -23,21 +26,22 @@ class CartManager { // Class describing the product object which is stored in th
     }
 
     async addCart () {
-        const carts = await this.getCarts()
+        const carts = await this.#getCarts()
         const cart = new Cart()
         carts.push(cart)
         this.#writeFile(carts)
+        return cart.id
     }
 
     async getCartProductsById(id) { // Returns the product (if found) with that id
-        const carts = await this.getCarts()
-        const {products} = carts.find(item => item.id === id)
-        if (products) return products
+        const carts = await this.#getCarts()
+        const cart = carts.find(item => item.id === id)
+        if (cart) return cart.products
         throw new Error ('Cart not found')
     }
 
-    async updateCart(id, productId) { // Updates one product of the products in the file
-        const carts = this.#getCarts()
+    async updateCart({id, productId}) { // Updates one product of the products in the file
+        const carts = await this.#getCarts()
         const index = carts.findIndex(item => item.id === id)
         if (index < 0) throw new Error ('Cart not found')
         const productIndex = carts[index].products.findIndex(item => item.id === productId)
