@@ -12,7 +12,7 @@ const router = Router()
 router.get('/', async (req, res) => { // Endpoint for retrieving all of the products in the file. It can be limited if included in the url a limit.
     let products = await productManager.getProducts()
 
-    if (Number.isNaN(req.query.limit)) return res.status(400).send('Limit must be a number')
+    if (isNaN(req.query.limit)) return res.status(400).send('Limit must be a number')
     const limit = Number(req.query.limit)
     if (products.length === 0) return res.status(204) // There are no products
     return res.json(limit > products.length ? products : products.slice(0, limit-1) )

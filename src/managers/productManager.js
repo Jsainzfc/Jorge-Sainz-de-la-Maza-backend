@@ -34,19 +34,37 @@ class ProductManager {
     return products.findIndex (product => product.id === id)
   }
 
-  async addProduct({code, title, description, price, stock, thumbnails, status}) { // If correct creates a new Product and adds it to the array
-
+  #validateFields ({products, code, title, description, price, stock, thumbnails, status}) { // Validates that compulsory fields exist, and the format is correct
     if (!(code && title && description && price && stock)) {
       throw new Error('Not all fields included.')
     }
-
-    const products = await this.getProducts()
-
+    if (isNaN(price)) throw new Error ('Price must be a number')
+    if (isNaN(stock)) throw new Error ('Stock must be a number')
+    if (status && status !== "true" && status !== "false") throw new Error ('Status can only be true or false')
+    if (thumbnails && !Array.isArray(thumbnails)) throw new Error ('Thumbnails should be an array')
     if (this.#codeExists(products, code)) {
       throw new Error('Code already exists.')
     }
+  }
 
-    const product = new Product({code, title, description, price, stock, thumbnails, status})
+  async addProduct({code, title, description, price, stock, thumbnails, status}) { // If correct creates a new Product and adds it to the array
+    const products = await this.getProducts()
+    try {
+      this.#validateFields({products, code, title, description, price, stock, thumbnails, status})
+    } catch(err) {
+      throw new Error (`Validation Error: ${err}`)
+    }
+
+    const product = new Product({
+      code, 
+      title, 
+      description, 
+      price: Number(price), 
+      stock: Number(stock), 
+      thumbnails, 
+      status: Boolean(status)
+    })
+
     products.push(product)
     this.#writeFile(products)
   }

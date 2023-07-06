@@ -40,7 +40,7 @@ const test3 = async () => {
   try {
     await manager.addProduct ({code, title, description, price, stock})
   } catch (err) {
-    console.log('Test 3: Expect not unique error:')
+    console.log('Test 3: Expect a validation error (code not unique):')
     console.error(err)
   }
 }
@@ -63,7 +63,7 @@ const test6 = async () => {
   try {
     await manager.addProduct({code, title, description, price})
   } catch (err) {
-    console.log('Test 6: Expect not all fields found error:')
+    console.log('Test 6: Expect a validation error (not all fields found):')
     console.error(err)
   }
 }
@@ -112,6 +112,90 @@ const test11 = async () => {
   console.log('Test 11: Expect an array with only one item => ', products)
 }
 
+const test12 = async () => {
+  const product = {
+    code : 'producto 3',
+    title: 'producto prueba 3',
+    description: 'Este es un product prueba',
+    price: "aaa",
+    stock: 12
+  }
+  try {
+    await manager.addProduct(product)
+  } catch (err) {
+    console.log('Test 12: Expect a validation error (price not a number)')
+    console.error(err)
+  }
+}
+
+const test13 = async () => {
+  const product = {
+    code : 'producto 3',
+    title: 'producto prueba 3',
+    description: 'Este es un product prueba',
+    price: "5",
+    stock: "a2"
+  }
+  try {
+    await manager.addProduct(product)
+  } catch (err) {
+    console.log('Test 13: Expect a validation error (stock not a number)')
+    console.error(err)
+  }
+}
+
+const test14 = async () => {
+  const product = {
+    code : 'producto 3',
+    title: 'producto prueba 3',
+    description: 'Este es un product prueba',
+    price: "5",
+    stock: "2",
+    thumbnails: 'imagenes'
+  }
+  try {
+    await manager.addProduct(product)
+  } catch (err) {
+    console.log('Test 14: Expect a validation error (thumbnails not an array)')
+    console.error(err)
+  }
+}
+
+const test15 = async () => {
+  const product = {
+    code : 'producto 3',
+    title: 'producto prueba 3',
+    description: 'Este es un product prueba',
+    price: "5",
+    stock: "2",
+    status: "n"
+  }
+  try {
+    await manager.addProduct(product)
+  } catch (err) {
+    console.log('Test 15: Expect a validation error (status not true or false)')
+    console.error(err)
+  }
+}
+
+const test16 = async () => {
+  const product = {
+    code : 'producto 3',
+    title: 'producto prueba 3',
+    description: 'Este es un product prueba',
+    price: "5",
+    stock: "2",
+    status: "false",
+    thumbnails: [
+      "imagen1",
+      "imagen2"
+    ]
+  }
+  await manager.addProduct(product)
+  const products = await manager.getProducts()
+  console.log('Test 16: Expect an array with 2 items => ', products)
+}
+
 const testing = async () => {
   initializeTests()
   await test1()
@@ -125,6 +209,11 @@ const testing = async () => {
   await test9()
   await test10()
   await test11()
+  await test12()
+  await test13()
+  await test14()
+  await test15()
+  await test16()
 }
 
 

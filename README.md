@@ -98,6 +98,7 @@ Si el carrito ya contiene el producto con id pid, se suma 1 a la cantidad presen
 Para testear los managers de carrito y producto, se puede ejecutar el comando npm run test, que incluye una serie de test cases ya recogidos en las actividades de clase anteriores, así como algún test más que he considerado óptimo.
 
 ### Testing del servidor
-Para arrancar se ha creado un comando "dev" en el package.json con lo cual es suficiente con ejecutar npm run dev. La base de datos de testeo de productos ya está generada. La base de datos de carrito se inicializa vacía. Una vez lanzado el servidor todo el testeo puede hacerse en el navegador.
-
+Para arrancar se ha creado un comando "dev" en el package.json con lo cual es suficiente con ejecutar npm run dev. 
+La base de datos de testeo de productos ya está generada. Si hiciera falta volver a generarla basta con ejecutar el archivo testing/createDatabaseFiles.js 
+La base de datos de carrito se inicializa vacía. Una vez lanzado el servidor todo el testeo puede hacerse en el navegador.
 El testeo del servidor se puede hacer mediante el archivo testing.REST en la carpeta testing que recoge todas las request al servidor para probar su funcionamiento.
