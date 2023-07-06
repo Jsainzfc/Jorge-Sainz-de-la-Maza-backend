@@ -30,15 +30,14 @@ const test2 = async () => {
     price: 20,
     stock: 25
   }
-  await manager.addProduct (product)
-  const products = await manager.getProducts()
+  const products = await manager.addProduct (product)
   console.log('Test 2: Expect an array with only one item => ', products)
   id = products[0].id
 }
 
 const test3 = async () => {
   try {
-    await manager.addProduct ({code, title, description, price, stock})
+    const products = await manager.addProduct ({code, title, description, price, stock})
   } catch (err) {
     console.log('Test 3: Expect a validation error (code not unique):')
     console.error(err)
@@ -61,7 +60,7 @@ const test5 = async () => {
 
 const test6 = async () => {
   try {
-    await manager.addProduct({code, title, description, price})
+    const products = await manager.addProduct({code, title, description, price})
   } catch (err) {
     console.log('Test 6: Expect a validation error (not all fields found):')
     console.error(err)
@@ -69,14 +68,13 @@ const test6 = async () => {
 }
 
 const test7 = async () => {
-  await manager.updateProduct(id, {code: 'newCode'})
-  const product = await (manager.getProductById(id))
+  const product = await manager.updateProduct(id, {code: 'newCode'})
   console.log('Test 7: Expect product with code changed:', product)
 }
 
 const test8 = async () => {
   try {
-    await manager.updateProduct(1, {code: 'newCode'})
+    const product = await manager.updateProduct(1, {code: 'newCode'})
   } catch (err) {
     console.log('Test 8: Expect not found error:')
     console.error(err)
@@ -91,15 +89,14 @@ const test9 = async () => {
     price: 40,
     stock: 12
   }
-  await manager.addProduct (product)
-  const products = await manager.getProducts()
+  const products = await manager.addProduct (product)
   console.log('Test 9: Expect an array with 2 items => ', products)
   id_2 = products[1].id
 }
 
 const test10 = async () => {
   try {
-    await manager.deleteProduct(2)
+    const products = await manager.deleteProduct(2)
   } catch (err) {
     console.log('Test 10: Expect not found error:')
     console.error(err)
@@ -107,8 +104,7 @@ const test10 = async () => {
 }
 
 const test11 = async () => {
-  await manager.deleteProduct(id)
-  const products = await manager.getProducts()
+  const products = await manager.deleteProduct(id)
   console.log('Test 11: Expect an array with only one item => ', products)
 }
 
@@ -121,7 +117,7 @@ const test12 = async () => {
     stock: 12
   }
   try {
-    await manager.addProduct(product)
+    const products = await manager.addProduct(product)
   } catch (err) {
     console.log('Test 12: Expect a validation error (price not a number)')
     console.error(err)
@@ -137,7 +133,7 @@ const test13 = async () => {
     stock: "a2"
   }
   try {
-    await manager.addProduct(product)
+    const products = await manager.addProduct(product)
   } catch (err) {
     console.log('Test 13: Expect a validation error (stock not a number)')
     console.error(err)
@@ -154,7 +150,7 @@ const test14 = async () => {
     thumbnails: 'imagenes'
   }
   try {
-    await manager.addProduct(product)
+    const products = await manager.addProduct(product)
   } catch (err) {
     console.log('Test 14: Expect a validation error (thumbnails not an array)')
     console.error(err)
@@ -171,7 +167,7 @@ const test15 = async () => {
     status: "n"
   }
   try {
-    await manager.addProduct(product)
+    const products = await manager.addProduct(product)
   } catch (err) {
     console.log('Test 15: Expect a validation error (status not true or false)')
     console.error(err)
@@ -191,8 +187,7 @@ const test16 = async () => {
       "imagen2"
     ]
   }
-  await manager.addProduct(product)
-  const products = await manager.getProducts()
+  const products = await manager.addProduct(product)
   console.log('Test 16: Expect an array with 2 items => ', products)
 }
 

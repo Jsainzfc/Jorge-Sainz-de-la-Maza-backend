@@ -67,6 +67,7 @@ class ProductManager {
 
     products.push(product)
     this.#writeFile(products)
+    return products
   }
 
   async getProducts() { // Returns the array of products
@@ -98,7 +99,7 @@ class ProductManager {
     const index = this.#getIndex (products, id)
     products[index] = product
     this.#writeFile(products)
-    return
+    return products[index]
   }
 
   async deleteProduct(id) {
@@ -107,7 +108,7 @@ class ProductManager {
     if (index < 0) throw new Error ('Product not found')
     products.splice(index, 1)
     this.#writeFile(products)
-    return
+    return products
   }
 }
 

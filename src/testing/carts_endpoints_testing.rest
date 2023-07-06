@@ -1,4 +1,4 @@
-### Devolución esperada: código 200 ###
+### Devolución esperada: código 200, id del nuevo carrito ###
 
 POST http://localhost:8080/api/carts/
 

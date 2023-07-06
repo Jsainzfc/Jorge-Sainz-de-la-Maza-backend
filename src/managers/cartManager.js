@@ -59,7 +59,7 @@ class CartManager { // Class describing the product object which is stored in th
             carts[index].products.push(newProduct)
         }
         this.#writeFile(carts)
-        return
+        return carts[index].products
     }
 }
 

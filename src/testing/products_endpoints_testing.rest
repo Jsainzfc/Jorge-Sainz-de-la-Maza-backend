@@ -14,7 +14,7 @@ GET http://localhost:8080/api/products/f0a8eed4-021a-44d5-84c8-7a6980efb21f
 
 GET http://localhost:8080/api/products/1
 
-### Devolución esperada: código 200, producto añadido correctamente ###
+### Devolución esperada: código 200, array de productos con el nuevo producto incluido ###
 
 POST http://localhost:8080/api/products/
 content-type: application/json
@@ -40,7 +40,7 @@ content-type: application/json
     "stock": "10"
 }
 
-### Devolución esperada: código 200, producto actualizado correctamente ###
+### Devolución esperada: código 200, producto actualizado ###
 
 PUT http://localhost:8080/api/products/f0a8eed4-021a-44d5-84c8-7a6980efb21f
 content-type: application/json
@@ -70,7 +70,7 @@ content-type: application/json
 
 DELETE http://localhost:8080/api/products/1
 
-### Devolución esperada: código 204, producto eliminado ###
+### Devolución esperada: código 204, lista de productos sin el eliminado ###
 
 DELETE http://localhost:8080/api/products/f0a8eed4-021a-44d5-84c8-7a6980efb21f
 

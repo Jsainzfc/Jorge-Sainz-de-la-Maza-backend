@@ -30,8 +30,8 @@ router.get('/:pid', async (req, res) => { // Endpoint for retrieving the product
 router.post('/', async (req, res) => { // Endpoint for adding one product
     const product = request.body
     try {
-        await productManager.addProduct(product)
-        return res.status(201).send('Product added correctly.')
+        const products = await productManager.addProduct(product)
+        return res.status(201).json(products)
     } catch (err) {
         return res.status(400).send(err)
     }
@@ -40,8 +40,8 @@ router.post('/', async (req, res) => { // Endpoint for adding one product
 router.put('/:pid', async (req, res) => { // Endpoint for updating a product
     const product = request.body
     try {
-        await productManager.updateProduct(req.query.id, product)
-        return res.send('Product updated.')
+        const product = await productManager.updateProduct(req.query.id, product)
+        return res.json(product)
     } catch (err) {
         return res.status(404).send(err)
     }
@@ -49,8 +49,8 @@ router.put('/:pid', async (req, res) => { // Endpoint for updating a product
 
 router.delete('/:pid', async (req, res) => {
     try {
-        await productManager.deleteProduct(req.query.id)
-        return res.status(204).send('Product removed')
+        const products = await productManager.deleteProduct(req.query.id)
+        return res.status(204).json(products)
     } catch(err) {
         return res.status(404).send(err)
     }

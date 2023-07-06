@@ -37,26 +37,23 @@ const test3 = async () => {
   }
 
 const test4 = async () => {
-    await manager.updateCart ({id, productId: '1'})
-    const products = await manager.getCartProductsById(id)
+    const products = await manager.updateCart ({id, productId: '1'})
     console.log('Test 4: Expect array with 1 item and quantity = 1:', products)
 }
 
 const test5 = async () => {
-    await manager.updateCart ({id, productId: '1'})
-    const products = await manager.getCartProductsById(id)
+    const products =  await manager.updateCart ({id, productId: '1'})
     console.log('Test 5: Expect array with 1 item and quantity = 2:', products)
 }
 
 const test6 = async () => {
-    await manager.updateCart ({id, productId: '2'})
-    const products = await manager.getCartProductsById(id)
+    const products = await manager.updateCart ({id, productId: '2'})
     console.log('Test 6: Expect array with 2 items , first with quantity = 2, second with quantity = 1:', products)
 }
 
 const test7 = async () => {
   try {
-    await manager.updateCart ({id: '1', productId: '1'})
+    const products = await manager.updateCart ({id: '1', productId: '1'})
   } catch (err) {
     console.log('Test 5: Expect not found error:')
     console.error(err)
