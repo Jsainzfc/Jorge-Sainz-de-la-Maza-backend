@@ -2,7 +2,7 @@ import fs from 'fs'
 // Module for managing files 
 
 class Product { // Class describing the product object which is stored in the ProductManager
-  constructor (id, code, title, description, price, stock, thumbnail) {
+  constructor ({id, code, title, description, price, stock, thumbnail}) {
     this.id = id
     this.code = code
     this.title = title
@@ -35,7 +35,7 @@ class ProductManager {
     return products.findIndex (product => product.id === id)
   }
 
-  async addProduct(code, title, description, price, stock, thumbnail) { // If correct creates a new Product and adds it to the array
+  async addProduct({code, title, description, price, stock, thumbnail}) { // If correct creates a new Product and adds it to the array
 
     if (!(code && title && description && price && stock && thumbnail)) {
       console.error('Error! All of the fields must be included to create a new product.')
@@ -49,7 +49,7 @@ class ProductManager {
       return
     }
 
-    const product = new Product(this.#lastId, code, title, description, price, stock, thumbnail)
+    const product = new Product({id = this.#lastId, code, title, description, price, stock, thumbnail})
     products.push(product)
     this.#writeFile(products)
     this.#lastId++
@@ -62,9 +62,9 @@ class ProductManager {
   
   async getProductById(id) { // Returns the product (if found) with that id
     const products = await this.getProducts()
-    const index = this.#getIndex(products, id)
-    if (index >= 0) return products[index]
-    console.error('Error! Product not found.') 
+    const product = products.find(item => item.id === id)
+    if (product) return product
+    throw new Error ('Product not found')
   }
 
   #updateProperty(product, field, fieldValue) { // Updates one product of the products in the file.
