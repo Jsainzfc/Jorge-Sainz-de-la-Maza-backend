@@ -1,6 +1,6 @@
 import express from 'express'
-import producstRouter from 'routes/products.router.js'
-import cartsRouter from 'routes/carts.router.js'
+import productsRouter from './routes/products.router.js'
+import cartsRouter from './routes/carts.router.js'
 
 const app = express() // Initialize express app
 
@@ -18,5 +18,5 @@ app.get('/', (req, res) => {
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)
 
-app.listen(process.env.PORT, () => console.log(`Server up and listening in port ${PORT}`))
+app.listen(8080, () => console.log(`Server up and listening in port 8080`))
 // Starting the server

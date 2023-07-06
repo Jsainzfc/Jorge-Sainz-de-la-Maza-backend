@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { ProductManager } from './productManager.js'
+import { ProductManager } from '../managers/productManager.js'
 import path  from 'path'
 import { fileURLToPath } from 'url';
 
@@ -9,46 +9,27 @@ const productManager = new ProductManager(path.join(__dirname, 'productsForTesti
 
 const router = Router()
 
-app.get('/', async (req, res) => { // Endpoint for retrieving all of the products in the file. It can be limited if included in the url a limit.
+router.get('/', async (req, res) => { // Endpoint for retrieving all of the products in the file. It can be limited if included in the url a limit.
     let products = await productManager.getProducts()
-    try { // Check if limit (if included) is a number, else return a 400 error
-        if (isNaN(req.query.limit)) {
-        throw new Error('Limit must be a number')
-        }
-    } catch (err){
-        return res.status(400).send(err.message)
-    }
+
+    if (Number.isNaN(req.query.limit)) return res.status(400).send('Limit must be a number')
     const limit = Number(req.query.limit)
-
-    if (products.length === 0) return res.status(204)
-
-    if (limit) {
-        products = limit > products.length ? products : products.slice(0, limit-1) 
-        // If limit is larger than the amount of items, return all of them
-    }
-    return res.json(products)
+    if (products.length === 0) return res.status(204) // There are no products
+    return res.json(limit > products.length ? products : products.slice(0, limit-1) )
 })
   
-app.get('/:pid', async (req, res) => { // Endpoint for retrieving the product with id pid.
-    try { // Check if id is a number, else return a 400 error
-        if (isNaN(req.query.id)) {
-        throw new Error('Id must be a number')
-        }
-    } catch (err){
-        return res.status(400).send(err.message)
-    }
+router.get('/:pid', async (req, res) => { // Endpoint for retrieving the product with id pid.
+    if (Number.isNaN(req.query.id)) return res.status(400).send('id must be a number')
     const id = Number(req.query.id)
-
-    let product
     try {
-        product = await productManager.getProductById(id)
+        const product = await productManager.getProductById(id)
         return res.json(product) 
     } catch (err) {
-        return res.status(404).send('Product not found.')
+        return res.status(404).send(err)
     }
 })
 
-app.post('/', async (req, res) => { // Endpoint for adding one product
+router.post('/', async (req, res) => { // Endpoint for adding one product
     let products = await productManager.getProducts()
     const product = request.body
 })

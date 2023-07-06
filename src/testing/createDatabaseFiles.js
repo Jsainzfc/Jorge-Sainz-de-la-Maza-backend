@@ -6,13 +6,13 @@ import fs from 'fs' // Module for managing files
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const code  = 'code'
-const title = 'Product'
-const description = 'Este es un product prueba'
-const price = 20
-const stock = 25
-
 const createFileForTesting = async () => {
+    const code  = 'code'
+    const title = 'Product'
+    const description = 'Este es un product prueba'
+    const price = 20
+    const stock = 25
+
     if (fs.existsSync(path.join(__dirname, '../database/productsForTesting.json'))) {
         fs.unlinkSync(path.join(__dirname, '../database/productsForTesting.json'))
         //file removed
