@@ -1,7 +1,7 @@
 import {Router} from 'express'
 import path  from 'path'
 import { fileURLToPath } from 'url';
-import { CartManager } from '../managers/cartManager';
+import { CartManager } from '../managers/cartManager.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,10 +11,10 @@ const router = Router()
 
 router.get('/:cid', async (req, res) => {
     try {
-        const products = await cartManager.getCartProductsById(req.query.id)
+        const products = await cartManager.getCartProductsById(req.params.cid)
         return res.json(products)
     } catch(err) {
-        return res.status(404).send(err)
+        return res.status(404).send(err.message)
     }
 })
 
@@ -29,10 +29,10 @@ router.post('/', async (req, res) => {
 
 router.post('/:cid/product/:pid', async (req, res) => {
     try {
-        const products = await cartManager.updateCart({id : req.query.cid, productId: req.query.pid})
+        const products = await cartManager.updateCart({id : req.params.cid, productId: req.params.pid})
         return res.json(products)
     } catch(err) {
-        return res.status(404).send(err)
+        return res.status(404).send(err.message)
     }
 })
 
