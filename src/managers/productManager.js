@@ -63,17 +63,6 @@ class ProductManager {
     throw new Error ('Product not found')
   }
 
-  #updateProperty(product, field, fieldValue) { // Updates one product of the products in the file.
-    if (product.hasOwnProperty(field)) {
-      if (field === 'id') {
-        throw new Error('Id cannot be modified.')
-      }
-      product[field] = fieldValue
-      return product
-    }
-    throw new Error(`Field ${field} does not exist in product.`)
-  }
-
   async updateProduct(id, {code, title, description, price, stock, thumbnails, status}) { // Updates one product of the products in the file
     const products = await this.getProducts()
     let product = products.find(item => item.id === id)
