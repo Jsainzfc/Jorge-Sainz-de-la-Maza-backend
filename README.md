@@ -100,5 +100,5 @@ Para testear los managers de carrito y producto, se puede ejecutar el comando np
 ### Testing del servidor
 Para arrancar se ha creado un comando "dev" en el package.json con lo cual es suficiente con ejecutar npm run dev. 
 La base de datos de testeo de productos ya está generada. Si hiciera falta volver a generarla basta con ejecutar el archivo testing/createDatabaseFiles.js 
-La base de datos de carrito se inicializa vacía. Una vez lanzado el servidor todo el testeo puede hacerse en el navegador.
-El testeo del servidor se puede hacer mediante el archivo testing.REST en la carpeta testing que recoge todas las request al servidor para probar su funcionamiento.
+La base de datos de carrito se inicializa con un único carrito, ya que al generar los id de forma aleatoria, se emplea uno ya creado para poder tener unas peticiones de testing.
+El testeo del servidor se puede hacer mediante los archivos products_endpoints_testing.rest y carts_endpoints_testing.rest en la carpeta testing que recoge todas las request al servidor para probar su funcionamiento.
