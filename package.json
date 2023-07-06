@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "node src/productManager.js",
+    "test": "node src/testing/productManager.js",
     "dev": "nodemon src/app.js"
   },
   "keywords": [],
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Jsainzfc/Jorge-Sainz-de-la-Maza-backend#readme",
   "dependencies": {
-    "express": "4.18.2"
+    "express": "4.18.2",
+    "uuid": "^9.0.0"
   }
 }

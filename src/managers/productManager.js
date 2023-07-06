@@ -1,15 +1,16 @@
-import fs from 'fs'
-// Module for managing files 
+import fs from 'fs' // Module for managing files 
+import { v4 as uuidv4 } from 'uuid' // Module for generating unique identifiers
 
 class Product { // Class describing the product object which is stored in the ProductManager
-  constructor ({id, code, title, description, price, stock, thumbnail}) {
-    this.id = id
+  constructor ({code, title, description, price, stock, thumbnails, status}) {
+    this.id = uuidv4() // Id is automatically generated and unique
     this.code = code
     this.title = title
     this.description = description
     this.price = price
     this.stock = stock
-    this.thumbnail = thumbnail
+    this.thumbnails = thumbnails ?? []
+    this.status = status ?? true
   }
 }
 
@@ -25,8 +26,6 @@ class ProductManager {
     fs.writeFileSync(this.path, JSON.stringify(products))
   }
 
-  #lastId = 0 // Variable for storing the last available id (increments with every new product)
-
   #codeExists (products, code) { // True if there is already a product in the manager with the same code
     return products.findIndex(product => product.code === code) >= 0
   }
@@ -35,24 +34,21 @@ class ProductManager {
     return products.findIndex (product => product.id === id)
   }
 
-  async addProduct({code, title, description, price, stock, thumbnail}) { // If correct creates a new Product and adds it to the array
+  async addProduct({code, title, description, price, stock, thumbnails, status}) { // If correct creates a new Product and adds it to the array
 
-    if (!(code && title && description && price && stock && thumbnail)) {
-      console.error('Error! All of the fields must be included to create a new product.')
-      return
+    if (!(code && title && description && price && stock)) {
+      throw new Error('Not all fields included.')
     }
 
     const products = await this.getProducts()
 
     if (this.#codeExists(products, code)) {
-      console.error('Error! Product with the same code already exists, please add a unique code for the new product.')
-      return
+      throw new Error('Code already exists.')
     }
 
-    const product = new Product({id = this.#lastId, code, title, description, price, stock, thumbnail})
+    const product = new Product({code, title, description, price, stock, thumbnails, status})
     products.push(product)
     this.#writeFile(products)
-    this.#lastId++
   }
 
   async getProducts() { // Returns the array of products
@@ -78,35 +74,33 @@ class ProductManager {
     throw new Error(`Field ${field} does not exist in product.`)
   }
 
-  async updateProduct(id, changes) { // Updates one product of the products in the file
+  async updateProduct(id, {code, title, description, price, stock, thumbnails, status}) { // Updates one product of the products in the file
     const products = await this.getProducts()
-    const index = this.#getIndex(products, id)
-    let product = products[index]
-    if (index >= 0) {
-      changes.forEach(change => {
-        try {
-          product = this.#updateProperty(product, change.property, change.value)
-        } catch(e) {
-          console.error(e)
-          return
-        }      
-      })
-      products[index] = product
-      this.#writeFile(products)
-      return
+    let product = products.find(item => item.id === id)
+    if (!product) throw new Error ('Product not found')
+    product = {
+      id : product.id, // Id cannot be modified or removed
+      code : code ?? product.code,
+      title : title ?? product.title,
+      description : description ?? product.description,
+      price : price ?? product.price,
+      stock : stock ?? product.stock,
+      thumbnails : thumbnails ?? product.thumbnails,
+      status : status ?? product.status,
     }
-    console.error('Error! Product not found.') 
+    const index = this.#getIndex (products, id)
+    products[index] = product
+    this.#writeFile(products)
+    return
   }
 
   async deleteProduct(id) {
     const products = await this.getProducts()
-    const index = this.#getIndex(products, id)   
-    if (index >= 0) {
-      products.splice(index, 1)
-      this.#writeFile(products)
-      return
-    }
-    console.error('Error! Product not found.') 
+    const index = this.#getIndex(products, id)
+    if (index < 0) throw new Error ('Product not found')
+    products.splice(index, 1)
+    this.#writeFile(products)
+    return
   }
 }
 
