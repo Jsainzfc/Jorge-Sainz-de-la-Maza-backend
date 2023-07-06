@@ -127,20 +127,5 @@ const testing = async () => {
   await test11()
 }
 
-const createFileForTesting = async () => {
-  const manager = new ProductManager(path.join(__dirname, 'productsForTesting.json'))
-  await manager.addProduct('abc123', 'producto prueba', 'Este es un product prueba', 200, 25, 'Sin imagen')
-  await manager.addProduct('shoes', 'zapatos', 'zapatos', 200, 25, 'Sin imagen')
-  await manager.addProduct('shirt', 'camiseta', 'camiseta', 200, 25, 'Sin imagen')
-  await manager.addProduct('trousers', 'pantalones', 'pantalones', 200, 25, 'Sin imagen')
-  await manager.addProduct('watch', 'reloj', 'reloj', 200, 25, 'Sin imagen')
-  await manager.addProduct('hat', 'sombrero', 'sombrero', 200, 25, 'Sin imagen')
-  await manager.addProduct('code1', 'producto prueba', 'Este es un product prueba', 200, 25, 'Sin imagen')
-  await manager.addProduct('code2', 'zapatos', 'zapatos', 200, 25, 'Sin imagen')
-  await manager.addProduct('code3', 'camiseta', 'camiseta', 200, 25, 'Sin imagen')
-  await manager.addProduct('code4', 'pantalones', 'pantalones', 200, 25, 'Sin imagen')
-  await manager.addProduct('code5', 'reloj', 'reloj', 200, 25, 'Sin imagen')
-  await manager.addProduct('code6', 'sombrero', 'sombrero', 200, 25, 'Sin imagen')
-}
 
 testing()
