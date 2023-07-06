@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.post('/:cid/products/:pid', async (req, res) => {
+router.post('/:cid/product/:pid', async (req, res) => {
     try {
         await cartManager.updateCart({id : req.query.cid, productId: req.query.pid})
     } catch(err) {
