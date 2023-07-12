@@ -2,9 +2,9 @@ import fs from 'fs' // Module for managing files
 import { v4 as uuidv4 } from 'uuid' // Module for generating unique identifiers
 
 class Cart {
-    constructor() {
+    constructor(products) {
         this.id = uuidv4() // Id is automatically generated and unique
-        this.products = []
+        this.products = products ?? []
     }
 }
 
@@ -25,9 +25,9 @@ class CartManager { // Class describing the product object which is stored in th
         return JSON.parse(carts)
     }
 
-    async addCart () {
+    async addCart (products) {
         const carts = await this.#getCarts()
-        const cart = new Cart()
+        const cart = new Cart(products)
         carts.push(cart)
         this.#writeFile(carts)
         return cart.id
