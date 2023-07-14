@@ -1,10 +1,7 @@
 import {Router} from 'express'
 import { ProductManager } from '../managers/productManager.js'
-import path  from 'path'
-import { fileURLToPath } from 'url';
+import __dirname from '../utils.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const productManager = new ProductManager(path.join(__dirname, '../database/products.json'))
 
 const router = Router()

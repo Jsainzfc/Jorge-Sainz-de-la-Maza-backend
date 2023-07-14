@@ -1,10 +1,6 @@
-import path from 'path'
-import { fileURLToPath } from 'url';
 import { ProductManager } from '../managers/productManager.js'
 import fs from 'fs' // Module for managing files 
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import __dirname from '../utils.js';
 
 const createFileForTesting = async () => {
     const code  = 'code'
