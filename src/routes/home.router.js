@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
   //const products = await productManager.getAll()
   // const randomId = getRandomNumber(0, products.length - 1)
 
-  res.render('home', {
+  res.render('index', {
     title: 'Home',
     // products,
     // user: {
