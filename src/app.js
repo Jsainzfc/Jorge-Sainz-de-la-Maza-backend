@@ -34,4 +34,6 @@ socketServer.on('connection', socket => {
   socket.on('message', data => {
     console.log(data)
   })
+
+  socket.emit()
 })

@@ -1,19 +1,17 @@
 import { Router } from 'express'
+import { ProductManager } from '../managers/productManager.js'
+import __dirname from '../utils.js';
+import { join } from 'path'
 
 const router = Router()
+const productManager = new ProductManager(join(__dirname, '/database/products.json'))
 
 router.get('/', async (req, res) => {
-  // res.sendFile(path.join(__dirname, '../public/index.html'))
-  //const products = await productManager.getAll()
-  // const randomId = getRandomNumber(0, products.length - 1)
+  const products = await productManager.getProducts()
 
-  res.render('index', {
+  res.render('home', {
     title: 'Home',
-    // products,
-    // user: {
-    //   ...req.user,
-    //   isAdmin: req.user.role == 'admin',
-    // },
+    products,
     style: 'home'
   })
 })

@@ -1,3 +1,21 @@
 h1 {
-  color: red;
+  font-weight: 600;
+}
+
+.products-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  padding: 2rem;
+  list-style: none;
+  gap: 2rem;
+}
+
+.products-list li {
+  border-radius: 2rem;
+  border: 1px solid black;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
