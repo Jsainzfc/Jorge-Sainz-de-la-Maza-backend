@@ -1,4 +1,4 @@
-# Desafío entregable clase 4
+# Pre-Entrega 1
 
 ## Alcance clase 2
 Se ha creado una clase Product con un constructor que inicializa todas las variables necesarias al valor introducido al crear una instancia.
@@ -39,15 +39,66 @@ Se ha creado un servidor en express que emplea el ProductManager como se dejó l
 - /products?limit=x : retorna x productos de la base de datos.
 - /products/:pid : retorna el productos con id pid de la base de datos.
 
+## Alcance Pre-Entrega 1
+Se ha implementado el Router de express para contar con dos grupos de rutas: /api/products y /api/carts. Las rutas se han implementado siguiendo la arquitectura API REST. El proyecto cuenta con persistencia mediante fs de node.
+
 ## Estructura
-El código está dentro de la carpeta src. El archivo productManager.js recoge el estado en la entrega de la clase 4. El archivo productManagerTesting.js recoge el testing de la clase 4. Se ha incluido en este testing una función para generar un json para el testeo de la clase 6.
+El código está dentro de la carpeta src. 
+La carpeta database recoge products.json y carts.json, base de datos de productos y de carritos.
+La carpeta managers recoge el CartManager y el ProductManager, clases para manejar los productos y los carritos.
+La carpeta testing recoge todos los archivos necesarios para testear los managers.
+La carpeta routes incluye los enrutados de los endpoints de la aplicación.
 El servidor de express está en el archivo app.js.
 
+## Endpoints de products:
+
+### GET /api/products/?limit=x
+Retorna todos los productos de la base de datos hasta un límite = x. 
+Limit ha de ser un número entero, si no retorna un status 400.
+Si limite es superior al máximo de productos disponibles en la base de datos o no se ha fijado un límite, devuelve todos los productos disponibles.
+Si no hay productos en la base de datos se retorna un status 204.
+
+### GET /api/products/:pid
+Retorna el producto con id pid.
+Si el producto no se encuentra, retorna un status 404.
+
+### POST /api/products/
+Añade el producto del cuerpo de la petición a la base de datos.
+Si la petición es correcta, retorna un status 201.
+Si la petición tiene algún error, retorna un status 400.
+
+### PUT /api/products/:pid
+Actualiza el product con el id pid de la base de datos con la información del cuerpo de la petición.
+Si el producto no se encuentra, retorna un status 404.
+
+### DELETE /api/products/:pid
+Elimina el producto con id pid de la base de datos.
+Si el producto no se encuentra, retorna un status 404.
+Si el producto se elimina correctamente, retorna un status 204.
+
+## Endpoints de carts:
+
+### POST /api/carts/
+Crea un carrito con un id aleatorio y único y sin productos. 
+
+### GET /api/carts/:cid
+Retorna los productos del carrito con id cid.
+Si el carrito no se encuentra, retorna un status 404.
+
+### POST /api/carts/:cid/product/:pid
+Añade un item del producto con id pid al carrito con id cid.
+Si el carrito no se encuentra, retorna un status 404.
+Si el carrito no contiene aún el id de product pid, se añade con una cantidad de 1.
+Si el carrito ya contiene el producto con id pid, se suma 1 a la cantidad presente.
+
+
 ## Testeo
-Para ejecutarlo se ha creado un comando "dev" en el package.json con lo cual es suficiente con ejecutar npm run dev. La base de datos de testeo ya está generada. Una vez lanzado el servidor todo el testeo puede hacerse en el navegador.
-El testeo de este entregable consiste en:
-- Se corroborará que el servidor esté corriendo en el puerto 8080.
-- Se mandará a llamar desde el navegador a la url http://localhost:8080/products sin query, eso debe devolver todos los 10 productos.
-- Se mandará a llamar desde el navegador a la url http://localhost:8080/products?limit=5 , eso debe devolver sólo los primeros 5 de los 10 productos.
-- Se mandará a llamar desde el navegador a la url http://localhost:8080/products/2, eso debe devolver sólo el producto con id=2.
-- Se mandará a llamar desde el navegador a la url http://localhost:8080/products/34123123, al no existir el id del producto, debe devolver un objeto con un error indicando que el producto no existe.
+
+### Testing de clases managers
+Para testear los managers de carrito y producto, se puede ejecutar el comando npm run test, que incluye una serie de test cases ya recogidos en las actividades de clase anteriores, así como algún test más que he considerado óptimo.
+
+### Testing del servidor
+Para arrancar se ha creado un comando "dev" en el package.json con lo cual es suficiente con ejecutar npm run dev. 
+La base de datos de testeo de productos ya está generada. Si hiciera falta volver a generarla basta con ejecutar el archivo testing/createDatabaseFiles.js 
+La base de datos de carrito se inicializa con un único carrito, ya que al generar los id de forma aleatoria, se emplea uno ya creado para poder tener unas peticiones de testing.
+El testeo del servidor se puede hacer mediante los archivos products_endpoints_testing.rest y carts_endpoints_testing.rest en la carpeta testing que recoge todas las request al servidor para probar su funcionamiento.
