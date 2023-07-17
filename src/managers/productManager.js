@@ -67,7 +67,7 @@ class ProductManager {
 
     products.push(product)
     this.#writeFile(products)
-    return products
+    return product
   }
 
   async getProducts() { // Returns the array of products

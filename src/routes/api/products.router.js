@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { ProductManager } from '../../managers/productManager.js'
 import __dirname from '../../utils.js';
 import { join } from 'path'
+import io from '../../app.js';
 
 const productManager = new ProductManager(join(__dirname, '/database/products.json'))
 const router = Router()
@@ -30,8 +31,9 @@ router.get('/:pid', async (req, res) => { // Endpoint for retrieving the product
 router.post('/', async (req, res) => { // Endpoint for adding one product
     const product = req.body
     try {
-        const products = await productManager.addProduct(product)
-        return res.status(201).json(products)
+        const newProduct = await productManager.addProduct(product)
+        io.emit('new_product', newProduct)
+        return res.status(201).json({message: 'Product added', product: newProduct})
     } catch (err) {
         return res.status(400).send(err.message)
     }
@@ -50,6 +52,7 @@ router.put('/:pid', async (req, res) => { // Endpoint for updating a product
 router.delete('/:pid', async (req, res) => {
     try {
         const products = await productManager.deleteProduct(req.params.pid)
+        io.emit('product_deleted', req.params.pid)
         return res.status(204).json(products)
     } catch(err) {
         return res.status(404).send(err.message)
