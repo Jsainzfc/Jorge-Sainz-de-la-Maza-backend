@@ -21,7 +21,7 @@ router.get('/', async (req, res) => { // Endpoint for retrieving all of the prod
 router.get('/:pid', async (req, res) => { // Endpoint for retrieving the product with id pid.
     try {
         const product = await productManager.getProductById(req.params.pid)
-        return res.json(product) 
+        return res.json({message: 'Product found', product}) 
     } catch (err) {
 
         return res.status(404).send(err.message)
@@ -43,7 +43,7 @@ router.put('/:pid', async (req, res) => { // Endpoint for updating a product
     const product = req.body
     try {
         const updatedProduct = await productManager.updateProduct(req.params.pid, product)
-        return res.json(product)
+        return res.json({message: 'Product added', product: updatedProduct})
     } catch (err) {
         return res.status(404).send(err.message)
     }
@@ -53,7 +53,7 @@ router.delete('/:pid', async (req, res) => {
     try {
         const products = await productManager.deleteProduct(req.params.pid)
         io.emit('product_deleted', req.params.pid)
-        return res.status(204).json(products)
+        return res.status(204).json({message: `Product width id ${req.params.pid} removed correctly`})
     } catch(err) {
         return res.status(404).send(err.message)
     }
