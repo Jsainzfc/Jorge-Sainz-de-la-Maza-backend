@@ -1,4 +1,4 @@
-# Pre-Entrega 1
+# Entregable clase 10
 
 ## Alcance clase 2
 Se ha creado una clase Product con un constructor que inicializa todas las variables necesarias al valor introducido al crear una instancia.
@@ -42,13 +42,19 @@ Se ha creado un servidor en express que emplea el ProductManager como se dejó l
 ## Alcance Pre-Entrega 1
 Se ha implementado el Router de express para contar con dos grupos de rutas: /api/products y /api/carts. Las rutas se han implementado siguiendo la arquitectura API REST. El proyecto cuenta con persistencia mediante fs de node.
 
+## Alcance clase 10
+Se han implementado plantillas mediante handlebars par crear dos nuevos endpoints: / y /realtimeproducts, que se sirven mediante dicho motor de plantillas y proporciona una lista de los productos.
+La información proporcionada en / es estática mediante el servidor de express.
+La información proporcionada en /realtimeproducts es dinámica gracias a un websocket server que actualiza la lista de productos cada vez que se recibe un nuevo producto o se elimina un producto.
+
 ## Estructura
 El código está dentro de la carpeta src. 
 La carpeta database recoge products.json y carts.json, base de datos de productos y de carritos.
 La carpeta managers recoge el CartManager y el ProductManager, clases para manejar los productos y los carritos.
-La carpeta testing recoge todos los archivos necesarios para testear los managers.
-La carpeta routes incluye los enrutados de los endpoints de la aplicación.
-El servidor de express está en el archivo app.js.
+La carpeta testing recoge todos los archivos necesarios para testear los managers y los endpoints en express.
+La carpeta routes incluye, en la subcarpeta api los enrutados de los endpoints de carritos y productos, un router de las rutas estáticas de home (/ y /realtimeproducts), y un index.js que distribuye las rutas.
+El servidor de express y el socket están en el archivo app.js, pero el socket solo se inicializa en las rutas que lo usan.
+Las vistas de handlebars están enla carpeta views.
 
 ## Endpoints de products:
 
@@ -91,7 +97,6 @@ Si el carrito no se encuentra, retorna un status 404.
 Si el carrito no contiene aún el id de product pid, se añade con una cantidad de 1.
 Si el carrito ya contiene el producto con id pid, se suma 1 a la cantidad presente.
 
-
 ## Testeo
 
 ### Testing de clases managers
@@ -102,3 +107,14 @@ Para arrancar se ha creado un comando "dev" en el package.json con lo cual es su
 La base de datos de testeo de productos ya está generada. Si hiciera falta volver a generarla basta con ejecutar el archivo testing/createDatabaseFiles.js 
 La base de datos de carrito se inicializa con un único carrito, ya que al generar los id de forma aleatoria, se emplea uno ya creado para poder tener unas peticiones de testing.
 El testeo del servidor se puede hacer mediante los archivos products_endpoints_testing.rest y carts_endpoints_testing.rest en la carpeta testing que recoge todas las request al servidor para probar su funcionamiento.
+
+### Testing clase 10
+- Se instalará y correrá el servidor en el puerto indicado.
+  - El servidor debe levantarse sin problema.
+- Se abrirá la ruta raíz
+  - Debe visualizarse el contenido de la vista index.handlebars
+  - No se debe activar el websocket aún.
+- Se buscará en la url del navegador la ruta “/realtimeproducts”.
+  - Se corroborará que el servidor haya conectado con el cliente, en la consola del servidor deberá mostrarse un mensaje de “cliente conectado”.
+  - Se debe mostrar la lista de productos y se corroborará que se esté enviando desde websocket.
+
