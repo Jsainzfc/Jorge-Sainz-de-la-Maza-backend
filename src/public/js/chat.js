@@ -39,10 +39,16 @@ const appendUserActionElement = (user, joined) => {
   }, 250)
 }
 
-const appendOnlineUser = (user) => {
+const appendOnlineUser = (user, token) => {
   const li = document.createElement('li')
+  li.setAttribute('id', token)
   li.innerText = `${user} ${user === username ? '(You)' : ''}`
   usersEl.appendChild(li)
+}
+
+const removeOnlineUser = (token) => {
+  const li = document.getElementById(`${token}`)
+  usersEl.removeChild(li)
 }
 
 let currentMessages = [] // History of messages
@@ -50,7 +56,8 @@ let onlineUsers = []
 
 socket.on('initialise', ({messages, users}) => {
   currentMessages = messages
-  currentUsers = users
+  onlineUsers = users
+  console.log(users, onlineUsers)
 })
 
 Swal.fire({
@@ -86,8 +93,8 @@ Swal.fire({
       } 
     }
 
-    for (const user of currentUsers) {
-      appendOnlineUser(user)
+    for (const {user, token} of onlineUsers) {
+      appendOnlineUser(user, token)
     }
 
     socket.on('chat-message', ({ user, datetime, text }) => {
@@ -96,6 +103,14 @@ Swal.fire({
 
     socket.on('user', ({ user, action }) => {
       appendUserActionElement(user, action)
+    })
+
+    socket.on('userIn', ({user, token}) => {
+      appendOnlineUser(user, token)
+    })
+
+    socket.on('userOut', ({token}) => {
+      removeOnlineUser(token)
     })
 
     inputElement.addEventListener('keyup', ({ key, target }) => {

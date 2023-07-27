@@ -30,9 +30,9 @@ function socketManager(socket) {
       user: userOnline[socket.id],
       action: false
     })
-
+    socket.broadcast.emit('userOut', {token: socket.id})
     delete userOnline[socket.id]
-    console.log('disconnected')
+    console.log(`user has disconnected: ${socket.id}`)
   })
 
   socket.on('chat-message', (msg) => {
@@ -41,8 +41,10 @@ function socketManager(socket) {
   })
 
   socket.on('user', ({ user, action }) => {
+    users.push({user, token: socket.id})
     userOnline[socket.id] = user
     socket.broadcast.emit('user', { user, action })
+    socket.broadcast.emit('userIn', {user, token: socket.id})
   })
 }
 
