@@ -39,6 +39,7 @@ const appendUserActionElement = (user, joined) => {
   }, 250)
 }
 
+// Function for adding a user to the logged users list
 const appendOnlineUser = (user, token) => {
   const li = document.createElement('li')
   li.setAttribute('id', token)
@@ -46,6 +47,7 @@ const appendOnlineUser = (user, token) => {
   usersEl.appendChild(li)
 }
 
+// Function for removing a user from the logged users list
 const removeOnlineUser = (token) => {
   const li = document.getElementById(`${token}`)
   usersEl.removeChild(li)
@@ -54,12 +56,14 @@ const removeOnlineUser = (token) => {
 let currentMessages = [] // History of messages
 let onlineUsers = []
 
+// Initialise socket event. Initialises users and messages
 socket.on('initialise', ({messages, users}) => {
   currentMessages = messages
   onlineUsers = users
   console.log(users, onlineUsers)
 })
 
+// Identification
 Swal.fire({
   title: "Input a username",
   input: "text",
@@ -85,6 +89,7 @@ Swal.fire({
     socket.emit('user', { user: username, action: true })
     appendOnlineUser(username)
 
+    // Initialise messages in HTML
     for (const message of currentMessages) {
       if (message.type === 'user') {
         appendUserActionElement(message.user, message.action)
@@ -93,6 +98,7 @@ Swal.fire({
       } 
     }
 
+    // Initialise users in HTML
     for (const {user, token} of onlineUsers) {
       appendOnlineUser(user, token)
     }
@@ -119,14 +125,11 @@ Swal.fire({
       }
 
       const { value } = target
-
-      if (!value) {
+      if (!value) { // Empty messages are not sent
         return
       }
 
-      // enviar el mensaje al socket
       const fecha = new Date()
-
       const msg = { user: username, datetime: fecha.toLocaleTimeString('en-US'), text: value }
 
       socket.emit('chat-message', msg)
