@@ -31,6 +31,7 @@ router.get('/realtimeproducts', async (req, res) => {
 })
 
 router.get('/chat', async (req, res) => {
+  console.log("Here")
   // Initializes socket server
   io.on('connection', socketManager)
 

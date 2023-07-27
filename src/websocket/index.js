@@ -32,6 +32,7 @@ function socketManager(socket) {
     })
 
     delete userOnline[socket.id]
+    console.log('disconnected')
   })
 
   socket.on('chat-message', (msg) => {

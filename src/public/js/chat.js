@@ -75,8 +75,8 @@ Swal.fire({
 })
   .then (({ value }) => {
     username = value
-    appendOnlineUser(username)
     socket.emit('user', { user: username, action: true })
+    appendOnlineUser(username)
 
     for (const message of currentMessages) {
       if (message.type === 'user') {
