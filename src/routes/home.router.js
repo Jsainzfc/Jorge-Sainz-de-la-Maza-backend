@@ -30,4 +30,14 @@ router.get('/realtimeproducts', async (req, res) => {
   })
 })
 
+router.get('/chat', async (req, res) => {
+  // Initializes socket server
+  io.on('connection', socketManager)
+
+  res.render('chat', {
+    title: 'Chat',
+    style: 'chat'
+  })
+})
+
 export default router
