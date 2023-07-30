@@ -1,5 +1,5 @@
 import fs from 'fs' // Module for managing files 
-import { productModel } from '../../models/products.model.js';
+import { productModel } from '../models/products.model.js';
 
 class Product { // Class describing the product object which is stored in the ProductManager
   constructor ({code, title, description, price, stock, thumbnails, status}) {
@@ -54,8 +54,6 @@ class ProductManager {
       throw new Error (`Validation Error: ${err}`)
     }
 
-    console.log('Here')
-
     const product = await productModel.create({
       code, 
       title, 
@@ -71,25 +69,23 @@ class ProductManager {
   async getProducts() { // Returns the array of products
     try {
       const products = await productModel.find()
-      return JSON.parse(products)
+      return products
     } catch(err) {
       throw new Error ('Cannot get products with mongoose.')
     }
   }
   
   async getProductById(id) { // Returns the product (if found) with that id
-    const products = await this.getProducts()
-    const product = products.find(item => item.id === id)
+    const product = await productModel.findById(id)
     if (product) return product
     throw new Error ('Product not found')
   }
 
   async updateProduct(id, {code, title, description, price, stock, thumbnails, status}) { // Updates one product of the products in the file
-    const products = await this.getProducts()
-    let product = products.find(item => item.id === id)
+    const product = await productModel.findById(id)
     if (!product) throw new Error ('Product not found')
-    product = {
-      id : product.id, // Id cannot be modified or removed
+    const newProduct = {
+      ...Product,
       code : code ?? product.code,
       title : title ?? product.title,
       description : description ?? product.description,
@@ -98,10 +94,9 @@ class ProductManager {
       thumbnails : thumbnails ?? product.thumbnails,
       status : status ?? product.status,
     }
-    const index = this.#getIndex (products, id)
-    products[index] = product
-    this.#writeFile(products)
-    return products[index]
+
+    const result = await productModel.replaceOne({_id: id}, newProduct)
+    return newProduct
   }
 
   async deleteProduct(id) {

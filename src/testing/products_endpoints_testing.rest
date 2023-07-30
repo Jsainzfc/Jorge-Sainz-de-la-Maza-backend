@@ -6,9 +6,9 @@ GET http://localhost:8080/api/products/
 
 GET http://localhost:8080/api/products/?limit=5
 
-### Devolución esperada: código 200, 1 único producto con id = f0a8eed4-021a-44d5-84c8-7a6980efb21f ###
+### Devolución esperada: código 200, 1 único producto con id = 64c6575aafe9a3fb33cccd60 ###
 
-GET http://localhost:8080/api/products/f0a8eed4-021a-44d5-84c8-7a6980efb21f
+GET http://localhost:8080/api/products/64c6575aafe9a3fb33cccd60
 
 ### Devolución esperada: código 404 ###
 
@@ -41,8 +41,7 @@ content-type: application/json
 }
 
 ### Devolución esperada: código 200, producto actualizado ###
-
-PUT http://localhost:8080/api/products/f0a8eed4-021a-44d5-84c8-7a6980efb21f
+PUT http://localhost:8080/api/products/64c6575aafe9a3fb33cccd60
 content-type: application/json
 
 {

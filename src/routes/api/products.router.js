@@ -14,7 +14,9 @@ router.get('/', async (req, res) => { // Endpoint for retrieving all of the prod
         const limit = Number(req.query.limit)
         products = limit === 0 || limit > products.length ? products : products.slice(0, limit)
     }
-    if (products.length === 0) return res.status(204) // There are no products
+    if (products.length === 0) {
+        return res.status(204).json({message: 'No products found'}) // There are no products
+    }
     return res.json(products)
 })
   
@@ -23,7 +25,6 @@ router.get('/:pid', async (req, res) => { // Endpoint for retrieving the product
         const product = await productManager.getProductById(req.params.pid)
         return res.json({message: 'Product found', product}) 
     } catch (err) {
-
         return res.status(404).send(err.message)
     }
 })
@@ -43,7 +44,7 @@ router.put('/:pid', async (req, res) => { // Endpoint for updating a product
     const product = req.body
     try {
         const updatedProduct = await productManager.updateProduct(req.params.pid, product)
-        return res.json({message: 'Product added', product: updatedProduct})
+        return res.json({message: 'Product updated', product: updatedProduct})
     } catch (err) {
         return res.status(404).send(err.message)
     }
