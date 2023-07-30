@@ -1,9 +1,8 @@
 import fs from 'fs' // Module for managing files 
-import { v4 as uuidv4 } from 'uuid' // Module for generating unique identifiers
+import { productModel } from '../../models/products.model.js';
 
 class Product { // Class describing the product object which is stored in the ProductManager
   constructor ({code, title, description, price, stock, thumbnails, status}) {
-    this.id = uuidv4() // Id is automatically generated and unique
     this.code = code
     this.title = title
     this.description = description
@@ -55,7 +54,9 @@ class ProductManager {
       throw new Error (`Validation Error: ${err}`)
     }
 
-    const product = new Product({
+    console.log('Here')
+
+    const product = await productModel.create({
       code, 
       title, 
       description, 
@@ -64,15 +65,16 @@ class ProductManager {
       thumbnails, 
       status: Boolean(status)
     })
-
-    products.push(product)
-    this.#writeFile(products)
     return product
   }
 
   async getProducts() { // Returns the array of products
-    const products = await fs.promises.readFile(this.path, 'utf-8')
-    return JSON.parse(products)
+    try {
+      const products = await productModel.find()
+      return JSON.parse(products)
+    } catch(err) {
+      throw new Error ('Cannot get products with mongoose.')
+    }
   }
   
   async getProductById(id) { // Returns the product (if found) with that id

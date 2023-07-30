@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import { ProductManager } from '../../managers/productManager.js'
-import __dirname from '../../utils.js';
+import __dirname from '../../utils.js'
 import { join } from 'path'
-import io from '../../app.js';
+import io from '../../app.js'
 
 const productManager = new ProductManager(join(__dirname, '/database/products.json'))
 const router = Router()

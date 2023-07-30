@@ -5,6 +5,7 @@ import {join} from 'path'
 import http from 'http'
 import {api, home} from './routes/index.js'
 import { Server } from 'socket.io'
+import mongoose from 'mongoose'
 
 const app = express() // Initialize express app
 
@@ -27,5 +28,7 @@ const PORT = 8080
 server.listen(PORT, () => {
   console.log(`Express Server listening at http://localhost:${PORT}`)
 })
+
+mongoose.connect('mongodb+srv://jsainz:sjy6fEAqjwZjLinV@coderhouse.yi9eoma.mongodb.net/?retryWrites=true&w=majority')
 
 export default io
