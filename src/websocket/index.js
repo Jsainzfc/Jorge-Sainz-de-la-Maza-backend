@@ -1,27 +1,12 @@
-const messages = [
-  {
-    type: 'message',
-    user: 'Mauricio',
-    datetime: '17:35',
-    text: 'Este es un mensaje de prueba de Mauricio'
-  },
-  {
-    type: 'message',
-    user: 'Javier',
-    datetime: '17:37',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
-  },
-  {
-    type: 'user',
-    user: 'Ramon',
-    action: 'false'
-  }
-]
+import { messageModel } from '../models/messages.model.js'
+
 const userOnline = {}
 const users = []
 
-function socketManager (socket) {
+const socketManager = async (socket) => {
   console.log(`user has connected: ${socket.id}`)
+
+  const messages = await messageModel.find()
 
   socket.emit('initialise', { messages, users })
 
@@ -36,7 +21,10 @@ function socketManager (socket) {
   })
 
   socket.on('chat-message', (msg) => {
-    messages.push(msg)
+    messageModel.create({
+      user: userOnline[socket.id],
+      message: msg
+    })
     socket.broadcast.emit('chat-message', msg)
   })
 
