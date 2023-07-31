@@ -1,0 +1,119 @@
+###
+POST http://localhost:8080/api/products/
+content-type: application/json
+
+{
+    "code": "product0",
+    "title": "Product 0",
+    "description": "This is product 0",
+    "price": "34",
+    "stock": "10"
+}
+
+###
+POST http://localhost:8080/api/products/
+content-type: application/json
+
+{
+    "code": "product1",
+    "title": "Product 1",
+    "description": "This is product 1",
+    "price": "34",
+    "stock": "10"
+}
+
+###
+POST http://localhost:8080/api/products/
+content-type: application/json
+
+{
+    "code": "product2",
+    "title": "Product 2",
+    "description": "This is product 2",
+    "price": "34",
+    "stock": "10"
+}
+
+###
+POST http://localhost:8080/api/products/
+content-type: application/json
+
+{
+    "code": "product3",
+    "title": "Product 3",
+    "description": "This is product 3",
+    "price": "34",
+    "stock": "10"
+}
+
+###
+POST http://localhost:8080/api/products/
+content-type: application/json
+
+{
+    "code": "product4",
+    "title": "Product 4",
+    "description": "This is product 4",
+    "price": "34",
+    "stock": "10"
+}
+
+###
+POST http://localhost:8080/api/products/
+content-type: application/json
+
+{
+    "code": "product5",
+    "title": "Product 5",
+    "description": "This is product 5",
+    "price": "34",
+    "stock": "10"
+}
+
+###
+POST http://localhost:8080/api/products/
+content-type: application/json
+
+{
+    "code": "product6",
+    "title": "Product 6",
+    "description": "This is product 6",
+    "price": "34",
+    "stock": "10"
+}
+
+###
+POST http://localhost:8080/api/products/
+content-type: application/json
+
+{
+    "code": "product7",
+    "title": "Product 7",
+    "description": "This is product 7",
+    "price": "34",
+    "stock": "10"
+}
+
+###
+POST http://localhost:8080/api/products/
+content-type: application/json
+
+{
+    "code": "product8",
+    "title": "Product 8",
+    "description": "This is product 8",
+    "price": "34",
+    "stock": "10"
+}
+
+###
+POST http://localhost:8080/api/products/
+content-type: application/json
+
+{
+    "code": "product9",
+    "title": "Product 9",
+    "description": "This is product 9",
+    "price": "34",
+    "stock": "10"
+}

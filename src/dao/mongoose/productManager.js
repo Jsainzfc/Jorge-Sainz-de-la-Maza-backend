@@ -3,10 +3,10 @@ import { productModel } from '../../models/products.model.js'
 class ProductManager {
   async #codeExists (code) { // True if there is already a product in the manager with the same code
     const products = await productModel.find({ code })
-    return products.length > 0
+    return (products.length > 0)
   }
 
-  #validateFields ({ code, title, description, price, stock, thumbnails, status }) { // Validates that compulsory fields exist, and the format is correct
+  async #validateFields ({ code, title, description, price, stock, thumbnails, status }) { // Validates that compulsory fields exist, and the format is correct
     if (!(code && title && description && price && stock)) {
       throw new Error('Not all fields included.')
     }
@@ -14,14 +14,14 @@ class ProductManager {
     if (isNaN(stock)) throw new Error('Stock must be a number')
     if (status && status !== 'true' && status !== 'false') throw new Error('Status can only be true or false')
     if (thumbnails && !Array.isArray(thumbnails)) throw new Error('Thumbnails should be an array')
-    if (this.#codeExists(code)) {
+    if (await this.#codeExists(code)) {
       throw new Error('Code already exists.')
     }
   }
 
   async addProduct ({ code, title, description, price, stock, thumbnails, status }) { // If correct creates a new Product and adds it to the array
     try {
-      this.#validateFields({ code, title, description, price, stock, thumbnails, status })
+      await this.#validateFields({ code, title, description, price, stock, thumbnails, status })
     } catch (err) {
       throw new Error(`Validation Error: ${err}`)
     }
@@ -56,8 +56,8 @@ class ProductManager {
   async updateProduct (id, { code, title, description, price, stock, thumbnails, status }) { // Updates one product of the products in the file
     const product = await productModel.findById(id)
     if (!product) throw new Error('Product not found')
-    const newProduct = {
-      ...product,
+
+    await productModel.updateOne({ _id: id }, {
       code: code ?? product.code,
       title: title ?? product.title,
       description: description ?? product.description,
@@ -65,10 +65,7 @@ class ProductManager {
       stock: stock ?? product.stock,
       thumbnails: thumbnails ?? product.thumbnails,
       status: status ?? product.status
-    }
-
-    await productModel.replaceOne({ _id: id }, newProduct)
-    return newProduct
+    })
   }
 
   async deleteProduct (id) {

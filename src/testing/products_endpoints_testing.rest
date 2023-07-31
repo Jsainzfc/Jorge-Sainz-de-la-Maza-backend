@@ -1,21 +1,20 @@
 ### Devolución esperada: código 200, 10 productos ###
-
 GET http://localhost:8080/api/products/
 
-### Devolución esperada: código 200, 5 productos ###
 
+### Devolución esperada: código 200, 5 productos ###
 GET http://localhost:8080/api/products/?limit=5
 
-### Devolución esperada: código 200, 1 único producto con id = 64c6575aafe9a3fb33cccd60 ###
 
-GET http://localhost:8080/api/products/64c6575aafe9a3fb33cccd60
+### Devolución esperada: código 200, 1 único producto con id = 64c6575aafe9a3fb33cccd60 ###
+GET http://localhost:8080/api/products/64c7a978e2012d87a7c5fbb6
+
 
 ### Devolución esperada: código 404 ###
-
 GET http://localhost:8080/api/products/1
 
-### Devolución esperada: código 200, array de productos con el nuevo producto incluido ###
 
+### Devolución esperada: código 200, array de productos con el nuevo producto incluido ###
 POST http://localhost:8080/api/products/
 content-type: application/json
 
@@ -27,8 +26,8 @@ content-type: application/json
     "stock": "10"
 }
 
-### Devolución esperada: código 400, error de validación ###
 
+### Devolución esperada: código 400, error de validación ###
 POST http://localhost:8080/api/products/
 content-type: application/json
 
@@ -40,20 +39,21 @@ content-type: application/json
     "stock": "10"
 }
 
+
 ### Devolución esperada: código 200, producto actualizado ###
-PUT http://localhost:8080/api/products/64c6575aafe9a3fb33cccd60
+PUT http://localhost:8080/api/products/64c7a978e2012d87a7c5fbb6
 content-type: application/json
 
 {
     "code": "sampleProduct2",
     "title": "Sample Product",
     "description": "This is a sample product",
-    "price": "a",
+    "price": "24",
     "stock": "10"
 }
 
-### Devolución esperada: código 404, producto no encontrado ###
 
+### Devolución esperada: código 404, producto no encontrado ###
 PUT http://localhost:8080/api/products/1
 content-type: application/json
 
@@ -61,16 +61,16 @@ content-type: application/json
     "code": "sampleProduct2",
     "title": "Sample Product",
     "description": "This is a sample product",
-    "price": "a",
+    "price": "24",
     "stock": "10"
 }
 
-### Devolución esperada: código 404, producto no encontrado ###
 
+### Devolución esperada: código 404, producto no encontrado ###
 DELETE http://localhost:8080/api/products/1
 
-### Devolución esperada: código 204, lista de productos sin el eliminado ###
 
-DELETE http://localhost:8080/api/products/f0a8eed4-021a-44d5-84c8-7a6980efb21f
+### Devolución esperada: código 204, lista de productos sin el eliminado ###
+DELETE http://localhost:8080/api/products/64c7aa0998befc79677380ba
 
 
