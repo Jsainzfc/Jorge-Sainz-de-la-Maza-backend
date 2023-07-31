@@ -1,39 +1,40 @@
 import { ProductManager } from '../managers/productManager.js'
-import fs from 'fs' // Module for managing files 
-import __dirname from '../utils.js';
+import fs from 'fs' // Module for managing files
+import __dirname from '../utils.js'
+import path from 'path'
 
-let id, id_2
+let id
 let manager
 
 const initializeTests = () => {
   if (fs.existsSync(path.join(__dirname, 'products.json'))) {
     fs.unlinkSync(path.join(__dirname, 'products.json'))
-    //file removed
+    // file removed
   }
   manager = new ProductManager(path.join(__dirname, 'products.json'))
 }
 
 const test1 = async () => {
-  const products = await manager.getProducts() 
+  const products = await manager.getProducts()
   console.log('Test 1: Expect an empty array => ', products)
 }
 
 const test2 = async () => {
   const product = {
-    code : 'abc123',
+    code: 'abc123',
     title: 'producto prueba',
     description: 'Este es un product prueba',
     price: 20,
     stock: 25
   }
-  const products = await manager.addProduct (product)
+  const products = await manager.addProduct(product)
   console.log('Test 2: Expect an array with only one item => ', products)
   id = products[0].id
 }
 
 const test3 = async () => {
   try {
-    const products = await manager.addProduct ({code, title, description, price, stock})
+    await manager.addProduct({ code, title, description, price, stock })
   } catch (err) {
     console.log('Test 3: Expect a validation error (code not unique):')
     console.error(err)
@@ -47,7 +48,7 @@ const test4 = async () => {
 
 const test5 = async () => {
   try {
-    const product = await manager.getProductById(1)
+    await manager.getProductById(1)
   } catch (err) {
     console.log('Test 5: Expect not found error:')
     console.error(err)
@@ -56,7 +57,7 @@ const test5 = async () => {
 
 const test6 = async () => {
   try {
-    const products = await manager.addProduct({code, title, description, price})
+    await manager.addProduct({ code, title, description, price })
   } catch (err) {
     console.log('Test 6: Expect a validation error (not all fields found):')
     console.error(err)
@@ -64,13 +65,13 @@ const test6 = async () => {
 }
 
 const test7 = async () => {
-  const product = await manager.updateProduct(id, {code: 'newCode'})
+  const product = await manager.updateProduct(id, { code: 'newCode' })
   console.log('Test 7: Expect product with code changed:', product)
 }
 
 const test8 = async () => {
   try {
-    const product = await manager.updateProduct(1, {code: 'newCode'})
+    const product = await manager.updateProduct(1, { code: 'newCode' })
   } catch (err) {
     console.log('Test 8: Expect not found error:')
     console.error(err)
@@ -79,15 +80,15 @@ const test8 = async () => {
 
 const test9 = async () => {
   const product = {
-    code : 'producto 2',
+    code: 'producto 2',
     title: 'producto prueba 2',
     description: 'Este es un product prueba',
     price: 40,
     stock: 12
   }
-  const products = await manager.addProduct (product)
+  const products = await manager.addProduct(product)
   console.log('Test 9: Expect an array with 2 items => ', products)
-  id_2 = products[1].id
+  id2 = products[1].id
 }
 
 const test10 = async () => {
@@ -106,10 +107,10 @@ const test11 = async () => {
 
 const test12 = async () => {
   const product = {
-    code : 'producto 3',
+    code: 'producto 3',
     title: 'producto prueba 3',
     description: 'Este es un product prueba',
-    price: "aaa",
+    price: 'aaa',
     stock: 12
   }
   try {
@@ -122,11 +123,11 @@ const test12 = async () => {
 
 const test13 = async () => {
   const product = {
-    code : 'producto 3',
+    code: 'producto 3',
     title: 'producto prueba 3',
     description: 'Este es un product prueba',
-    price: "5",
-    stock: "a2"
+    price: '5',
+    stock: 'a2'
   }
   try {
     const products = await manager.addProduct(product)
@@ -138,11 +139,11 @@ const test13 = async () => {
 
 const test14 = async () => {
   const product = {
-    code : 'producto 3',
+    code: 'producto 3',
     title: 'producto prueba 3',
     description: 'Este es un product prueba',
-    price: "5",
-    stock: "2",
+    price: '5',
+    stock: '2',
     thumbnails: 'imagenes'
   }
   try {
@@ -155,12 +156,12 @@ const test14 = async () => {
 
 const test15 = async () => {
   const product = {
-    code : 'producto 3',
+    code: 'producto 3',
     title: 'producto prueba 3',
     description: 'Este es un product prueba',
-    price: "5",
-    stock: "2",
-    status: "n"
+    price: '5',
+    stock: '2',
+    status: 'n'
   }
   try {
     const products = await manager.addProduct(product)
@@ -172,15 +173,15 @@ const test15 = async () => {
 
 const test16 = async () => {
   const product = {
-    code : 'producto 3',
+    code: 'producto 3',
     title: 'producto prueba 3',
     description: 'Este es un product prueba',
-    price: "5",
-    stock: "2",
-    status: "false",
+    price: '5',
+    stock: '2',
+    status: 'false',
     thumbnails: [
-      "imagen1",
-      "imagen2"
+      'imagen1',
+      'imagen2'
     ]
   }
   const products = await manager.addProduct(product)
@@ -206,6 +207,5 @@ const testing = async () => {
   await test15()
   await test16()
 }
-
 
 export default testing

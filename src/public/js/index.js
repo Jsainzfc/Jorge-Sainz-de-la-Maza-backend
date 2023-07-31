@@ -1,9 +1,10 @@
+// eslint-disable-next-line no-undef
 const socket = io() // Start connection with socket server
 
 socket.on('new_product', data => {
   console.log('Producto nuevo', data)
 
-  const newItem = 
+  const newItem =
   ` <li id='${data.id}'>
         <p><b>Título:</b> ${data.title}</p>
         <p><b>Descripción:</b> ${data.description}</p>

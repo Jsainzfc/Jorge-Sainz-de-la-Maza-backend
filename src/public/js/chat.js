@@ -1,10 +1,11 @@
+// eslint-disable-next-line no-undef
 const socket = io()
 const messagesEl = document.querySelector('#messages')
 const inputElement = document.querySelector('.send input')
 let username = null
 const usersEl = document.querySelector('.logged-users')
 
-messagesEl.innerHTML = ""
+messagesEl.innerHTML = ''
 
 // Function that appends a new message element to the HTML
 const appendMessageElement = (user, time, msg, action) => {
@@ -12,13 +13,8 @@ const appendMessageElement = (user, time, msg, action) => {
   div.classList.add('message')
   if (action === user) div.classList.add('joined')
   div.innerHTML = `<span class="user">${user === username ? 'You' : user} [${time}]</span> <span class="text">${msg}</span>`
-  
-  messagesEl.appendChild(div)
 
-  // Update container height with the new appended node
-  setTimeout(() => {
-    messagesEl.scrollTo(0, messages.scrollHeight);
-  }, 250)
+  messagesEl.appendChild(div)
 }
 
 // Function that appends a new user (dis)connection element to the HTML
@@ -32,11 +28,6 @@ const appendUserActionElement = (user, joined) => {
   div.innerHTML = `<span class="text">${user === username ? 'You' : user} logged ${action}</span>`
 
   messagesEl.appendChild(div)
-
-  // Update container height with the new appended node
-  setTimeout(() => {
-    messagesEl.scrollTo(0, messages.scrollHeight);
-  }, 250)
 }
 
 // Function for adding a user to the logged users list
@@ -57,16 +48,17 @@ let currentMessages = [] // History of messages
 let onlineUsers = []
 
 // Initialise socket event. Initialises users and messages
-socket.on('initialise', ({messages, users}) => {
+socket.on('initialise', ({ messages, users }) => {
   currentMessages = messages
   onlineUsers = users
   console.log(users, onlineUsers)
 })
 
 // Identification
+// eslint-disable-next-line no-undef
 Swal.fire({
-  title: "Input a username",
-  input: "text",
+  title: 'Input a username',
+  input: 'text',
   inputAttributes: {
     autocapitalize: 'off'
   },
@@ -74,17 +66,18 @@ Swal.fire({
   preConfirm: (username) => {
     // agregar logica
     if (!username) {
+      // eslint-disable-next-line no-undef
       Swal.showValidationMessage(
-        `User cannot be blank`
+        'User cannot be blank'
       )
       return
     }
-    
+
     return username
   },
   allowOutsideClick: false
 })
-  .then (({ value }) => {
+  .then(({ value }) => {
     username = value
     socket.emit('user', { user: username, action: true })
     appendOnlineUser(username)
@@ -95,11 +88,11 @@ Swal.fire({
         appendUserActionElement(message.user, message.action)
       } else {
         appendMessageElement(message.user, message.datetime, message.text, message.action)
-      } 
+      }
     }
 
     // Initialise users in HTML
-    for (const {user, token} of onlineUsers) {
+    for (const { user, token } of onlineUsers) {
       appendOnlineUser(user, token)
     }
 
@@ -111,11 +104,11 @@ Swal.fire({
       appendUserActionElement(user, action)
     })
 
-    socket.on('userIn', ({user, token}) => {
+    socket.on('userIn', ({ user, token }) => {
       appendOnlineUser(user, token)
     })
 
-    socket.on('userOut', ({token}) => {
+    socket.on('userOut', ({ token }) => {
       removeOnlineUser(token)
     })
 
@@ -133,8 +126,8 @@ Swal.fire({
       const msg = { user: username, datetime: fecha.toLocaleTimeString('en-US'), text: value }
 
       socket.emit('chat-message', msg)
-      target.value = ""
+      target.value = ''
       appendMessageElement(username, fecha.toLocaleTimeString('en-US'), value)
-    }) 
+    })
   }
-)
+  )

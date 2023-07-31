@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const productCollection = 'products'
 
@@ -6,14 +6,14 @@ const productSchema = new mongoose.Schema({
   title: String,
   code: {
     type: String,
-    unique: true,
+    unique: true
   },
   description: String,
   price: Number,
   status: Boolean,
-  thumbnails: [String],
+  thumbnails: [String]
 })
 
 const productModel = mongoose.model(productCollection, productSchema)
 
-export {productModel}
+export { productModel }
