@@ -20,12 +20,11 @@ const socketManager = async (socket) => {
     console.log(`user has disconnected: ${socket.id}`)
   })
 
-  socket.on('chat-message', (msg) => {
+  socket.on('chat-message', ({ user, date, text }) => {
     messageModel.create({
-      user: userOnline[socket.id],
-      message: msg
+      user, date, message: text
     })
-    socket.broadcast.emit('chat-message', msg)
+    socket.broadcast.emit('chat-message', { user, date, text })
   })
 
   socket.on('user', ({ user, action }) => {

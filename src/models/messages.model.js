@@ -3,10 +3,8 @@ import mongoose from 'mongoose'
 const messagesCollection = 'messages'
 
 const messageSchema = new mongoose.Schema({
-  user: {
-    type: String,
-    unique: true
-  },
+  user: String,
+  date: Date,
   message: String
 })
 

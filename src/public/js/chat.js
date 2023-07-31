@@ -8,12 +8,10 @@ const usersEl = document.querySelector('.logged-users')
 messagesEl.innerHTML = ''
 
 // Function that appends a new message element to the HTML
-const appendMessageElement = (user, time, msg, action) => {
+const appendMessageElement = ({ user, date, msg }) => {
   const div = document.createElement('div')
   div.classList.add('message')
-  if (action === user) div.classList.add('joined')
-  div.innerHTML = `<span class="user">${user === username ? 'You' : user} [${time}]</span> <span class="text">${msg}</span>`
-
+  div.innerHTML = `<span class="user">${user === username ? 'You' : user} [${date.toLocaleTimeString('en-US')}]</span> <span class="text">${msg}</span>`
   messagesEl.appendChild(div)
 }
 
@@ -51,7 +49,6 @@ let onlineUsers = []
 socket.on('initialise', ({ messages, users }) => {
   currentMessages = messages
   onlineUsers = users
-  console.log(users, onlineUsers)
 })
 
 // Identification
@@ -84,11 +81,8 @@ Swal.fire({
 
     // Initialise messages in HTML
     for (const message of currentMessages) {
-      if (message.type === 'user') {
-        appendUserActionElement(message.user, message.action)
-      } else {
-        appendMessageElement(message.user, message.datetime, message.text, message.action)
-      }
+      const datetime = new Date(message.date)
+      appendMessageElement({ user: message.user, msg: message.message, date: datetime })
     }
 
     // Initialise users in HTML
@@ -96,8 +90,9 @@ Swal.fire({
       appendOnlineUser(user, token)
     }
 
-    socket.on('chat-message', ({ user, datetime, text }) => {
-      appendMessageElement(user, datetime, text)
+    socket.on('chat-message', ({ user, date, text }) => {
+      const datetime = new Date(date)
+      appendMessageElement({ user, date: datetime, msg: text })
     })
 
     socket.on('user', ({ user, action }) => {
@@ -122,12 +117,12 @@ Swal.fire({
         return
       }
 
-      const fecha = new Date()
-      const msg = { user: username, datetime: fecha.toLocaleTimeString('en-US'), text: value }
+      const date = new Date()
+      const msg = { user: username, date, text: value }
 
       socket.emit('chat-message', msg)
       target.value = ''
-      appendMessageElement(username, fecha.toLocaleTimeString('en-US'), value)
+      appendMessageElement({ user: username, date, msg: value })
     })
   }
   )
