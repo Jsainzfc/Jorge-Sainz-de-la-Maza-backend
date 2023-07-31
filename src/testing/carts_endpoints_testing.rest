@@ -1,26 +1,26 @@
 ### Devolución esperada: código 200, id del nuevo carrito ###
 POST http://localhost:8080/api/carts/
 
-### Devolución esperada: código 200, array vacío ###
 
-GET http://localhost:8080/api/carts/23e73a4a-3055-43fb-b457-fe40b94cd69f
+### Devolución esperada: código 200, array vacío ###
+GET http://localhost:8080/api/carts/64c7ab42212b5d15027c0da8
+
 
 ### Devolución esperada: código 404, carrito no encontrado ###
-
 GET http://localhost:8080/api/carts/1
 
-### Devolución esperada: código 200, 1 único producto con id = 1 y cantidad = 1 ###
 
-POST http://localhost:8080/api/carts/23e73a4a-3055-43fb-b457-fe40b94cd69f/product/1
+### Devolución esperada: código 200, 1 único producto con id = 1 y cantidad = 1 ###
+POST http://localhost:8080/api/carts/64c7ab42212b5d15027c0da8/product/1
+
 
 ### Devolución esperada: código 200, 1 único producto con id = 1 y cantidad = 2 ###
+POST http://localhost:8080/api/carts/64c7ab42212b5d15027c0da8/product/1
 
-POST http://localhost:8080/api/carts/23e73a4a-3055-43fb-b457-fe40b94cd69f/product/1
 
 ### Devolución esperada: código 200, 2 productos, uno con id = 1 y cantidad = 2, y otro con id = 2 y cantidad = 1 ###
+POST http://localhost:8080/api/carts/64c7ab42212b5d15027c0da8/product/2
 
-POST http://localhost:8080/api/carts/23e73a4a-3055-43fb-b457-fe40b94cd69f/product/2
 
 ### Devolución esperada: código 404 ###
-
 POST http://localhost:8080/api/carts/1/product/2

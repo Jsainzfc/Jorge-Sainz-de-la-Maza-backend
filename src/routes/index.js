@@ -5,7 +5,7 @@ import HomeRoutes from './home.router.js'
 
 const api = Router()
 api.use('/products', ProductRoutes)
-api.use('/users', CartRoutes)
+api.use('/carts', CartRoutes)
 
 const home = Router()
 home.use('/', HomeRoutes)
