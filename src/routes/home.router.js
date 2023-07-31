@@ -1,12 +1,10 @@
 import { Router } from 'express'
-import { ProductManager } from '../managers/productManager.js'
-import __dirname from '../utils.js'
-import { join } from 'path'
+import { ProductManager } from '../dao/mongoose/productManager.js'
 import io from '../app.js'
 import socketManager from '../websocket/index.js'
 
 const router = Router()
-const productManager = new ProductManager(join(__dirname, '/database/products.json'))
+const productManager = new ProductManager()
 
 router.get('/', async (req, res) => {
   const products = await productManager.getProducts()

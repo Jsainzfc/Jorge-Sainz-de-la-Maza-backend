@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import __dirname from '../../utils.js';
-import { CartManager } from '../../managers/cartManager.js';
+import { CartManager } from '../../dao/mongoose/cartManager.js';
 import { join } from 'path'
 
 const cartManager = new CartManager (join(__dirname, '/database/carts.json'))
@@ -9,9 +9,9 @@ const router = Router()
 router.get('/:cid', async (req, res) => {
     try {
         const products = await cartManager.getCartProductsById(req.params.cid)
-        return res.json(products)
+        return res.json({message: 'Cart found', products})
     } catch(err) {
-        return res.status(404).send(err.message)
+        return res.status(404).json({message: err.message})
     }
 })
 
@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
         const products = await cartManager.getCartProductsById(id)
         return res.json({message: 'Cart created', cart: {id, products}})
     } catch(err) {
-        return res.status(500).send('Something went wrong')
+        return res.status(500).json({message: 'Something went wrong'})
     }
 })
 
