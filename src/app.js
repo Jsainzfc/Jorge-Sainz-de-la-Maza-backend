@@ -29,6 +29,7 @@ server.listen(process.env.PORT, () => {
   console.log(`Express Server listening at http://localhost:${process.env.PORT}`)
 })
 
-mongoose.connect(process.env.MONGOURI)
+const MONGOURI = `mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@coderhouse.wp11tre.mongodb.net/?retryWrites=true&w=majority`
+mongoose.connect(MONGOURI)
 
 export default io
