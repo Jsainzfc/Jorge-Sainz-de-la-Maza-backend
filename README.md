@@ -1,4 +1,4 @@
-# Entregable clase 10
+# Desafío clase 15 - Primera práctica integradora
 
 ## Alcance clase 2
 Se ha creado una clase Product con un constructor que inicializa todas las variables necesarias al valor introducido al crear una instancia.
@@ -47,16 +47,30 @@ Se han implementado plantillas mediante handlebars par crear dos nuevos endpoint
 La información proporcionada en / es estática mediante el servidor de express.
 La información proporcionada en /realtimeproducts es dinámica gracias a un websocket server que actualiza la lista de productos cada vez que se recibe un nuevo producto o se elimina un producto.
 
+## Alcance clase 15
+Se ha implementado un chat en tiempo real mediante el uso de websocket.
+Se ha creado una vista en tiempo real del carrito mediante el uso de websocket.
+La persistencia de productos, mensajes del chat y carritos se ha integrado con MongoDB + mongoose, conservando el uso de filesystem, pero sin emplearlo.
+
 ## Estructura
-El código está dentro de la carpeta src. 
-La carpeta database recoge products.json y carts.json, base de datos de productos y de carritos.
-La carpeta managers recoge el CartManager y el ProductManager, clases para manejar los productos y los carritos.
+El código está dentro de la carpeta src.
+La carpeta database recoge unas bases de datos, ahora en desuso, para el uso de filesystem en carritos y productos.
+La carpeta dao recoge los managers para el carrito y los productos. Se divide en dos subcarpetas: fs y mongoose. En cada una están los managers. En este momento solo se emplea la subcarpeta mongoose.
+La carpeta models recoge todos los modelos (Schemas y colecciones) que se recogen en la base de datos de MongoDB.
+La carpeta routes incluye, en la subcarpeta api los enrutados de los endpoints de carritos y productos para su uso modo api, un router de las rutas estáticas de home:
+- / : Todos los productos de la base de datos en ese momento sin actualización en tiempo real.
+- /realtimeproducts : Todos los productos de la base de datos en ese momento con actualización en tiempo real.
+- /chat : Chat en tiempo real.
+- /cart/:cid : Visión del carrito con id=cid a tiempo real.
+y un index.js que distribuye las rutas.
 La carpeta testing recoge todos los archivos necesarios para testear los managers y los endpoints en express.
-La carpeta routes incluye, en la subcarpeta api los enrutados de los endpoints de carritos y productos, un router de las rutas estáticas de home (/ y /realtimeproducts), y un index.js que distribuye las rutas.
+La carpeta websocket recoge la gestión en servidor del socket para el uso del chat.
 El servidor de express y el socket están en el archivo app.js, pero el socket solo se inicializa en las rutas que lo usan.
 Las vistas de handlebars están enla carpeta views.
+El archivo utils.js está en desuso en este momento. Proporciona la ruta para la conexión del filesystem.
+La carpeta public proporciona el lado cliente de los websockets así como estilados para las diferentes vistas de handlebars.
 
-## Endpoints de products:
+## Endpoints de la api de products:
 
 ### GET /api/products/?limit=x
 Retorna todos los productos de la base de datos hasta un límite = x. 
@@ -82,7 +96,7 @@ Elimina el producto con id pid de la base de datos.
 Si el producto no se encuentra, retorna un status 404.
 Si el producto se elimina correctamente, retorna un status 204.
 
-## Endpoints de carts:
+## Endpoints de la api de carts:
 
 ### POST /api/carts/
 Crea un carrito con un id aleatorio y único y sin productos. 
