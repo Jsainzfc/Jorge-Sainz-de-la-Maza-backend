@@ -41,14 +41,14 @@ content-type: application/json
 
 
 ### Devolución esperada: código 200, producto actualizado ###
-PUT http://localhost:8080/api/products/64c7a978e2012d87a7c5fbb6
+PUT http://localhost:8080/api/products/64ca1a147ac4cdefe4d1eb6b
 content-type: application/json
 
 {
-    "code": "sampleProduct2",
+    "code": "sampleProduct",
     "title": "Sample Product",
     "description": "This is a sample product",
-    "price": "24",
+    "price": "34",
     "stock": "10"
 }
 

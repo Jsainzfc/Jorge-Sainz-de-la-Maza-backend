@@ -1,0 +1,20 @@
+.cart {
+  border-radius: 1rem;
+  padding: 2rem;
+  border: 1px solid darkgrey;
+  margin-top: 2rem;
+}
+
+.cart__items {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  padding-left: 0;
+}
+
+.cart__items li{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

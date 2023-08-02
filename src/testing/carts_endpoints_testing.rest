@@ -11,7 +11,7 @@ GET http://localhost:8080/api/carts/1
 
 
 ### Devolución esperada: código 200, 1 único producto con id = 1 y cantidad = 1 ###
-POST http://localhost:8080/api/carts/64c7ab42212b5d15027c0da8/product/1
+POST http://localhost:8080/api/carts/64c7ab42212b5d15027c0da8/product/64ca19f57ac4cdefe4d1eb54
 
 
 ### Devolución esperada: código 200, 1 único producto con id = 1 y cantidad = 2 ###

@@ -1,9 +1,8 @@
 import { Router } from 'express'
-import __dirname from '../../utils.js'
 import { CartManager } from '../../dao/mongoose/cartManager.js'
-import { join } from 'path'
+import io from '../../app.js'
 
-const cartManager = new CartManager(join(__dirname, '/database/carts.json'))
+const cartManager = new CartManager()
 const router = Router()
 
 router.get('/:cid', async (req, res) => {
@@ -27,8 +26,9 @@ router.post('/', async (req, res) => {
 
 router.post('/:cid/product/:pid', async (req, res) => {
   try {
-    const { cid } = req.params
-    const products = await cartManager.updateCart({ id: cid, productId: req.params.pid })
+    const { cid, pid } = req.params
+    const products = await cartManager.updateCart({ id: cid, productId: pid })
+    io.emit('cart_updated', { cid, products })
     return res.json({ message: 'Cart updated', cart: { id: cid, products } })
   } catch (err) {
     return res.status(404).send(err.message)

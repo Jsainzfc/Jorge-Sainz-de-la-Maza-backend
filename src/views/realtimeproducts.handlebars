@@ -1,7 +1,7 @@
 <h1>Lista de productos en tiempo real:</h1>
 <ul class="products-list">
     {{#each products}}
-    <li id="{{this.id}}">
+    <li id="{{this._id}}">
         <p><b>Título:</b> {{this.title}}</p>
         <p><b>Descripción:</b> {{this.description}}</p>
         <p><b>Precio:</b> {{this.price}}€</p>

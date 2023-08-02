@@ -2,9 +2,11 @@ import { Router } from 'express'
 import { ProductManager } from '../dao/mongoose/productManager.js'
 import io from '../app.js'
 import socketManager from '../websocket/index.js'
+import { CartManager } from '../dao/mongoose/cartManager.js'
 
 const router = Router()
 const productManager = new ProductManager()
+const cartManager = new CartManager()
 
 router.get('/', async (req, res) => {
   const products = await productManager.getProducts()
@@ -18,13 +20,26 @@ router.get('/', async (req, res) => {
 
 router.get('/realtimeproducts', async (req, res) => {
   // Initializes socket server
-  io.on('connection', socketManager)
+  io.once('connection', socketManager)
 
   const products = await productManager.getProducts()
+
   res.render('realtimeproducts', {
     title: 'Real Time Products',
     products,
     style: 'home'
+  })
+})
+
+router.get('/cart/:cid', async (req, res) => {
+  // Initialises socket server
+  io.once('connection', socketManager)
+  const products = await cartManager.getCartProductsById(req.params.cid)
+
+  res.render('cart', {
+    title: 'Cart',
+    products,
+    style: 'cart'
   })
 })
 

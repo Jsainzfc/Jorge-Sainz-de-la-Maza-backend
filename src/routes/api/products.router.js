@@ -44,6 +44,7 @@ router.put('/:pid', async (req, res) => { // Endpoint for updating a product
   const product = req.body
   try {
     await productManager.updateProduct(req.params.pid, product)
+    io.emit('product_updated', { id: req.params.pid, product })
     return res.json({ message: 'Product updated' })
   } catch (err) {
     return res.status(404).json({ message: err.message })

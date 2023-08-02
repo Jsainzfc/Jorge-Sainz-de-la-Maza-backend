@@ -40,7 +40,7 @@ class ProductManager {
 
   async getProducts () { // Returns the array of products
     try {
-      const products = await productModel.find()
+      const products = await productModel.find().lean()
       return products
     } catch (err) {
       throw new Error('Cannot get products with mongoose.')
@@ -48,7 +48,7 @@ class ProductManager {
   }
 
   async getProductById (id) { // Returns the product (if found) with that id
-    const product = await productModel.findById(id)
+    const product = await productModel.findById(id).lean()
     if (product) return product
     throw new Error('Product not found')
   }

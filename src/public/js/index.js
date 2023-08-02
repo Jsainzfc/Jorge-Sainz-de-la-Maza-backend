@@ -2,7 +2,7 @@
 const socket = io() // Start connection with socket server
 
 socket.on('new_product', data => {
-  console.log('Producto nuevo', data)
+  console.log('New product', data)
 
   const newItem =
   ` <li id='${data.id}'>
@@ -18,7 +18,37 @@ socket.on('new_product', data => {
 })
 
 socket.on('product_deleted', id => {
-  console.log('Eliminado producto con id: ', id)
+  console.log('Removed product with id: ', id)
   const productRemoved = document.getElementById(`${id}`)
   productRemoved.parentElement.removeChild(productRemoved)
+})
+
+socket.on('product_updated', ({ id, product }) => {
+  console.log('Product updated with id: ' + id)
+  const productUpdated = document.getElementById(`${id}`)
+  const newItem =
+  `
+        <p><b>Título:</b> ${product.title}</p>
+        <p><b>Descripción:</b> ${product.description}</p>
+        <p><b>Precio:</b> ${product.price}€</p>
+        <p><b>Stock:</b> ${product.stock}</p>
+
+  `
+  productUpdated.innerHTML = newItem
+})
+
+socket.on('cart_updated', ({ cid, products }) => {
+  console.log('Cart updated with id: ' + cid)
+  const cartItems = document.querySelector('.cart__items')
+  let cartItemsHTML = ''
+  for (const product of products) {
+    const newItem = `
+      <li id="${product.id}">
+          <p><b>Product:</b> ${product.title}</p>
+          <p><b>Quantity:</b> ${product.quantity}</p>
+          <p><b>Price:</b> ${product.price}</p>
+      </li>`
+    cartItemsHTML = cartItemsHTML + newItem
+  }
+  cartItems.innerHTML = cartItemsHTML
 })
