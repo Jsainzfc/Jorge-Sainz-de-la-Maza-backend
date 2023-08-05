@@ -1,0 +1,301 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+html, body, div, span, object, iframe, figure, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, code, em, img, small, strike, strong, sub, sup, tt, b, u, i, ol, ul, li, fieldset, form, label, table, caption, tbody, tfoot, thead, tr, th, td, main, canvas, embed, footer, header, nav, section, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: none;
+}
+
+footer, header, nav, section, main {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+input {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+body {
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  color: #323232;
+  display: grid;
+  grid-template-areas: "nav" "header" "main" "footer";
+  grid-template-columns: 1fr;
+  grid-template-rows: 85px auto 1fr auto;
+}
+
+nav {
+  grid-area: nav;
+}
+
+header {
+  grid-area: header;
+}
+
+main {
+  grid-area: main;
+}
+
+footer {
+  grid-area: footer;
+}
+
+.flex, .flex--center, main, .flex__col, .header {
+  display: flex;
+}
+.flex__col, main, .header {
+  flex-direction: column;
+}
+.flex--center, main {
+  align-items: center;
+  justify-content: center;
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: #323232;
+  cursor: pointer;
+}
+
+.center-text, .button {
+  text-align: center;
+}
+
+.button {
+  background-color: #1b1a1a;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+}
+
+.font-base, .important-text, p, .h_base, h3, h1, h2 {
+  font-style: normal;
+  font-family: "Poppins", sans-serif;
+}
+
+.h_base, h3, h1, h2 {
+  font-family: orpheus, serif;
+  font-weight: 400;
+}
+
+h1, h2 {
+  font-size: 42px;
+  line-height: 110%;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+p {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+}
+
+.circle-image {
+  border-radius: 50%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.container {
+  max-width: 1420px;
+  padding: 0 30px;
+}
+
+.header {
+  gap: 35px;
+  padding: 150px 30px 90px 30px;
+  margin-top: -138px;
+  background-position: center center;
+  background-size: cover;
+  justify-content: center;
+  min-height: 75vh;
+}
+.header p {
+  font-weight: 300;
+  font-size: 16px;
+  letter-spacing: 1.2px;
+}
+
+main {
+  gap: 80px;
+}
+
+.important-text {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+input[type=number] {
+  font-family: "Poppins", sans-serif;
+  color: #323232;
+  width: 50px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  padding: 2rem;
+  list-style: none;
+  gap: 2rem;
+}
+
+.product {
+  gap: 20px;
+  border-radius: 2rem;
+  border: 1px solid black;
+  padding: 1.5rem;
+  gap: 1rem;
+}
+.product__info {
+  gap: 0.5rem;
+}
+.product__info--img {
+  width: 100%;
+  border-radius: 2rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center;
+}
+.product__info--title {
+  font-size: 24px;
+}
+.product__info--price {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.itemCount {
+  gap: 30px;
+  border-radius: 10px;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+}
+.itemCount__quantity {
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #FEF5E9;
+  padding: 5px 15px;
+  border: 1px solid #323232;
+  border-radius: 5px;
+}
+.itemCount__quantity--button {
+  background: none;
+  border: none;
+  font-size: 28px;
+  padding: 0;
+  cursor: pointer;
+  width: 28px;
+}
+.itemCount__quantity--amount {
+  font-size: 20px;
+  font-weight: 600;
+}
+.itemCount__add-to-cart {
+  width: 100%;
+  background-color: #FFC34E;
+  padding: 10px;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+.itemCount__add-to-cart:hover {
+  background-color: #D2BEDD;
+  transform: scale(1.1);
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.chat-title {
+  align-self: flex-start;
+  margin-bottom: 20px;
+}
+
+.chat {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
+  gap: 60px;
+}
+
+aside, main {
+  padding: 1rem 1rem 1rem 0;
+}
+
+h2 {
+  padding-bottom: 1rem;
+}
+
+.logged-users, #messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+ul.logged-users {
+  list-style: none;
+  padding-left: 0;
+}
+
+.user {
+  font-weight: 500;
+}
+
+.joined {
+  color: darkgrey;
+}
+
+.yourself {
+  color: darkblue;
+  font-weight: 500;
+}
+
+.send input {
+  width: 60%;
+}
+
+/*# sourceMappingURL=style.css.map */

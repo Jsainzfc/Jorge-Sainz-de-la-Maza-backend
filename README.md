@@ -1,4 +1,4 @@
-# Desafío clase 15 - Primera práctica integradora
+# Pre Entrega 2
 
 ## Alcance clase 2
 Se ha creado una clase Product con un constructor que inicializa todas las variables necesarias al valor introducido al crear una instancia.
@@ -51,6 +51,8 @@ La información proporcionada en /realtimeproducts es dinámica gracias a un web
 Se ha implementado un chat en tiempo real mediante el uso de websocket.
 Se ha creado una vista en tiempo real del carrito mediante el uso de websocket.
 La persistencia de productos, mensajes del chat y carritos se ha integrado con MongoDB + mongoose, conservando el uso de filesystem, pero sin emplearlo.
+
+## Alcance pre Entrega 2
 
 ## Estructura
 El código está dentro de la carpeta src.

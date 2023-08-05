@@ -1,0 +1,145 @@
+@use "../util/" as *;
+
+body {
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  color: $fuente;
+  display: grid;
+  grid-template-areas:
+  "nav"
+  "header"
+  "main"
+  "footer";
+  grid-template-columns: 1fr;
+  grid-template-rows: 85px auto 1fr auto;
+}
+
+nav {
+  grid-area: nav;
+}
+
+header {
+  grid-area: header;
+}
+
+main {
+  grid-area: main;
+}
+
+footer {
+  grid-area: footer;
+}
+
+.flex {
+  display: flex;
+
+  &__col {
+    @extend .flex;
+    flex-direction: column;
+  }
+
+  &--center {
+    @extend .flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: $fuente;
+  cursor: pointer;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.button {
+  @extend .center-text;
+  background-color: $oscuro;
+  color: $blanco;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-base {
+  font-style: normal;
+  font-family: 'Poppins', sans-serif;
+}
+
+.h_base {
+  @extend .font-base;
+  font-family: orpheus, serif;
+  font-weight: 400;
+}
+
+h1, h2 {
+  @extend .h_base;
+  font-size: 42px;
+  line-height: 110%;
+}
+
+h3 {
+  @extend .h_base;
+  font-size: 24px;
+}
+
+p {
+  @extend .font-base;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+}
+
+.circle-image {
+  border-radius: 50%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.container {
+  max-width: 1420px;
+  padding: 0 30px;
+}
+
+.header {
+  @extend .flex__col;
+  gap: 35px;
+  padding: 150px 30px 90px 30px;
+  margin-top: -138px;
+  background-position: center center;
+  background-size: cover;
+  justify-content: center;
+  min-height: 75vh;
+  
+  p {
+    font-weight: 300;
+    font-size: 16px;
+    letter-spacing: 1.2px;
+  }
+}
+
+main {
+  @extend .flex__col, .flex--center;
+  gap: 80px;
+}
+
+.important-text {
+  @extend .font-base;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+input[type="number"]{
+  font-family: 'Poppins', sans-serif;
+  color: $fuente;
+  width: 50px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px;
+}

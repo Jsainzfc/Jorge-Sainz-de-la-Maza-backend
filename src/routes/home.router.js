@@ -13,8 +13,7 @@ router.get('/', async (req, res) => {
 
   res.render('home', {
     title: 'Home',
-    products,
-    style: 'home'
+    products
   })
 })
 
@@ -26,8 +25,7 @@ router.get('/realtimeproducts', async (req, res) => {
 
   res.render('realtimeproducts', {
     title: 'Real Time Products',
-    products,
-    style: 'home'
+    products
   })
 })
 
@@ -38,8 +36,7 @@ router.get('/cart/:cid', async (req, res) => {
 
   res.render('cart', {
     title: 'Cart',
-    products,
-    style: 'cart'
+    products
   })
 })
 
