@@ -324,6 +324,7 @@ img {
   width: 100%;
   aspect-ratio: 1;
   border-radius: 2rem;
+  cursor: pointer;
 }
 .single-product__thumbnails .thumbnails {
   width: 100%;
@@ -337,6 +338,7 @@ img {
   width: 100%;
   aspect-ratio: 1;
   border-radius: 2rem;
+  cursor: pointer;
 }
 .single-product__info {
   justify-content: center;
@@ -351,6 +353,41 @@ img {
 }
 .single-product .itemCount {
   max-width: 300px;
+}
+
+.lightbox {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.6);
+  place-items: center;
+  display: none;
+}
+.lightbox__close, .lightbox__prev, .lightbox__next {
+  cursor: pointer;
+  position: absolute;
+  fill: white;
+  width: 50px;
+}
+.lightbox__close {
+  top: 20px;
+}
+.lightbox__next, .lightbox__prev {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.lightbox__next, .lightbox__close {
+  right: 20px;
+}
+.lightbox__prev {
+  left: 20px;
+}
+.lightbox__image {
+  width: 60%;
+  max-height: 90%;
 }
 
 /*# sourceMappingURL=style.css.map */
