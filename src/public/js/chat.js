@@ -3,7 +3,7 @@ const socket = io()
 const messagesEl = document.querySelector('#messages')
 const inputElement = document.querySelector('.send input')
 let username = null
-const usersEl = document.querySelector('.logged-users')
+const usersEl = document.querySelector('.chat__users--logged')
 
 messagesEl.innerHTML = ''
 

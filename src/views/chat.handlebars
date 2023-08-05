@@ -1,13 +1,13 @@
 <h1 class="chat-title">Chat de la tienda</h1>
-<div class="chat">
-  <aside>
+<div class="chat flex">
+  <aside class="chat__users flex__col">
     <h2>Logged Users</h2>
-    <ul class="logged-users">
+    <ul class="chat__users--logged">
     </ul>
   </aside>
-  <main class="chat-messages">
+  <main class="chat__messages flex__col">
     <h2>Messages</h2>
-    <div id="messages"></div>
+    <div id="messages" class="flex__col"></div>
     <div class="send">
       <input type="text" placeholder="" aria-label="Input">
     </div>

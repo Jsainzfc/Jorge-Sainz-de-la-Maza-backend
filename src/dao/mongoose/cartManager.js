@@ -1,5 +1,6 @@
 import { cartModel } from '../../models/carts.model.js'
 import { productModel } from '../../models/products.model.js'
+import { NotEnoughStock } from '../errors/index.js'
 
 // Class for managins the cart Model in mongoose
 class CartManager {
@@ -8,40 +9,48 @@ class CartManager {
     return cart._id
   }
 
-  async #getRealProductsArray ({ products }) {
-    const newProducts = []
-    for (const product of products) {
-      const newProduct = await productModel.findById(product.id).lean()
-      if (!newProduct) {
-        throw new Error('Product in the cart does not exist in the database')
-      }
-      newProducts.push({ ...product, title: newProduct.title, price: newProduct.price })
-    }
-    return newProducts
-  }
-
   async getCartProductsById (id) { // Returns the product (if found) with that id
-    const { products } = await cartModel.findById(id).lean()
+    const { products } = await cartModel.findById(id).lean().populate('products.product')
     if (products) {
-      return this.#getRealProductsArray({ products })
+      return products
     }
     throw new Error('Cart not found')
   }
 
-  async updateCart ({ id, productId }) { // Updates one product of the products in the file
-    const { products } = await cartModel.findById(id).lean()
-    if (!products) {
+  async updateCart ({ id, productId, quantity }) { // Updates one product of the products in the file
+    let data 
+    try {
+      data = await cartModel.findById(id).populate('products.product')
+    } catch (err) {
       throw new Error('Cart not found')
     }
-
-    const productIndex = products.findIndex(item => item.id === productId)
+    const {products} = data
+    const productIndex = products.findIndex(item => item.product._id.toString() === productId)
     if (productIndex >= 0) {
-      products[productIndex].quantity = products[productIndex].quantity + 1
+      const newAmount = products[productIndex].quantity + quantity
+      if (newAmount > products[productIndex].product.stock) {
+        throw new NotEnoughStock('Insufficient stock')
+      }
     } else {
-      products.push({ id: productId, quantity: 1 })
+      const { stock } = productModel.findById(productId)
+      if (quantity > stock) {
+        throw new NotEnoughStock('Insufficient stock')
+      }
+      products.push({ product: productId, quantity })
     }
     await cartModel.updateOne({ _id: id }, { products })
-    return this.#getRealProductsArray({ products })
+    return await cartModel.findById(id).lean()
+  }
+
+  async getTotal ({ id }) {
+    let data
+    try {
+      data = await cartModel.findById(id).populate('products.product')
+    } catch (err) {
+      throw new Error('Cart not found')
+    }
+    const { products } = data
+    return products.reduce((acc, curr) => acc + (curr.quantity * curr.product.price), 0)
   }
 }
 

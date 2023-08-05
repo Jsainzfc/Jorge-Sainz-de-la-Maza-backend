@@ -25,13 +25,20 @@ router.post('/', async (req, res) => {
 })
 
 router.post('/:cid/product/:pid', async (req, res) => {
+  const quantity = req.body.quantity ?? 1
+  if (isNaN(quantity)) {
+    return res.status(400).send({message: 'Incorrect quantity'})
+  }
   try {
     const { cid, pid } = req.params
-    const products = await cartManager.updateCart({ id: cid, productId: pid })
+    const products = await cartManager.updateCart({ id: cid, productId: pid, quantity })
     io.emit('cart_updated', { cid, products })
     return res.json({ message: 'Cart updated', cart: { id: cid, products } })
   } catch (err) {
-    return res.status(404).send(err.message)
+    if (err.name === 'NotEnoughStock') {
+      return res.status(400).send({message: err.message})
+    }
+    return res.status(404).send({message: err.message})
   }
 })
 

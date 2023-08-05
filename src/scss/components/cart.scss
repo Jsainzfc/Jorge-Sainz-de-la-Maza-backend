@@ -1,0 +1,47 @@
+@use '../util/' as *;
+
+.cart {
+    border-radius: 1rem;
+    padding: 2rem;
+    border: 1px solid darkgrey;
+    margin-top: 2rem;
+
+    &__items {
+        list-style: none;
+        gap: 2rem;
+        padding-left: 0;
+    }
+
+    &__total {
+        font-weight: 600;
+        font-size: 24px;
+        text-align: center;
+    }
+}
+
+.cart-item {
+    gap: 2rem;
+
+    &__img {
+        max-width: 200px;
+        aspect-ratio: 1;
+        border-radius: 2rem;
+    }
+
+    &__info {
+        justify-content: center;
+        gap: $product-gap;
+
+        &--title, &--quantity {
+            font-size: 24px;
+        }
+    
+        &--price {
+            font-weight: 600;
+            font-size: 20px;
+        }
+    }
+}
+.cart__items li{
+    gap: 0.5rem;
+}

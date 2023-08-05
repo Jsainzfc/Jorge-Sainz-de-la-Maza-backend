@@ -1,0 +1,53 @@
+.single-product {
+    margin-top: 100px;
+    gap: 3rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    justify-items: center;
+
+    &__thumbnails {
+        gap: 2rem;
+
+        &--main {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 2rem;
+        }
+
+        .thumbnails {
+            width: 100%;
+            gap: 2rem;
+
+            &__img {
+                width: 100%;
+                max-width: 150px;
+
+                img {
+                    width: 100%;
+                    aspect-ratio: 1;
+                    border-radius: 2rem;
+                }
+            }
+        }
+    }
+
+    &__info {
+        justify-content: center;
+        gap: 1rem;
+        width: 100%;
+
+        >*:not(h1) {
+            font-size: 20px;
+        }
+        
+
+        &--code {
+            font-size: 20px;
+        }
+    }
+
+    .itemCount {
+        max-width: 300px;
+    }
+}

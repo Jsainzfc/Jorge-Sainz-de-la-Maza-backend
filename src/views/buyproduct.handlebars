@@ -1,0 +1,35 @@
+<div class="single-product container flex product-{{product._id}}" data-stock='{{product.stock}}'>
+    <div class="single-product__thumbnails flex__col">
+        {{#if product.thumbnails}}
+        <img class='single-product__thumbnails--main' alt='Imagen de producto de {{product.title}}' src='{{product.thumbnails.[0]}}' />
+        <ul class="thumbnails flex">
+        {{#each product.thumbnails}}
+            {{#unless @first}}
+            <li class='thumbnails__img'>
+                <img alt='Imagen de producto de {{product.title}}' src='{{this}}' />
+            </li>
+            {{/unless}}
+        {{/each}}
+        </ul>
+        {{else}}
+        <img class='single-product__thumbnails--main' alt='Imagen de producto de {{product.title}}' src='https://cdn2.vectorstock.com/i/1000x1000/81/56/empty-icon-on-white-background-simple-element-vector-28228156.jpg' />
+        {{/if}}
+    </div>
+    
+    <div class="single-product__info flex__col">
+        <h1 class='single-product__info--title'>{{product.title}}</h1>
+        <p class='single-product__info--price'>{{product.price}}€</p>
+        <p class='single-product__info--description'>{{product.description}}</p>
+        <p class='single-product__info--stock'>Stock: {{product.stock}}</p>
+        <div class="itemCount flex__col flex--center">
+            <div class="itemCount__quantity flex">
+                <button class="minusOne itemCount__quantity--button">-</button>
+                <span class="itemCount__quantity--amount amount-{{product._id}}">1</span>
+                <button id="{{product._id}}" class="plusOne itemCount__quantity--button">+</button>
+            </div>
+            <button id ="{{product._id}}" class="itemCount__add-to-cart cart-{{product._id}}">Añadir al carrito</button>
+        </div>
+    </div>
+</div>
+<script src="/static/js/addProduct.js"></script>
+<script src="/static/js/thumbnails.js"></script>

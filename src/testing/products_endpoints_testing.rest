@@ -19,8 +19,8 @@ POST http://localhost:8080/api/products/
 content-type: application/json
 
 {
-    "code": "sampleProduct",
-    "title": "Sample Product",
+    "code": "sampleProduct3",
+    "title": "Sample Product 3",
     "description": "This is a sample product",
     "price": "34",
     "stock": "10"
@@ -32,8 +32,8 @@ POST http://localhost:8080/api/products/
 content-type: application/json
 
 {
-    "code": "sampleProduct",
-    "title": "Sample Product",
+    "code": "sampleProduct3",
+    "title": "Sample Product 3",
     "description": "This is a sample product",
     "price": "a",
     "stock": "10"

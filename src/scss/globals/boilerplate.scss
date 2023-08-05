@@ -4,30 +4,9 @@ body {
   width: 100%;
   font-family: 'Poppins', sans-serif;
   color: $fuente;
-  display: grid;
-  grid-template-areas:
-  "nav"
-  "header"
-  "main"
-  "footer";
-  grid-template-columns: 1fr;
-  grid-template-rows: 85px auto 1fr auto;
-}
-
-nav {
-  grid-area: nav;
-}
-
-header {
-  grid-area: header;
-}
-
-main {
-  grid-area: main;
-}
-
-footer {
-  grid-area: footer;
+  display: flex;
+  margin: 100px 50px;
+  gap: 50px;
 }
 
 .flex {
@@ -75,6 +54,8 @@ a, a:visited {
   @extend .font-base;
   font-family: orpheus, serif;
   font-weight: 400;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 h1, h2 {
@@ -124,11 +105,6 @@ p {
   }
 }
 
-main {
-  @extend .flex__col, .flex--center;
-  gap: 80px;
-}
-
 .important-text {
   @extend .font-base;
   font-weight: 700;
@@ -142,4 +118,9 @@ input[type="number"]{
   font-size: 16px;
   font-weight: 500;
   padding: 8px;
+}
+
+img {
+  object-fit: cover;
+  object-position: center;
 }

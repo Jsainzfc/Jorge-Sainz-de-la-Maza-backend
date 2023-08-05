@@ -1,8 +1,8 @@
-<h1>Lista de productos en tiempo real:</h1>
+<h1>Lista de productos:</h1>
 <ul class="products container">
     {{#each products}}
     <li class='product flex__col product-{{this._id}}' data-stock='{{this.stock}}'>
-        <a href="http://localhost:8080/product/{{this._id}}" class="flex__col product__info">
+        <a href="http://localhost:8080/buyproduct/{{this._id}}" class="flex__col product__info">
             {{#if this.thumbnails}}
             <img class='product__info--img' alt='Imagen de producto de {{this.title}}' src='{{this.thumbnails.[0]}}' />
             {{else}}
@@ -11,8 +11,15 @@
             <p class='product__info--title'>{{this.title}}</p>
             <p class='product__info--price' >{{this.price}}€</p>
         </a>
+        <div class="itemCount flex__col flex--center">
+            <div class="itemCount__quantity flex">
+                <button class="minusOne itemCount__quantity--button">-</button>
+                <span class="itemCount__quantity--amount amount-{{this._id}}">1</span>
+                <button id="{{this._id}}" class="plusOne itemCount__quantity--button">+</button>
+            </div>
+            <button id ="{{this._id}}" class="itemCount__add-to-cart cart-{{this._id}}">Añadir al carrito</button>
+        </div>
     </li>
     {{/each}}
 </ul>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/static/js/index.js"></script>
+<script src="/static/js/addProduct.js"></script>

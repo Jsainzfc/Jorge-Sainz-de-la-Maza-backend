@@ -1,15 +1,25 @@
 <h1>Carrito:</h1>
-<div class="cart">
-  <ul class="cart__items">
+<div class="cart container">
+  <ul class="cart__items flex__col">
       {{#each products}}
-      <li id="{{this.id}}">
-          <p><b>Product:</b> {{this.title}}</p>
-          <p><b>Quantity:</b> {{this.quantity}}</p>
-          <p><b>Price:</b> {{this.price}}</p>
+      <li>
+        <a class="flex cart-item">
+            {{#if this.product.thumbnails}}
+            <img class='cart-item__img' alt='Imagen de producto de {{this.product.title}}' src='{{this.product.thumbnails.[0]}}' />
+            {{else}}
+            <img class='cart-item__img' alt='Imagen de producto de {{this.product.title}}' src='https://cdn2.vectorstock.com/i/1000x1000/81/56/empty-icon-on-white-background-simple-element-vector-28228156.jpg' />
+            {{/if}}
+            <div class="cart-item__info flex__col">
+              <p class='cart-item__info--title'>{{this.product.title}}</p>
+              <p class='cart-item__info--quantity'>{{this.quantity}}</p>
+              <p class='cart-item__info--price' >{{this.product.price}}€</p>
+            </div>
+        </a>
       </li>
       {{else}}
       <li><h2>Cart is empty</h2></li>
       {{/each}}
+      <li class="cart__total">Total: {{total}}€</li>
   </ul>
 </div>
   
