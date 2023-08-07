@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const minus = document.querySelectorAll('.minusOne')
 const plus = document.querySelectorAll('.plusOne')
 const addToCart = document.querySelectorAll('.itemCount__add-to-cart')
@@ -50,7 +51,7 @@ addToCart.forEach(button => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({quantity: Number(quantity.innerHTML)})
+        body: JSON.stringify({ quantity: Number(quantity.innerHTML) })
       })
       if (response.ok) {
         Swal.fire({
@@ -60,7 +61,7 @@ addToCart.forEach(button => {
           footer: `<a href='http://localhost:8080/cart/${cartId}'>See cart</a>`
         })
       } else {
-        const {message} = await response.json()
+        const { message } = await response.json()
         Swal.fire({
           icon: 'error',
           title: 'Error',

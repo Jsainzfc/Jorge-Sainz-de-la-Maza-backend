@@ -68,8 +68,7 @@ router.get('/chat', async (req, res) => {
   // Initializes socket server
   io.once('connection', socketManager)
   res.render('chat', {
-    title: 'Chat',
-    style: 'chat'
+    title: 'Chat'
   })
 })
 

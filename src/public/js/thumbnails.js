@@ -9,47 +9,47 @@ let srcArray = []
 let index = 0
 
 thumbnails.forEach(thumb => {
-    thumb.addEventListener('click', () => {
-        const clickedSource = thumb.src
-        const mainSource = mainImage.src
-        thumb.src = mainSource
-        mainImage.src = clickedSource
-    })
+  thumb.addEventListener('click', () => {
+    const clickedSource = thumb.src
+    const mainSource = mainImage.src
+    thumb.src = mainSource
+    mainImage.src = clickedSource
+  })
 })
 
 const buildSrcArray = () => {
-    srcArray.push(mainImage.src)
-    thumbnails.forEach(thumb => {
-        srcArray.push(thumb.src)
-    })
+  srcArray.push(mainImage.src)
+  thumbnails.forEach(thumb => {
+    srcArray.push(thumb.src)
+  })
 }
 
 mainImage.addEventListener('click', () => {
-    lightBoxImage.src = mainImage.src
-    lightBox.style.display = 'grid'
-    buildSrcArray()
+  lightBoxImage.src = mainImage.src
+  lightBox.style.display = 'grid'
+  buildSrcArray()
 })
 
 lightBoxClose.addEventListener('click', () => {
-    lightBoxImage.src = ''
-    lightBox.style.display = 'none'
-    srcArray = []
+  lightBoxImage.src = ''
+  lightBox.style.display = 'none'
+  srcArray = []
 })
 
 lightBoxPrev.addEventListener('click', () => {
-    if (index === 0) {
-        index = srcArray.length - 1
-    } else {
-        index--
-    }
-    lightBoxImage.src = srcArray[index]
+  if (index === 0) {
+    index = srcArray.length - 1
+  } else {
+    index--
+  }
+  lightBoxImage.src = srcArray[index]
 })
 
 lightBoxNext.addEventListener('click', () => {
-    if (index === srcArray.length - 1){
-        index = 0
-    } else {
-        index++
-    }
-    lightBoxImage.src = srcArray[index]
+  if (index === srcArray.length - 1) {
+    index = 0
+  } else {
+    index++
+  }
+  lightBoxImage.src = srcArray[index]
 })

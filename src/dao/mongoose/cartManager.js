@@ -1,6 +1,6 @@
 import { cartModel } from '../../models/carts.model.js'
 import { productModel } from '../../models/products.model.js'
-import { NotEnoughStock } from '../errors/index.js'
+import { NotEnoughStock } from '../../errors/index.js'
 
 // Class for managins the cart Model in mongoose
 class CartManager {
@@ -18,13 +18,13 @@ class CartManager {
   }
 
   async updateCart ({ id, productId, quantity }) { // Updates one product of the products in the file
-    let data 
+    let data
     try {
       data = await cartModel.findById(id).populate('products.product')
     } catch (err) {
       throw new Error('Cart not found')
     }
-    const {products} = data
+    const { products } = data
     const productIndex = products.findIndex(item => item.product._id.toString() === productId)
     if (productIndex >= 0) {
       const newAmount = products[productIndex].quantity + quantity
