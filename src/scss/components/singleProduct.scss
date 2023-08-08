@@ -1,5 +1,4 @@
 .single-product {
-    margin-top: 100px;
     gap: 3rem;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -35,7 +34,7 @@
     }
 
     &__info {
-        justify-content: center;
+        padding: 2rem 0;
         gap: 1rem;
         width: 100%;
 
@@ -51,46 +50,5 @@
 
     .itemCount {
         max-width: 300px;
-    }
-}
-
-.lightbox {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    background: rgba(0, 0, 0, 0.6);
-    place-items: center;
-    display: none;
-
-    &__close, &__prev, &__next {
-        cursor: pointer;
-        position: absolute;
-        fill: white;
-        width: 50px;
-    }
-
-    &__close {
-        top: 20px
-    }
-
-    &__next, &__prev {
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    &__next, &__close {
-        right: 20px;
-    }
-
-    &__prev {
-        left: 20px;
-    }
-
-    &__image {
-        width: 60%;
-        max-height: 90%;
     }
 }

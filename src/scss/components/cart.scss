@@ -1,15 +1,16 @@
 @use '../util/' as *;
 
 .cart {
-    border-radius: 1rem;
-    padding: 2rem;
-    border: 1px solid darkgrey;
-    margin-top: 2rem;
+    margin: 0 3rem;
+    align-items: center;
 
     &__items {
         list-style: none;
         gap: 2rem;
         padding-left: 0;
+        border-radius: 1rem;
+        padding: 2rem;
+        border: 1px solid darkgrey;
     }
 
     &__total {
@@ -41,7 +42,14 @@
             font-size: 20px;
         }
     }
+
+    & svg {
+        align-self: center;
+        cursor: pointer;
+    }
 }
+
+
 .cart__items li{
     gap: 0.5rem;
 }

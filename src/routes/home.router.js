@@ -56,9 +56,9 @@ router.get('/cart/:cid', async (req, res) => {
   io.once('connection', socketManager)
   const products = await cartManager.getCartProductsById(req.params.cid)
   const total = await cartManager.getTotal({ id: req.params.cid })
-  console.log(products, total)
   res.render('cart', {
     title: 'Cart',
+    id: req.params.cid,
     products,
     total
   })

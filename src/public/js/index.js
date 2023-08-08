@@ -2,8 +2,6 @@
 const socket = io() // Start connection with socket server
 
 socket.on('new_product', data => {
-  console.log('New product', data)
-
   const newItem =
   ` <li id='${data.id}'>
         <p><b>Título:</b> ${data.title}</p>
@@ -18,13 +16,11 @@ socket.on('new_product', data => {
 })
 
 socket.on('product_deleted', id => {
-  console.log('Removed product with id: ', id)
   const productRemoved = document.getElementById(`${id}`)
   productRemoved.parentElement.removeChild(productRemoved)
 })
 
 socket.on('product_updated', ({ id, product }) => {
-  console.log('Product updated with id: ' + id)
   const productUpdated = document.getElementById(`${id}`)
   const newItem =
   `
@@ -38,7 +34,6 @@ socket.on('product_updated', ({ id, product }) => {
 })
 
 socket.on('cart_updated', ({ cid, products }) => {
-  console.log('Cart updated with id: ' + cid)
   const cartItems = document.querySelector('.cart__items')
   let cartItemsHTML = ''
   for (const product of products) {

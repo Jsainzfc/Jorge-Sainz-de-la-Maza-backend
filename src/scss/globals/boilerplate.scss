@@ -5,7 +5,8 @@ body {
   font-family: 'Poppins', sans-serif;
   color: $fuente;
   display: flex;
-  margin: 100px 50px;
+  flex-direction: column;
+  margin: 100px 0;
   gap: 50px;
 }
 
@@ -123,4 +124,21 @@ input[type="number"]{
 img {
   object-fit: cover;
   object-position: center;
+}
+
+button {
+  width: 100%;
+  background-color: #FFC34E;
+  padding: 10px;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+
+  &:hover {
+    background-color: $buttons-hover;
+    transform: scale(1.1);
+    font-weight: 500;
+    transition: all 0.3s;
+  }
 }

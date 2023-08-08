@@ -9,6 +9,10 @@ class CartManager {
     return cart._id
   }
 
+  #getProductIndex ({ products, productId }) {
+    return products.findIndex(item => item.product._id.toString() === productId)
+  }
+
   async getCartProductsById (id) { // Returns the product (if found) with that id
     const { products } = await cartModel.findById(id).lean().populate('products.product')
     if (products) {
@@ -25,7 +29,7 @@ class CartManager {
       throw new Error('Cart not found')
     }
     const { products } = data
-    const productIndex = products.findIndex(item => item.product._id.toString() === productId)
+    const productIndex = this.#getProductIndex({ products, productId })
     if (productIndex >= 0) {
       const newAmount = products[productIndex].quantity + quantity
       if (newAmount > products[productIndex].product.stock) {
@@ -49,8 +53,31 @@ class CartManager {
     } catch (err) {
       throw new Error('Cart not found')
     }
-    const { products } = data
-    return products.reduce((acc, curr) => acc + (curr.quantity * curr.product.price), 0)
+    if (!data) {
+      return 0
+    } else {
+      return data.products.reduce((acc, curr) => acc + (curr.quantity * curr.product.price), 0)
+    }
+  }
+
+  async removeProduct ({ cartId, productId }) {
+    const products = await this.getCartProductsById(cartId)
+    const index = this.#getProductIndex({ products, productId })
+    if (index >= 0) {
+      products.splice(index, 1)
+      await cartModel.updateOne({ _id: cartId }, { products })
+      return products
+    } else {
+      throw new Error('Product not found')
+    }
+  }
+
+  async updateCartWithProducts ({ cartId, products }) {
+    await cartModel.updateOne({ _id: cartId }, { products })
+  }
+
+  async removeProducts ({ cartId }) {
+    await cartModel.updateOne({ _id: cartId }, { products: [] })
   }
 }
 

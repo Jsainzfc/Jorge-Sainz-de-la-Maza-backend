@@ -1,9 +1,9 @@
-<h1>Carrito:</h1>
-<div class="cart container">
+<h1 class="center-text">Cart:</h1>
+<div class="cart container flex__col" data-cart="{{id}}">
   <ul class="cart__items flex__col">
       {{#each products}}
-      <li>
-        <a class="flex cart-item">
+      <li class="item-{{this.product._id}}">
+        <a href="http://localhost:8080/buyproduct/{{this.product._id}}" class="flex cart-item">
             {{#if this.product.thumbnails}}
             <img class='cart-item__img' alt='Imagen de producto de {{this.product.title}}' src='{{this.product.thumbnails.[0]}}' />
             {{else}}
@@ -14,14 +14,20 @@
               <p class='cart-item__info--quantity'>{{this.quantity}}</p>
               <p class='cart-item__info--price' >{{this.product.price}}€</p>
             </div>
+            <svg class="trash" data-id="{{this.product._id}}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/> <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+            </svg>
         </a>
       </li>
       {{else}}
       <li><h2>Cart is empty</h2></li>
       {{/each}}
       <li class="cart__total">Total: {{total}}€</li>
+      <button class="empty">Empty Cart</button>
   </ul>
-</div>
   
+</div>
+
+<script src="/static/js/cart.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/static/js/index.js"></script>

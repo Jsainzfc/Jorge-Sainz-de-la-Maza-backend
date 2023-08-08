@@ -47,7 +47,7 @@ addToCart.forEach(button => {
     const quantity = document.querySelector(`.amount-${id}`)
     try {
       const response = await fetch(`http://localhost:8080/api/carts/${cartId}/product/${id}`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -69,7 +69,6 @@ addToCart.forEach(button => {
         })
       }
     } catch (err) {
-      console.error(err)
       Swal.fire({
         icon: 'error',
         title: 'Error',
