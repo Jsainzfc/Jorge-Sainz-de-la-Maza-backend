@@ -78,11 +78,13 @@ router.get('/realtimeproducts', async (req, res) => {
   // Initializes socket server
   io.once('connection', socketManager)
   try {
-    const response = await findProductsAndBuildResponse(req)
+    const response = await findProductsAndBuildResponse({ req, baseURL: 'http://localhost:8080/realtimeproducts' })
     res.render('realtimeproducts', {
       title: 'Real Time Products',
       products: response.payload,
       pagination: response.totalPages > 1,
+      hasPrevPage: response.hasPrevPage,
+      hasNextPage: response.hasNextPage,
       prevLink: response.prevLink,
       nextLink: response.nextLink
     })
@@ -93,11 +95,13 @@ router.get('/realtimeproducts', async (req, res) => {
 
 router.get('/buyproducts', async (req, res) => {
   try {
-    const response = await findProductsAndBuildResponse(req)
+    const response = await findProductsAndBuildResponse({ req, baseURL: 'http://localhost:8080/buyproducts' })
     res.render('buyproducts', {
       title: 'Buy Products',
       products: response.payload,
       pagination: response.totalPages > 1,
+      hasPrevPage: response.hasPrevPage,
+      hasNextPage: response.hasNextPage,
       prevLink: response.prevLink,
       nextLink: response.nextLink
     })

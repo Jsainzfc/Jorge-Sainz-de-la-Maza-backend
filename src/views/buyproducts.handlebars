@@ -22,4 +22,14 @@
     </li>
     {{/each}}
 </ul>
+{{#if pagination}}
+<div class="pagination">
+    {{#if hasPrevPage}}
+    <a href="{{prevLink}}" class="button pagination-button pagination-prev">Prev Page</a>
+    {{/if}}
+    {{#if hasNextPage}}
+    <a href="{{nextLink}}" class="button pagination-button pagination-next">Next Page</a>
+    {{/if}}
+</div>
+{{/if}}
 <script src="/static/js/addProduct.js"></script>

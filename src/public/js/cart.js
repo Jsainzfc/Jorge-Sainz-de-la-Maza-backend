@@ -32,7 +32,7 @@ document.querySelector('.empty').addEventListener('click', async () => {
     })
     itemList.innerHTML = `
       <li><h2>Cart is empty</h2></li>
-      <li class="cart__total">Total: {{total}}€</li>
+      <li class="cart__total">Total: 0€</li>
       <button class="empty">Empty Cart</button>
     `
   } catch (err) {

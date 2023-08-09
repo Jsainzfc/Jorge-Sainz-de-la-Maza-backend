@@ -35,17 +35,6 @@ a, a:visited {
   text-align: center;
 }
 
-.button {
-  @extend .center-text;
-  background-color: $oscuro;
-  color: $blanco;
-  padding: 10px 16px;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
-}
-
 .font-base {
   font-style: normal;
   font-family: 'Poppins', sans-serif;

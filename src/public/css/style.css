@@ -73,18 +73,8 @@ a, a:visited {
   cursor: pointer;
 }
 
-.center-text, .button {
+.center-text {
   text-align: center;
-}
-
-.button {
-  background-color: #1b1a1a;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  font-family: "Poppins", sans-serif;
 }
 
 .font-base, .important-text, p, .h_base, h3, h1, h2 {
