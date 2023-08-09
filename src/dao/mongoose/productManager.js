@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { InvalidField, MongooseError, NotAllFields, ProductNotFound } from '../../errors/index.js'
+import { InvalidField, MongooseError, NotAllFields, ProductNotFound, ValidationError } from '../../errors/index.js'
 import { productModel } from '../../models/products.model.js'
 
 class ProductManager {
@@ -67,11 +67,28 @@ class ProductManager {
     return options
   }
 
+  #getQuery ({ queryName, queryValue }) {
+    if (!(queryName && queryValue)) {
+      return {}
+    }
+
+    if (queryName === 'category') {
+      return { queryName: queryValue }
+    } else if (queryName === 'status') {
+      return { queryName: Boolean(queryValue) }
+    } else {
+      throw new ValidationError('Query only allowed for category or status')
+    }
+  }
+
   // Returns an array with the products in the database.
   // Might throw an instance of Mongoose Error if there is any problem reading the products from the database.
-  async find ({ limit, page, sort, query }) {
+  async find ({ limit, page, sort, queryName, queryValue }) {
     try {
-      const products = await productModel.paginate(query ?? {}, this.#getOptions({ limit, page, sort }))
+      const products = await productModel
+        .paginate(
+          this.#getQuery({ queryName, queryValue }),
+          this.#getOptions({ limit, page, sort }))
       return products
     } catch (err) {
       throw new MongooseError('Error getting products with Mongoose')

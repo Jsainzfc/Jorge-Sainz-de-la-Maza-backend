@@ -160,7 +160,7 @@ img {
   object-position: center;
 }
 
-button {
+button, .button {
   width: 100%;
   background-color: #FFC34E;
   padding: 10px;
@@ -169,7 +169,7 @@ button {
   cursor: pointer;
   font-size: 18px;
 }
-button:hover {
+button:hover, .button:hover {
   background-color: #D2BEDD;
   transform: scale(1.1);
   font-weight: 500;
@@ -232,6 +232,22 @@ button:hover {
 .itemCount__quantity--amount {
   font-size: 20px;
   font-weight: 600;
+}
+
+.pagination {
+  position: relative;
+}
+.pagination a {
+  position: absolute;
+  bottom: 0;
+  width: auto;
+  padding: 1rem 2rem;
+}
+.pagination a.pagination-next {
+  right: 2rem;
+}
+.pagination a.pagination-prev {
+  left: 2rem;
 }
 
 .chat {

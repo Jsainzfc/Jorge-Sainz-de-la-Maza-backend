@@ -9,12 +9,37 @@ const router = Router()
 const productManager = new ProductManager()
 const cartManager = new CartManager()
 
-const findProductsAndBuildResponse = async (req) => {
-  const { query, limit, page, order } = req.query
+const getPageLink = ({ baseURL, queryName, queryValue, limit, order, page }) => {
+  let finalURL = baseURL + '?'
+  if (queryName) {
+    finalURL = finalURL + `queryName=${queryName}&`
+  }
+  if (queryValue) {
+    finalURL = finalURL + `queryValue=${queryValue}&`
+  }
+  if (limit) {
+    finalURL = finalURL + `limit=${limit}&`
+  }
+  if (order) {
+    finalURL = finalURL + `order=${order}&`
+  }
+  if (page) {
+    finalURL = finalURL + `page=${page}`
+  }
+  return finalURL
+}
+
+const findProductsAndBuildResponse = async ({ req, baseURL }) => {
+  const { queryName, queryValue, limit, page, order } = req.query
   try {
-    const products = await productManager.find({ query, limit, page, order })
-    const prevLink = products.hasPrevPage ? `http:localhost:8080/?page=${products.prevPage}` : ''
-    const nextLink = products.hasNextPage ? `http:localhost:8080/?page=${products.nextPage}` : ''
+    const products = await productManager.find({ queryName, queryValue, limit, page, order })
+    const prevLink = products.hasPrevPage
+      ? `${getPageLink({ queryName, queryValue, limit, order, page: products.prevPage, baseURL })}`
+      : ''
+    const nextLink = products.hasNextPage
+      ? `${getPageLink({ queryName, queryValue, limit, order, page: products.nextPage, baseURL })}`
+      : ''
+
     const response = {
       status: 'success',
       payload: products.docs,
@@ -34,10 +59,15 @@ const findProductsAndBuildResponse = async (req) => {
 
 router.get('/', async (req, res) => {
   try {
-    const response = await findProductsAndBuildResponse(req)
+    const response = await findProductsAndBuildResponse({ req, baseURL: 'http://localhost:8080' })
     res.render('home', {
       title: 'Home',
-      products: response.docs
+      products: response.payload,
+      pagination: response.totalPages > 1,
+      hasPrevPage: response.hasPrevPage,
+      hasNextPage: response.hasNextPage,
+      prevLink: response.prevLink,
+      nextLink: response.nextLink
     })
   } catch (err) {
     return res.status(500).json({ message: err.message })
@@ -51,7 +81,10 @@ router.get('/realtimeproducts', async (req, res) => {
     const response = await findProductsAndBuildResponse(req)
     res.render('realtimeproducts', {
       title: 'Real Time Products',
-      products: response.docs
+      products: response.payload,
+      pagination: response.totalPages > 1,
+      prevLink: response.prevLink,
+      nextLink: response.nextLink
     })
   } catch (err) {
     return res.status(500).json({ message: err.message })
@@ -63,7 +96,10 @@ router.get('/buyproducts', async (req, res) => {
     const response = await findProductsAndBuildResponse(req)
     res.render('buyproducts', {
       title: 'Buy Products',
-      products: response.docs
+      products: response.payload,
+      pagination: response.totalPages > 1,
+      prevLink: response.prevLink,
+      nextLink: response.nextLink
     })
   } catch (err) {
     return res.status(500).json({ message: err.message })

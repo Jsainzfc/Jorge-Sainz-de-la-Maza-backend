@@ -9,9 +9,9 @@ const router = Router()
 // Endpoint for retrieving all of the products in the database.
 // It can be limited if included in the url a limit.
 router.get('/', async (req, res) => {
-  const { query, limit, page, order } = req.query
+  const { queryName, queryValue, limit, page, order } = req.query
   try {
-    const products = await productManager.find({ query, limit, page, order })
+    const products = await productManager.find({ queryName, queryValue, limit, page, order })
     const prevLink = products.hasPrevPage ? `http:localhost:8080/api/products?page=${products.prevPage}` : ''
     const nextLink = products.hasNextPage ? `http:localhost:8080/api/products?page=${products.nextPage}` : ''
     const response = {
