@@ -52,11 +52,26 @@ class ProductManager {
     }
   }
 
+  #getOptions ({ limit, page, sort }) {
+    let options = {
+      lean: true,
+      limit: limit ?? 10,
+      page: page ?? 1
+    }
+    if (sort) {
+      options = {
+        ...options,
+        sort: { price: sort ? 'asc' : 'desc' }
+      }
+    }
+    return options
+  }
+
   // Returns an array with the products in the database.
   // Might throw an instance of Mongoose Error if there is any problem reading the products from the database.
-  async find () {
+  async find ({ limit, page, sort, query }) {
     try {
-      const products = await productModel.find().lean()
+      const products = await productModel.paginate(query ?? {}, this.#getOptions({ limit, page, sort }))
       return products
     } catch (err) {
       throw new MongooseError('Error getting products with Mongoose')

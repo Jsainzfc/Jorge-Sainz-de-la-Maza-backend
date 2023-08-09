@@ -9,18 +9,37 @@ const router = Router()
 // Endpoint for retrieving all of the products in the database.
 // It can be limited if included in the url a limit.
 router.get('/', async (req, res) => {
-  let products = await productManager.find()
-  if (req.query.limit) {
-    if (isNaN(req.query.limit)) {
-      return res.status(400).json({ message: 'Limit must be a number' })
+  const { query, limit, page, order } = req.query
+  try {
+    const products = await productManager.find({ query, limit, page, order })
+    const prevLink = products.hasPrevPage ? `http:localhost:8080/api/products?page=${products.prevPage}` : ''
+    const nextLink = products.hasNextPage ? `http:localhost:8080/api/products?page=${products.nextPage}` : ''
+    const response = {
+      status: 'success',
+      payload: products.docs,
+      totalPages: products.totalPages,
+      prevPage: products.prevPage,
+      nextPage: products.nextPage,
+      hasPrevPage: products.hasPrevPage,
+      hasNextPage: products.hasNextPage,
+      prevLink,
+      nextLink
     }
-    const limit = Number(req.query.limit)
-    products = limit === 0 || limit > products.length ? products : products.slice(0, limit)
+    return res.status(200).json({ message: 'Products found', data: response })
+  } catch (err) {
+    const response = {
+      status: 'error',
+      payload: [],
+      totalPages: 0,
+      prevPage: 0,
+      nextPage: 0,
+      hasPrevPage: false,
+      hasNextPage: false,
+      prevLink: null,
+      nextLink: null
+    }
+    return res.status(500).json({ message: err.message, data: response })
   }
-  if (products.length === 0) {
-    return res.status(204).json({ message: 'No products found' }) // There are no products
-  }
-  return res.json({ message: 'Successful', products })
 })
 
 // Endpoint for retrieving the product with id pid.
