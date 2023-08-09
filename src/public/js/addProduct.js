@@ -1,7 +1,4 @@
 /* eslint-disable no-undef */
-const minus = document.querySelectorAll('.minusOne')
-const plus = document.querySelectorAll('.plusOne')
-const addToCart = document.querySelectorAll('.itemCount__add-to-cart')
 let cartId
 
 const initialiseCart = async () => {
@@ -17,7 +14,7 @@ const initialiseCart = async () => {
   sessionStorage.setItem('cartId', cartId)
 }
 
-minus.forEach(minusButton => {
+document.querySelectorAll('.minusOne').forEach(minusButton => {
   minusButton.addEventListener('click', () => {
     const amount = minusButton.nextElementSibling
     let quantity = Number(amount.innerHTML)
@@ -28,11 +25,10 @@ minus.forEach(minusButton => {
   })
 })
 
-plus.forEach(plusButton => {
+document.querySelectorAll('.plusOne').forEach(plusButton => {
   plusButton.addEventListener('click', () => {
-    const id = plusButton.id
-    const amount = document.querySelector(`.amount-${id}`)
-    const stock = Number(document.querySelector(`.product-${id}`).dataset.stock)
+    const amount = document.querySelector(`.amount-${plusButton.id}`)
+    const stock = Number(document.querySelector(`.product-${plusButton.id}`).dataset.stock)
     let quantity = Number(amount.innerHTML)
     if (quantity >= 1 && quantity < stock) {
       quantity++
@@ -41,7 +37,7 @@ plus.forEach(plusButton => {
   })
 })
 
-addToCart.forEach(button => {
+document.querySelectorAll('.itemCount__add-to-cart').forEach(button => {
   button.addEventListener('click', async () => {
     const id = button.id
     const quantity = document.querySelector(`.amount-${id}`)
