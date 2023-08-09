@@ -6,14 +6,38 @@ import { ProductNotFound, ValidationError } from '../../errors/index.js'
 const productManager = new ProductManager()
 const router = Router()
 
+const getPageLink = ({ baseURL, queryName, queryValue, limit, order, page }) => {
+  let finalURL = baseURL + '?'
+  if (queryName) {
+    finalURL = finalURL + `queryName=${queryName}&`
+  }
+  if (queryValue) {
+    finalURL = finalURL + `queryValue=${queryValue}&`
+  }
+  if (limit) {
+    finalURL = finalURL + `limit=${limit}&`
+  }
+  if (order) {
+    finalURL = finalURL + `order=${order}&`
+  }
+  if (page) {
+    finalURL = finalURL + `page=${page}`
+  }
+  return finalURL
+}
+
 // Endpoint for retrieving all of the products in the database.
 // It can be limited if included in the url a limit.
 router.get('/', async (req, res) => {
   const { queryName, queryValue, limit, page, order } = req.query
   try {
     const products = await productManager.find({ queryName, queryValue, limit, page, order })
-    const prevLink = products.hasPrevPage ? `http:localhost:8080/api/products?page=${products.prevPage}` : ''
-    const nextLink = products.hasNextPage ? `http:localhost:8080/api/products?page=${products.nextPage}` : ''
+    const prevLink = products.hasPrevPage
+      ? `${getPageLink({ queryName, queryValue, limit, page: products.prevPage, order, baseURL: 'http:localhost:8080/api/products' })}`
+      : ''
+    const nextLink = products.hasNextPage
+      ? `${getPageLink({ queryName, queryValue, limit, page: products.nextPage, order, baseURL: 'http:localhost:8080/api/products' })}`
+      : ''
     const response = {
       status: 'success',
       payload: products.docs,
