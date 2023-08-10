@@ -262,6 +262,7 @@ button:hover, .button:hover {
   gap: 60px;
   display: grid;
   grid-template-columns: auto 1fr;
+  padding: 0 3rem;
 }
 .chat__users {
   gap: 1rem;
