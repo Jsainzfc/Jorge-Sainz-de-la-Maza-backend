@@ -138,6 +138,9 @@ Devuelve todas las categorías.
 ### DELETE /api/categories/:id
 Elimina la categoría con id = id
 
+## Estilado
+Para mejorar un poco más el estilo de la aplicación, se está usando sass. Es por ello que he añadido un script al package.json "watch-sass" para que compile el estilo.
+
 ## Testeo
 
 ### Testing de clases managers
@@ -158,6 +161,13 @@ El testeo del servidor se puede hacer mediante los archivos products_endpoints_t
 - Se buscará en la url del navegador la ruta “/realtimeproducts”.
   - Se corroborará que el servidor haya conectado con el cliente, en la consola del servidor deberá mostrarse un mensaje de “cliente conectado”.
   - Se debe mostrar la lista de productos y se corroborará que se esté enviando desde websocket.
+
+### Accesos a la base de datos y puerto del servidor
+Tanto el puerto de la app de express como el usuario y contraseña de la base de datos están en un archivo .env que no está en github. Las variables de entorno son:
+PORT
+MONGOUSER
+MONGOPASSWORD
+El usuario y contraseña se proporcionan en la entrega.
 
 ### Testing pre Entrega 2
 La ruta / permite hacer el testeo del endpoint GET /api/products. Una vez cargado, clicar en cualquier producto permite probar el endpoint GET /api/products/:pid.

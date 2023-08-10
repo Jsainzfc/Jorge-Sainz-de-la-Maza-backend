@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { ProductManager } from '../../dao/mongoose/productManager.js'
 import io from '../../app.js'
-import { ProductNotFound, ValidationError } from '../../errors/index.js'
+import { ItemNotFound, ValidationError } from '../../errors/index.js'
 
 const productManager = new ProductManager()
 const router = Router()
@@ -105,7 +105,7 @@ router.put('/:pid', async (req, res) => { // Endpoint for updating a product
     io.emit('product_updated', { id: req.params.pid, product })
     return res.json({ message: 'Product updated' })
   } catch (err) {
-    if (err instanceof ProductNotFound) {
+    if (err instanceof ItemNotFound) {
       return res.status(404).json({ message: err.message })
     }
     return res.status(500).json({ message: err.message })
@@ -118,7 +118,7 @@ router.delete('/:pid', async (req, res) => {
     io.emit('product_deleted', req.params.pid)
     return res.status(204).json({ message: `Product width id ${req.params.pid} removed correctly` })
   } catch (err) {
-    if (err instanceof ProductNotFound) {
+    if (err instanceof ItemNotFound) {
       return res.status(404).json({ message: err.message })
     }
     return res.status(500).json({ message: err.message })

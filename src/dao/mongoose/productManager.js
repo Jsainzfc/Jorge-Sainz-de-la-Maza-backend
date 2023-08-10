@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { InvalidField, MongooseError, NotAllFields, ProductNotFound, ValidationError } from '../../errors/index.js'
+import { InvalidField, MongooseError, NotAllFields, ItemNotFound, ValidationError } from '../../errors/index.js'
 import { productModel } from '../../models/products.model.js'
 
 class ProductManager {
@@ -113,10 +113,10 @@ class ProductManager {
   // Updates one product of the database
   // Might throw instances of ValidationError if any new field is not correct
   // Might throw instances of MongooseError if there is any error updating the database
-  // Might throw instance of ProductNotFound if product is not found in the database
+  // Might throw instance of ItemNotFound if product is not found in the database
   async updateOne (id, { code, title, description, price, stock, thumbnails, status, categories }) {
     const product = await productModel.findById(id)
-    if (!product) throw new ProductNotFound('Product not found')
+    if (!product) throw new ItemNotFound('Product not found')
 
     const newProduct = {
       code: code ?? product.code,
@@ -142,7 +142,7 @@ class ProductManager {
     try {
       await productModel.updateOne({ _id: id }, newProduct)
     } catch (err) {
-      throw new ProductNotFound(err.message)
+      throw new ItemNotFound(err.message)
     }
   }
 
@@ -153,7 +153,7 @@ class ProductManager {
     try {
       const { deletedCount } = await productModel.deleteOne({ _id: id })
       if (deletedCount !== 1) {
-        throw new ProductNotFound('Product not found')
+        throw new ItemNotFound('Product not found')
       }
     } catch (err) {
       throw new MongooseError(err.message)

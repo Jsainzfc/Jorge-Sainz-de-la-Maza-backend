@@ -129,7 +129,7 @@ router.get('/buyproduct/:pid', async (req, res) => {
 router.get('/cart/:cid', async (req, res) => {
   // Initialises socket server
   io.once('connection', socketManager)
-  const products = await cartManager.getCartProductsById(req.params.cid)
+  const products = await cartManager.findById(req.params.cid)
   const total = await cartManager.getTotal({ id: req.params.cid })
   res.render('cart', {
     title: 'Cart',
