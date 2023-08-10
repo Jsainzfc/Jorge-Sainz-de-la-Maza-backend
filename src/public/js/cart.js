@@ -4,7 +4,6 @@ const itemList = document.querySelector('.cart__items')
 
 trashIcons.forEach(trash => {
   trash.addEventListener('click', async () => {
-    console.log('Clicked trash', cartId)
     const id = trash.dataset.id
     try {
       const response = await fetch(`http://localhost:8080/api/carts/${cartId}/products/${id}`, {
@@ -12,6 +11,7 @@ trashIcons.forEach(trash => {
       })
       const { products, total } = await response.json()
       const item = document.querySelector(`.item-${id}`)
+      console.log('Here')
       itemList.removeChild(item)
       document.querySelector('.cart__total').innerHTML = `Total: ${total ?? 0}€`
       if (products.length === 0) {

@@ -54,6 +54,7 @@ body {
   flex-direction: column;
   margin: 100px 0;
   gap: 50px;
+  align-items: center;
 }
 
 .flex, .flex--center, .flex__col, .header {
@@ -73,7 +74,7 @@ a, a:visited {
   cursor: pointer;
 }
 
-.center-text {
+.center-text, .swal2-footer a {
   text-align: center;
 }
 
@@ -160,6 +161,22 @@ button, .button {
   font-size: 18px;
 }
 button:hover, .button:hover {
+  background-color: #D2BEDD;
+  transform: scale(1.1);
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.swal2-footer a {
+  width: 100%;
+  background-color: #FFC34E;
+  padding: 10px;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+.swal2-footer a:hover {
   background-color: #D2BEDD;
   transform: scale(1.1);
   font-weight: 500;
@@ -288,6 +305,10 @@ button:hover, .button:hover {
   padding: 2rem;
   border: 1px solid darkgrey;
 }
+.cart__items li {
+  align-items: center;
+  gap: 0.5rem;
+}
 .cart__total {
   font-weight: 600;
   font-size: 24px;
@@ -318,8 +339,8 @@ button:hover, .button:hover {
   cursor: pointer;
 }
 
-.cart__items li {
-  gap: 0.5rem;
+.trash {
+  cursor: pointer;
 }
 
 .single-product {

@@ -36,7 +36,6 @@ router.post('/:cid/product/:pid', async (req, res) => {
 })
 
 router.delete('/:cid/products/:pid', async (req, res) => {
-  console.log('Deleted item')
   try {
     const newProducts = await cartManager.removeProduct({ cartId: req.params.cid, productId: req.params.pid })
     const newTotal = await cartManager.getTotal({ id: req.params.id })

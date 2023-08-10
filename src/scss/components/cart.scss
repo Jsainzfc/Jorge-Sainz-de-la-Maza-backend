@@ -11,6 +11,11 @@
         border-radius: 1rem;
         padding: 2rem;
         border: 1px solid darkgrey;
+
+        li {
+            align-items: center;
+            gap: 0.5rem;
+        }
     }
 
     &__total {
@@ -49,7 +54,6 @@
     }
 }
 
-
-.cart__items li{
-    gap: 0.5rem;
+.trash {
+    cursor: pointer;
 }
