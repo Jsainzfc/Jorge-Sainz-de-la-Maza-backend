@@ -53,65 +53,90 @@ Se ha creado una vista en tiempo real del carrito mediante el uso de websocket.
 La persistencia de productos, mensajes del chat y carritos se ha integrado con MongoDB + mongoose, conservando el uso de filesystem, pero sin emplearlo.
 
 ## Alcance pre Entrega 2
+Se han profesionalizado las rutas existentes así como creado nuevas.
+Se permite hacer queries a api/products con limit, filter, paginado.
+Se han creado nuevas rutas estáticas para ver/comprar productos, ver/comprar producto individual, ver carritos.
+Se han implementado funcionalidades a las rutas estáticas para acceder a la api.
+Se ha creado un nuevo modelo category que está relacionado con los productos. Se ha creado su manager y su router en /api/categories.
+Se ha añadido Sass con la sintaxis SCSS para el estilado.
 
 ## Estructura
 El código está dentro de la carpeta src.
 La carpeta database recoge unas bases de datos, ahora en desuso, para el uso de filesystem en carritos y productos.
-La carpeta dao recoge los managers para el carrito y los productos. Se divide en dos subcarpetas: fs y mongoose. En cada una están los managers. En este momento solo se emplea la subcarpeta mongoose.
+La carpeta dao recoge los managers para el carrito, los productos y las categorías. Se divide en dos subcarpetas: fs y mongoose. En cada una están los managers. En este momento solo se emplea la subcarpeta mongoose.
+La carpeta errors recoge una serie de errores declarados para mejorar el manejo de errores en el proyecto.
 La carpeta models recoge todos los modelos (Schemas y colecciones) que se recogen en la base de datos de MongoDB.
-La carpeta routes incluye, en la subcarpeta api los enrutados de los endpoints de carritos y productos para su uso modo api, un router de las rutas estáticas de home:
+La carpeta routes incluye, en la subcarpeta api los enrutados de los endpoints de carritos, productos y categorías para su uso modo api, un router de las rutas estáticas de home:
 - / : Todos los productos de la base de datos en ese momento sin actualización en tiempo real.
 - /realtimeproducts : Todos los productos de la base de datos en ese momento con actualización en tiempo real.
+- /buyproducts : Vista de todos los productos que además permite añadir al carrito
+- /product/:pid : Vista detalle del producto con id pid. Se ha añadido un efecto lightbox a la galería de imágenes.
+- /buyproduct/:pid : Igual que la anterior. Permite comprar.
 - /chat : Chat en tiempo real.
 - /cart/:cid : Visión del carrito con id=cid a tiempo real.
 y un index.js que distribuye las rutas.
+La carpeta scss recoge los estilados.
 La carpeta testing recoge todos los archivos necesarios para testear los managers y los endpoints en express.
 La carpeta websocket recoge la gestión en servidor del socket para el uso del chat.
 El servidor de express y el socket están en el archivo app.js, pero el socket solo se inicializa en las rutas que lo usan.
 Las vistas de handlebars están enla carpeta views.
 El archivo utils.js está en desuso en este momento. Proporciona la ruta para la conexión del filesystem.
-La carpeta public proporciona el lado cliente de los websockets así como estilados para las diferentes vistas de handlebars.
+La carpeta public proporciona el lado cliente de los websockets así como estilados para las diferentes vistas de handlebars. También incluye lógica para la gestión de compra de productos y de carrito.
 
 ## Endpoints de la api de products:
 
-### GET /api/products/?limit=x
-Retorna todos los productos de la base de datos hasta un límite = x. 
-Limit ha de ser un número entero, si no retorna un status 400.
-Si limite es superior al máximo de productos disponibles en la base de datos o no se ha fijado un límite, devuelve todos los productos disponibles.
-Si no hay productos en la base de datos se retorna un status 204.
+### GET /api/products/?limit=x&page=y&sort=true&queryName=a&queryValue=b
+Retorna todos los productos de la base de datos hasta un límite = x (si no se incluye se considera 10).
+Si limite es superior al máximo de productos disponibles en la base de datos devuelve todos los productos disponibles.
+Page es la página de visionado (si no se incluye es 1). Si no hay más que una página se ignora.
+Sort decide si se ordena por precio. Si es true se ordena ascendente si es false descendente. Si no se incluye no se ordena.
+queryName y queryValue permite establecer un filtro para productos donde queryName = queryValue.
 
 ### GET /api/products/:pid
-Retorna el producto con id pid.
-Si el producto no se encuentra, retorna un status 404.
+Retorna el producto con id = pid.
 
 ### POST /api/products/
 Añade el producto del cuerpo de la petición a la base de datos.
-Si la petición es correcta, retorna un status 201.
-Si la petición tiene algún error, retorna un status 400.
 
 ### PUT /api/products/:pid
-Actualiza el product con el id pid de la base de datos con la información del cuerpo de la petición.
-Si el producto no se encuentra, retorna un status 404.
+Actualiza el product con el id = pid de la base de datos con la información del cuerpo de la petición.
 
 ### DELETE /api/products/:pid
-Elimina el producto con id pid de la base de datos.
-Si el producto no se encuentra, retorna un status 404.
-Si el producto se elimina correctamente, retorna un status 204.
+Elimina el producto con id = pid de la base de datos.
 
 ## Endpoints de la api de carts:
 
 ### POST /api/carts/
-Crea un carrito con un id aleatorio y único y sin productos. 
+Crea un carrito sin productos. 
 
 ### GET /api/carts/:cid
-Retorna los productos del carrito con id cid.
-Si el carrito no se encuentra, retorna un status 404.
+Retorna los productos del carrito con id = cid.
 
 ### POST /api/carts/:cid/product/:pid
-Añade un item del producto con id pid al carrito con id cid.
-Si el carrito no se encuentra, retorna un status 404.
-Si el carrito no contiene aún el id de product pid, se añade con una cantidad de 1.
-Si el carrito ya contiene el producto con id pid, se suma 1 a la cantidad presente.
+Añade un item del producto con id = pid al carrito con id = cid.
+
+### DELETE /api/carts/:cid/product/:pid
+Elimina por completo el item del producto con id pid del carrito con id = cid.
+
+### PUT /api/carts/:cid
+Actualiza el carrito con id = cid con los productos en el cuerpo de la petición.
+
+### PUT /api/carts/:cid/product/:pid
+Actualiza el carrito con id = cid con el producto con id = pid y la cantidad que incluya el cuerpo de la petición o 1 si no incluye cantidad.
+
+### DELETE /api/carts/:cid
+Elimina todos los productos del carrito con id = cid.
+
+## Endpoints de la api de categories:
+
+### POST /api/categories
+Crea una categoría con el contenido del cuerpo de la petición.
+
+### GET /api/categories
+Devuelve todas las categorías.
+
+### DELETE /api/categories/:id
+Elimina la categoría con id = id
 
 ## Testeo
 
@@ -134,3 +159,9 @@ El testeo del servidor se puede hacer mediante los archivos products_endpoints_t
   - Se corroborará que el servidor haya conectado con el cliente, en la consola del servidor deberá mostrarse un mensaje de “cliente conectado”.
   - Se debe mostrar la lista de productos y se corroborará que se esté enviando desde websocket.
 
+### Testing pre Entrega 2
+La ruta / permite hacer el testeo del endpoint GET /api/products. Una vez cargado, clicar en cualquier producto permite probar el endpoint GET /api/products/:pid.
+
+La ruta /buyproducts y /buyproducts/:pid permiten probar el endpoint POST /api/carts/ (se hace automáticamente y se guarda con persistencia en system storage). Además añadir productos permite probar el endpoint POST /api/carts/:cid/product/:pid. Si clicas en See Cart en la alerta de Sweet alert tras añadir un producto puedes ir a la página de carrito (/cart/:id) y probar el endpoint GET /api/carts/:cid. Empleando los botones con icono de cubo de basura se puede probar el endpoint DELETE /api/carts/:cid/product/:pid, y empleando el botón empty Cart se puede probar el endpoint ### DELETE /api/carts/:cid.
+
+El resto de endpoints de la api se pueden testear mediante cualquier herramienta de envío de queries.

@@ -33,11 +33,11 @@ class MongooseError extends Error {
   }
 }
 
-class ProductNotFound extends Error {
+class ItemNotFound extends Error {
   constructor (message) {
     super(message)
-    this.name = 'ProductNotFound'
+    this.name = 'ItemNotFound'
   }
 }
 
-export { NotEnoughStock, NotAllFields, InvalidField, ValidationError, MongooseError, ProductNotFound }
+export { NotEnoughStock, NotAllFields, InvalidField, ValidationError, MongooseError, ItemNotFound }

@@ -31,7 +31,7 @@ class ProductManager {
   }
 
   // Creates a new product in the database.
-  // Might throw instances of ValidationError if some problem is detected.
+  // Might throw instances of ValidationError if some value is not valid.
   // Might throw MongooseError if there is any issue reading products for validating code or adding the new product.
   async create ({ code, title, description, price, stock, thumbnails, status, categories }) {
     await this.#validateFields({ code, title, description, price, stock, thumbnails, status })
@@ -110,7 +110,7 @@ class ProductManager {
     }
   }
 
-  // Updates one product of the products in the file
+  // Updates one product of the database
   // Might throw instances of ValidationError if any new field is not correct
   // Might throw instances of MongooseError if there is any error updating the database
   // Might throw instance of ProductNotFound if product is not found in the database
@@ -146,7 +146,7 @@ class ProductManager {
     }
   }
 
-  // Updates one product of the products in the file
+  // Deletes one product from the database
   // Might throw instances of MongooseError if there is any error updating the database
   // Might throw instance of ProductNotFound if product is not found in the database
   async deleteOne (id) {
