@@ -6,9 +6,12 @@ body {
   color: $fuente;
   display: flex;
   flex-direction: column;
-  margin: 100px 0;
   gap: 50px;
   align-items: center;
+}
+
+header {
+  width: 100%;
 }
 
 .flex {

@@ -1,18 +1,5 @@
 /* eslint-disable no-undef */
-let cartId
-
-const initialiseCart = async () => {
-  let id = sessionStorage.getItem('cartId')
-  if (!id) {
-    const response = await fetch('http://localhost:8080/api/carts/', {
-      method: 'POST'
-    })
-    const data = await response.json()
-    id = data.cart.id
-  }
-  cartId = id
-  sessionStorage.setItem('cartId', cartId)
-}
+const cartId = document.querySelector('header').dataset.cart
 
 document.querySelectorAll('.minusOne').forEach(minusButton => {
   minusButton.addEventListener('click', () => {
@@ -73,5 +60,3 @@ document.querySelectorAll('.itemCount__add-to-cart').forEach(button => {
     }
   })
 })
-
-initialiseCart()

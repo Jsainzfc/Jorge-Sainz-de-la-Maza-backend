@@ -175,3 +175,14 @@ La ruta / permite hacer el testeo del endpoint GET /api/products. Una vez cargad
 La ruta /buyproducts y /buyproducts/:pid permiten probar el endpoint POST /api/carts/ (se hace automáticamente y se guarda con persistencia en system storage). Además añadir productos permite probar el endpoint POST /api/carts/:cid/product/:pid. Si clicas en See Cart en la alerta de Sweet alert tras añadir un producto puedes ir a la página de carrito (/cart/:id) y probar el endpoint GET /api/carts/:cid. Empleando los botones con icono de cubo de basura se puede probar el endpoint DELETE /api/carts/:cid/product/:pid, y empleando el botón empty Cart se puede probar el endpoint ### DELETE /api/carts/:cid.
 
 El resto de endpoints de la api se pueden testear mediante cualquier herramienta de envío de queries.
+
+### Testing clase 19
+Al cargar el proyecto, éste deberá comenzar en la pantalla de login
+Al no tener un usuario, primero se creará un usuario, para esto, la pantalla de login deberá tener un link de redirección “Regístrate” 
+El proceso de registro deberá guardar en la base de datos al usuario
+Se regresará al proceso de login y se colocarán las credenciales de manera incorrecta, esto para probar que no se pueda avanzar a la siguiente pantalla.
+Posteriormente, se colocarán las credenciales de manera correcta, esto para corroborar que se cree una sesión correctamente y que se haga una redirección a la vista de productos.
+La vista de productos tendrá en una parte de arriba de la página el mensaje “Bienvenido” seguido de los datos del usuario que se haya logueado (NO mostrar password). Es importante que se visualice el “rol” para ver que aparezca “usuario” o “user”
+Se presionará el botón de logout y se destruirá la sesión, notando cómo nos redirige a login.
+Se ingresarán las credenciales específicas de admin indicadas en las diapositivas, el login debe redirigir correctamente y mostrar en los datos del rol: “admin” haciendo referencia a la correcta gestión de roles. 
+Se revisará que el admin NO viva en base de datos, sino que sea una validación que se haga de manera interna en el código.

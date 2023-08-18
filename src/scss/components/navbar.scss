@@ -1,0 +1,17 @@
+.navBar {
+  width: 100%;
+  margin-top: 30px;
+
+  ul {
+    justify-content: space-evenly;
+
+    li {
+      transition: all 0.1s ease-in;
+      font-weight: 600;
+
+      &:not(:last-child):hover {
+        transform: scale(1.2);
+      }
+    }
+  }
+}

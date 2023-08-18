@@ -1,0 +1,16 @@
+<div class="flex__col login">
+  <h3 class="center-text">Log in</h3>
+  <form action="" method="post" class="flex__col">
+    <input name="email" placeholder="Email" class="" type="text" aria-label="Not clickable icon">
+    <input name="password" class="" placeholder="Password" type="password" aria-label="Not clickable icon">
+
+    <span>Don't have an account yet? <a class="login__signup" href="/signup">Sign up!</a></span>
+
+    {{#if error}}
+      <span class="login__error">{{error}}</span>
+    {{/if}}
+    
+
+    <button>Enter</button>
+  </form>
+</div>

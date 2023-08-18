@@ -26,9 +26,12 @@
   "homepage": "https://github.com/Jsainzfc/Jorge-Sainz-de-la-Maza-backend#readme",
   "dependencies": {
     "axios": "^1.4.0",
+    "connect-mongo": "^5.0.0",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
     "express": "4.18.2",
     "express-handlebars": "^7.0.7",
+    "express-session": "^1.17.3",
     "mongoose": "^7.4.1",
     "mongoose-paginate-v2": "^1.7.31",
     "socket.io": "^4.7.1",

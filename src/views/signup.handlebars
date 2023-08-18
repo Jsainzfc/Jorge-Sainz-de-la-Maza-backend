@@ -1,0 +1,18 @@
+<div class="signup flex__col">
+  <h3 class="center-text">Create your account</h3>
+  <form action="" method="post" class="flex__col">
+    <input name="firstname" type="text" placeholder="First Name">
+    <input name="lastname" type="text" placeholder="Last Name">
+    <input name="email" type="text" placeholder="Email">
+    <input name="age" type="text" placeholder="Age">
+    <input name="password" type="password" placeholder="Password">
+    <input name="password2" class="uk-input" type="password" placeholder="Repeat Password">
+    <span>Already have an account? <a class="signup__login" href="/login">Log in!</a></span>
+    
+    {{#if error}}
+      <span class="signup__error">{{error}}</span>
+    {{/if}}
+
+    <button>Sign up</button>
+  </form>
+</div>

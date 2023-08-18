@@ -52,9 +52,12 @@ body {
   color: #323232;
   display: flex;
   flex-direction: column;
-  margin: 100px 0;
   gap: 50px;
   align-items: center;
+}
+
+header {
+  width: 100%;
 }
 
 .flex, .flex--center, .flex__col, .header {
@@ -423,6 +426,49 @@ button:hover, .button:hover {
 .lightbox__image {
   width: 60%;
   max-height: 90%;
+}
+
+.login, .signup {
+  gap: 30px;
+  margin-top: 50px;
+}
+.login h3, .signup h3 {
+  font-size: 36px;
+  font-weight: 600;
+}
+.login form, .signup form {
+  gap: 14px;
+  align-items: center;
+}
+.login form input, .signup form input {
+  border: none;
+  background: lightgray;
+  border-radius: 20px;
+  padding: 12px 15px 12px 15px;
+  width: 100%;
+}
+.login__signup, .login__login, .signup__signup, .signup__login {
+  font-weight: 600;
+}
+.login__error, .signup__error {
+  color: red;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.navBar {
+  width: 100%;
+  margin-top: 30px;
+}
+.navBar ul {
+  justify-content: space-evenly;
+}
+.navBar ul li {
+  transition: all 0.1s ease-in;
+  font-weight: 600;
+}
+.navBar ul li:not(:last-child):hover {
+  transform: scale(1.2);
 }
 
 /*# sourceMappingURL=style.css.map */

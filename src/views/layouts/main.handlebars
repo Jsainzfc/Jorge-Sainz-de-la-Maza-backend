@@ -13,7 +13,22 @@
         <link rel="stylesheet" href="/static/css/style.css" type="text/css">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
+    
     <body>
+        {{#if user}}
+            <header data-cart="{{user.cart}}">
+                <nav class="navBar">
+                    <ul class="flex">
+                        <li><a href="/">Products</a></li>
+                        <li><a href="/buyproducts">Buy Products</a></li>
+                        <li><a href="/realtimeproducts">Real Time Products</a></li>
+                        <li><a href="/cart/{{user.cart}}">Cart</a></li>
+                        <li><a href="/logout">Log Out</a></li>
+                        <li>Bienvenido {{user.name}}. Su rol es {{user.role}}</li>
+                    </ul>
+                </nav>
+            </header>
+        {{/if}}
 
         {{{body}}}
         
