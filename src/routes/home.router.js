@@ -198,7 +198,7 @@ router.get('/login', (_, res) => res.render('login'))
 router.post('/login', async (req, res) => {
   const { email, password } = req.body
   try {
-    if (email === process.env.ADMINUSER && password === process.env.ADMINPASSWORD) {
+    if (email === process.env.ADMINMAIL && password === process.env.ADMINPASSWORD) {
       req.session.user = {
         name: email,
         id: 0,
