@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { CartManager } from '../../dao/mongoose/cartManager.js'
-import io from '../../app.js'
 import { InvalidField, NotEnoughStock, ValidationError } from '../../errors/index.js'
 
 const cartManager = new CartManager()
@@ -31,7 +30,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
   try {
     const { cid, pid } = req.params
     const products = await cartManager.updateOne({ id: cid, productId: pid, quantity: 1 })
-    io.emit('cart_updated', { cid, products })
+    req.io.emit('cart_updated', { cid, products })
     return res.json({ message: 'Cart updated', cart: { id: cid, products } })
   } catch (err) {
     if (err instanceof NotEnoughStock) {
@@ -78,7 +77,7 @@ router.put('/:cid/product/:pid', async (req, res) => {
   try {
     const { cid, pid } = req.params
     const products = await cartManager.updateOne({ id: cid, productId: pid, quantity })
-    io.emit('cart_updated', { cid, products })
+    req.io.emit('cart_updated', { cid, products })
     return res.json({ message: 'Cart updated', cart: { id: cid, products } })
   } catch (err) {
     if (err.name === 'NotEnoughStock') {

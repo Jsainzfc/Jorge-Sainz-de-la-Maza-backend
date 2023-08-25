@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { ProductManager } from '../../dao/mongoose/productManager.js'
-import io from '../../app.js'
 import { ItemNotFound, ValidationError } from '../../errors/index.js'
 
 const productManager = new ProductManager()
@@ -88,7 +87,7 @@ router.post('/', async (req, res) => {
   const product = req.body
   try {
     const newProduct = await productManager.create(product)
-    io.emit('new_product', newProduct)
+    req.io.emit('new_product', newProduct)
     return res.status(201).json({ message: 'Product added', product: newProduct })
   } catch (err) {
     if (err instanceof ValidationError) {
@@ -102,7 +101,7 @@ router.put('/:pid', async (req, res) => { // Endpoint for updating a product
   const product = req.body
   try {
     await productManager.updateOne(req.params.pid, product)
-    io.emit('product_updated', { id: req.params.pid, product })
+    req.io.emit('product_updated', { id: req.params.pid, product })
     return res.json({ message: 'Product updated' })
   } catch (err) {
     if (err instanceof ItemNotFound) {
@@ -115,7 +114,7 @@ router.put('/:pid', async (req, res) => { // Endpoint for updating a product
 router.delete('/:pid', async (req, res) => {
   try {
     await productManager.deleteOne(req.params.pid)
-    io.emit('product_deleted', req.params.pid)
+    req.io.emit('product_deleted', req.params.pid)
     return res.status(204).json({ message: `Product width id ${req.params.pid} removed correctly` })
   } catch (err) {
     if (err instanceof ItemNotFound) {

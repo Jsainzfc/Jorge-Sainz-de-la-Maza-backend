@@ -60,6 +60,13 @@ Se han implementado funcionalidades a las rutas estáticas para acceder a la api
 Se ha creado un nuevo modelo category que está relacionado con los productos. Se ha creado su manager y su router en /api/categories.
 Se ha añadido Sass con la sintaxis SCSS para el estilado.
 
+## Alcance clase 19
+Se ha añadido autenticación en la página. La autenticación es necesaria para ver el contenido de la aplicación.
+Existe un usuario admin que se registra en .env como ADMINMAIL y ADMINPASSWORD y que se corresponde con lo solicitado.
+Se han empleado sessions y cookies para registrar el acceso de los usuarios.
+El carrito se ha vinculado con el usuario para agregarle persistencia en db.
+Se ha creado una nueva tabla de users en la db para agregarle persistencia.
+
 ## Estructura
 El código está dentro de la carpeta src.
 La carpeta database recoge unas bases de datos, ahora en desuso, para el uso de filesystem en carritos y productos.
@@ -74,6 +81,9 @@ La carpeta routes incluye, en la subcarpeta api los enrutados de los endpoints d
 - /buyproduct/:pid : Igual que la anterior. Permite comprar.
 - /chat : Chat en tiempo real.
 - /cart/:cid : Visión del carrito con id=cid a tiempo real.
+- /login : Acceso cuando ya tienes usuario.
+- /logout : Desconexión.
+- /signup : Registro de usuario.
 y un index.js que distribuye las rutas.
 La carpeta scss recoge los estilados.
 La carpeta testing recoge todos los archivos necesarios para testear los managers y los endpoints en express.
