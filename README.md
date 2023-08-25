@@ -1,4 +1,4 @@
-# Pre Entrega 2
+# Entrega clase 21
 
 ## Alcance clase 2
 Se ha creado una clase Product con un constructor que inicializa todas las variables necesarias al valor introducido al crear una instancia.
@@ -66,6 +66,9 @@ Existe un usuario admin que se registra en .env como ADMINMAIL y ADMINPASSWORD y
 Se han empleado sessions y cookies para registrar el acceso de los usuarios.
 El carrito se ha vinculado con el usuario para agregarle persistencia en db.
 Se ha creado una nueva tabla de users en la db para agregarle persistencia.
+
+## Alcance clase 21
+Se han añadido estrategias de login mediante passport, incluyendo un login a través de github.
 
 ## Estructura
 El código está dentro de la carpeta src.
