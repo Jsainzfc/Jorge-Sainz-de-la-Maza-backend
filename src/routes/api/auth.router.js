@@ -62,11 +62,8 @@ router.post('/login', async (req, res) => {
   }
 })
 
-// /api/auth/user
-router.get('/user', passport.authenticate('jwt', { session: false }), (req, res) => {
-  console.log(req.user)
-
-  res.sendStatus(200)
+router.get('/current', (req, res) => {
+  res.send({ status: 'Success', payload: req.user })
 })
 
 export default router

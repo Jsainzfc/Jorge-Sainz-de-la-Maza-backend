@@ -3,8 +3,8 @@ import local from 'passport-local'
 import { hashPassword, isValidPassword } from '../utils/password.utils.js'
 import { UserManager } from '../dao/mongoose/user.manager.js'
 import github from './passport.github.js'
-import jwt from './passport.jwt.js'
 import { CartManager } from '../dao/mongoose/cartManager.js'
+import strategy from './passport.jwt.js'
 
 const userManager = new UserManager()
 const cartManager = new CartManager()
@@ -48,6 +48,7 @@ const signup = async (req, email, password, done) => {
 }
 
 const login = async (username, password, done) => {
+  console.log('HOLA')
   try {
     const user = await userManager.getByEmail(username)
     if (!user) {
@@ -61,13 +62,14 @@ const login = async (username, password, done) => {
   }
 }
 
+const loginStrategy = new LocalStrategy({ usernameField: 'email' }, login)
+
 const init = () => {
   passport.use('signup', new LocalStrategy({ passReqToCallback: true, usernameField: 'email' }, signup))
-  passport.use('login', new LocalStrategy({ usernameField: 'email' }, login))
+  passport.use('login', loginStrategy)
+  passport.use('jwt', strategy)
 
   passport.use('github', github)
-
-  passport.use('jwt', jwt)
 
   passport.serializeUser((user, done) => {
     done(null, user._id)
@@ -79,4 +81,4 @@ const init = () => {
   })
 }
 
-export { init }
+export { init, loginStrategy }
