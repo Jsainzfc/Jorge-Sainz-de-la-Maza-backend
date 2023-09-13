@@ -12,7 +12,7 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import { init } from './config/passport.config.js'
-import cors from 'corsg'
+import cors from 'cors'
 
 const MONGOURI = `mongodb+srv://${config.mongouser}:${config.mongopassword}@coderhouse.wp11tre.mongodb.net/?retryWrites=true&w=majority`
 mongoose.connect(MONGOURI) // Connect with the mongodb database
