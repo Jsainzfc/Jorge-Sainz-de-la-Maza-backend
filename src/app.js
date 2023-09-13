@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import { config } from './config/config.js'
 import http from 'http'
 import { __dirname } from './utils.js'
 import { join } from 'path'
@@ -12,8 +12,9 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import { init } from './config/passport.config.js'
+import cors from 'cors'
 
-const MONGOURI = `mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@coderhouse.wp11tre.mongodb.net/?retryWrites=true&w=majority`
+const MONGOURI = `mongodb+srv://${config.mongouser}:${config.mongopassword}@coderhouse.wp11tre.mongodb.net/?retryWrites=true&w=majority`
 mongoose.connect(MONGOURI) // Connect with the mongodb database
 
 // Initialize express, http and web socket servers
@@ -29,12 +30,13 @@ app.set('view engine', 'handlebars')
 // Set express to read body and query params and set static files directory
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(cors())
 app.use('/static', express.static(join(__dirname + '/public')))
 
 // Set cookie parser and sessions
-app.use(cookieParser(process.env.COOKIESECRET))
+app.use(cookieParser(config.cookiesecret))
 app.use(session({
-  secret: process.env.COOKIESECRET,
+  secret: config.cookiesecret,
   resave: true,
   saveUninitialized: true,
   store: MongoStore.create({
@@ -70,6 +72,6 @@ app.use('/', (req, res, next) => {
   next()
 }, home)
 
-server.listen(process.env.PORT, () => {
-  console.log(`Express Server listening at http://localhost:${process.env.PORT}`)
+server.listen(config.port, () => {
+  console.log(`Express Server listening at http://localhost:${config.port}`)
 })

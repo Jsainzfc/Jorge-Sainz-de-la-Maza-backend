@@ -1,6 +1,6 @@
 import GitHubStrategy from 'passport-github2'
 import { UserManager } from '../dao/mongoose/user.manager.js'
-import 'dotenv/config'
+import { config } from './config.js'
 import { CartManager } from '../dao/mongoose/cartManager.js'
 
 const CALLBACK_URL = 'http://localhost:8080/api/auth/github/callback'
@@ -43,8 +43,8 @@ const auth = async (accessToken, refreshToken, profile, done) => {
 
 const gitHubHandler = new GitHubStrategy(
   {
-    clientID: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    clientID: config.github_client_id,
+    clientSecret: config.github_client_secret,
     callbackURL: CALLBACK_URL
   },
   auth
