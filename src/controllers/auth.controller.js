@@ -1,6 +1,6 @@
-import { generateToken } from '../../utils/jwt.utils.js'
-import { isValidPassword } from '../../utils/password.utils.js'
-import { UserManager } from '../../dao/mongoose/user.manager.js'
+import { generateToken } from '../utils/jwt.utils.js'
+import { isValidPassword } from '../utils/password.utils.js'
+import { UserManager } from '../dao/factory.js'
 
 const userManager = new UserManager()
 

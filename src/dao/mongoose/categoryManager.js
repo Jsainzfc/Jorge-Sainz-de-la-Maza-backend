@@ -47,4 +47,4 @@ class CategoryManager {
   }
 }
 
-export { CategoryManager }
+export default CategoryManager

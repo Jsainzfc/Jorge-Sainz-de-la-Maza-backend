@@ -1,11 +1,9 @@
 import GitHubStrategy from 'passport-github2'
-import { UserManager } from '../dao/mongoose/user.manager.js'
 import { config } from './config.js'
-import { CartManager } from '../dao/mongoose/cartManager.js'
+import { create as createCart } from '../controllers/carts.controller.js'
+import { getByEmail, create } from '../controllers/users.controller.js'
 
 const CALLBACK_URL = 'http://localhost:8080/api/auth/github/callback'
-const userManager = new UserManager()
-const cartManager = new CartManager()
 
 // Callback when github strategy is used to log in
 const auth = async (accessToken, refreshToken, profile, done) => {
@@ -19,11 +17,11 @@ const auth = async (accessToken, refreshToken, profile, done) => {
       return done(null, false)
     }
 
-    let user = await userManager.getByEmail(email)
+    let user = await getByEmail(email)
 
     if (!user) {
-      const cart = await cartManager.create()
-      const _user = await userManager.create({
+      const cart = await createCart()
+      const _user = await create({
         firstname: '',
         lastname: '',
         email,

@@ -19,5 +19,6 @@ export const config = {
   github_app_id: process.env.GITHUB_APP_ID,
   github_client_id: process.env.GITHUB_CLIENT_ID,
   github_client_secret: process.env.GITHUB_CLIENT_SECRET,
-  jwt_secret: process.env.JWT_SECRET
+  jwt_secret: process.env.JWT_SECRET,
+  persistance: process.env.PERSISTANCE
 }

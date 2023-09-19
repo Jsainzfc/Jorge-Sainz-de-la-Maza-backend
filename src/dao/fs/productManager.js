@@ -112,4 +112,4 @@ class ProductManager {
   }
 }
 
-export { ProductManager }
+export default ProductManager

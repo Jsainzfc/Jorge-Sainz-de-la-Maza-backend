@@ -63,4 +63,4 @@ class CartManager { // Class describing the product object which is stored in th
   }
 }
 
-export { CartManager }
+export default CartManager

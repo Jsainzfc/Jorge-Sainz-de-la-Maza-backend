@@ -1,5 +1,5 @@
-import { CategoryManager } from '../../dao/mongoose/categoryManager.js'
-import { ValidationError } from '../../errors/index.js'
+import { ValidationError } from '../errors/index.js'
+import { CategoryManager } from '../dao/factory.js'
 
 const categoryManager = new CategoryManager()
 

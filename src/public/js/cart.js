@@ -11,7 +11,6 @@ trashIcons.forEach(trash => {
       })
       const { products, total } = await response.json()
       const item = document.querySelector(`.item-${id}`)
-      console.log('Here')
       itemList.removeChild(item)
       document.querySelector('.cart__total').innerHTML = `Total: ${total ?? 0}€`
       if (products.length === 0) {

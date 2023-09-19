@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const cartId = document.querySelector('header').dataset.cart
+const cartId = document.querySelector('#cart_id').dataset.cart
 
 document.querySelectorAll('.minusOne').forEach(minusButton => {
   minusButton.addEventListener('click', () => {
@@ -28,6 +28,7 @@ document.querySelectorAll('.itemCount__add-to-cart').forEach(button => {
   button.addEventListener('click', async () => {
     const id = button.id
     const quantity = document.querySelector(`.amount-${id}`)
+    console.log('Here', id)
     try {
       const response = await fetch(`http://localhost:8080/api/carts/${cartId}/product/${id}`, {
         method: 'PUT',

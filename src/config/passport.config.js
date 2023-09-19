@@ -1,13 +1,10 @@
 import passport from 'passport'
 import local from 'passport-local'
 import { hashPassword, isValidPassword } from '../utils/password.utils.js'
-import { UserManager } from '../dao/mongoose/user.manager.js'
 import github from './passport.github.js'
-import { CartManager } from '../dao/mongoose/cartManager.js'
 import strategy from './passport.jwt.js'
-
-const userManager = new UserManager()
-const cartManager = new CartManager()
+import { addOne } from '../controllers/carts.controller.js'
+import { create, getByEmail, getById } from '../controllers/users.controller.js'
 
 const LocalStrategy = local.Strategy
 
@@ -19,15 +16,15 @@ const signup = async (req, email, password, done) => {
   }
 
   try {
-    const user = await userManager.getByEmail(email)
+    const user = await getByEmail(email)
 
     if (user) {
       console.log('User already exists')
       return done(null, false)
     }
 
-    const cart = await cartManager.create()
-    const newUser = await userManager.create({
+    const cart = await addOne()
+    const newUser = await create({
       firstname: inputUser.firstName,
       lastname: inputUser.lastName,
       email: inputUser.email,
@@ -50,7 +47,7 @@ const signup = async (req, email, password, done) => {
 const login = async (username, password, done) => {
   console.log('HOLA')
   try {
-    const user = await userManager.getByEmail(username)
+    const user = await getByEmail(username)
     if (!user) {
       console.log("User doesn't exists")
       return done(null, false)
@@ -76,7 +73,7 @@ const init = () => {
   })
 
   passport.deserializeUser(async (id, done) => {
-    const user = await userManager.getById(id)
+    const user = await getById(id)
     done(null, user)
   })
 }

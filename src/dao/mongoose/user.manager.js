@@ -52,4 +52,4 @@ class UserManager {
   }
 }
 
-export { UserManager }
+export default UserManager

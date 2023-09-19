@@ -1,97 +1,232 @@
-import { CartManager } from '../../dao/mongoose/cartManager.js'
-import { InvalidField, NotEnoughStock, ValidationError } from '../../errors/index.js'
+import { InvalidField, NotEnoughStock, ValidationError } from '../errors/index.js'
+import { CartManager } from '../dao/factory.js'
 
 const cartManager = new CartManager()
 
-const getById = async (req, res) => {
+const getById = async (req) => {
+  let response
   try {
     const products = await cartManager.findById(req.params.cid)
-    return res.json({ message: 'Cart found', products })
+    response = {
+      success: true,
+      status: 200,
+      payload: products,
+      error: ''
+    }
   } catch (err) {
     if (err instanceof ValidationError) {
-      return res.status(404).json({ message: err.message })
+      response = {
+        success: false,
+        status: 404,
+        payload: {},
+        error: err.message
+      }
     }
-    return res.status(500).json({ message: err.message })
+    response = {
+      success: false,
+      status: 500,
+      payload: {},
+      error: err.message
+    }
   }
+  return response
 }
 
-const addOne = async (req, res) => {
+const create = async () => {
   try {
     const id = await cartManager.create()
-    return res.json({ message: 'Cart created', cart: { id } })
+    return id
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    throw new Error('Error creating cart')
   }
 }
 
-const addProduct = async (req, res) => {
+const addOne = async () => {
+  let response
+  try {
+    const id = create()
+    response = {
+      success: true,
+      status: 200,
+      payload: id,
+      error: ''
+    }
+  } catch (err) {
+    response = {
+      success: false,
+      status: 500,
+      payload: '',
+      error: err.message
+    }
+  }
+  return response
+}
+
+const addProduct = async (req) => {
+  let response
   try {
     const { cid, pid } = req.params
     const products = await cartManager.updateOne({ id: cid, productId: pid, quantity: 1 })
     req.io.emit('cart_updated', { cid, products })
-    return res.json({ message: 'Cart updated', cart: { id: cid, products } })
+    response = {
+      success: true,
+      status: 200,
+      payload: { id: cid, products },
+      error: ''
+    }
   } catch (err) {
     if (err instanceof NotEnoughStock) {
-      return res.status(400).send({ message: err.message })
+      response = {
+        success: false,
+        status: 400,
+        payload: { },
+        error: err.message
+      }
     } else if (err instanceof InvalidField) {
-      return res.status(404).send({ message: err.message })
+      response = {
+        success: false,
+        status: 404,
+        payload: { },
+        error: err.message
+      }
     }
-    return res.status(500).send({ message: err.message })
+    response = {
+      success: false,
+      status: 500,
+      payload: { },
+      error: err.message
+    }
   }
+  return response
 }
 
-const removeProduct = async (req, res) => {
+const removeProduct = async (req) => {
+  let response
   try {
     const newProducts = await cartManager.removeProduct({ cartId: req.params.cid, productId: req.params.pid })
-    const newTotal = await cartManager.getTotal({ id: req.params.id })
-    return res.status(200).send({ message: 'Cart updated', products: newProducts, total: newTotal })
+    const newTotal = await cartManager.getTotal({ id: req.params.cid })
+    response = {
+      success: true,
+      status: 200,
+      payload: {
+        products: newProducts,
+        total: newTotal
+      },
+      error: ''
+    }
   } catch (err) {
     if (err instanceof ValidationError) {
-      return res.status(404).send({ message: err.message })
+      response = {
+        success: false,
+        status: 404,
+        payload: {},
+        error: err.message
+      }
     }
-    return res.status(500).send({ message: err.message })
+    response = {
+      success: false,
+      status: 500,
+      payload: {},
+      error: err.message
+    }
   }
+  return response
 }
 
-const addProducts = async (req, res) => {
+const addProducts = async (req) => {
+  let response
   const products = req.body.products ?? []
   if (products.length > 0) {
     try {
       await cartManager.updateCartWithProducts({ cartId: req.params.id, products })
-      return res.status(200).send({ message: 'Cart updated.', products })
+      response = {
+        success: true,
+        status: 200,
+        payload: products,
+        error: ''
+      }
     } catch (err) {
-      return res.status(404).send({ message: err.message })
+      response = {
+        success: false,
+        status: 404,
+        payload: [],
+        error: err.message
+      }
     }
   } else {
-    return res.status(400).send({ message: 'Bad request: endpoint require products to be added in the body of the request.' })
+    response = {
+      success: false,
+      status: 400,
+      payload: [],
+      error: 'Bad request: endpoint require products to be added in the body of the request.'
+    }
   }
+  return response
 }
 
-const updateProduct = async (req, res) => {
+const updateProduct = async (req) => {
+  let response
   const quantity = req.body.quantity ?? 1
   if (isNaN(quantity)) {
-    return res.status(400).send({ message: 'Incorrect quantity' })
+    response = {
+      success: false,
+      status: 400,
+      payload: [],
+      error: 'Incorrect quantity'
+    }
   }
   try {
     const { cid, pid } = req.params
     const products = await cartManager.updateOne({ id: cid, productId: pid, quantity })
     req.io.emit('cart_updated', { cid, products })
-    return res.json({ message: 'Cart updated', cart: { id: cid, products } })
+    response = {
+      success: true,
+      status: 200,
+      payload: { id: cid, products },
+      error: ''
+    }
   } catch (err) {
     if (err.name === 'NotEnoughStock') {
-      return res.status(400).send({ message: err.message })
+      response = {
+        success: false,
+        status: 400,
+        payload: [],
+        error: err.message
+      }
     }
-    return res.status(404).send({ message: err.message })
+    response = {
+      success: false,
+      status: 400,
+      payload: [],
+      error: err.message
+    }
   }
+  return response
 }
 
-const deleteOne = async (req, res) => {
+const deleteOne = async (req) => {
+  let response
   try {
     await cartManager.updateCartWithProducts({ cartId: req.params.cid, products: [] })
-    return res.status(200).send({ message: 'Carts product removed', products: [] })
+    response = {
+      success: true,
+      status: 200,
+      payload: [],
+      error: ''
+    }
   } catch (err) {
-    return res.status(404).send({ message: err.message })
+    response = {
+      success: false,
+      status: 404,
+      payload: [],
+      error: err.message
+    }
   }
+  return response
 }
 
-export { getById, addOne, addProduct, removeProduct, addProducts, updateProduct, deleteOne }
+const getTotal = async ({ id }) => {
+  return await cartManager.getTotal({ id })
+}
+
+export { getById, addOne, addProduct, removeProduct, addProducts, updateProduct, deleteOne, getTotal, create }

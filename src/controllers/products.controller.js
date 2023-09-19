@@ -1,5 +1,5 @@
-import { ItemNotFound, ValidationError } from '../../errors/index.js'
-import { ProductManager } from '../../dao/mongoose/productManager.js'
+import { ItemNotFound, ValidationError } from '../errors/index.js'
+import { ProductManager } from '../dao/factory.js'
 
 const productManager = new ProductManager()
 
@@ -23,18 +23,20 @@ const getPageLink = ({ baseURL, queryName, queryValue, limit, order, page }) => 
   return finalURL
 }
 
-const get = async (req, res) => {
-  const { queryName, queryValue, limit, page, order } = req.query
+const get = async ({ queryName, queryValue, limit, page, order, user, baseURL }) => {
+  let response
   try {
     const products = await productManager.find({ queryName, queryValue, limit, page, order })
     const prevLink = products.hasPrevPage
-      ? `${getPageLink({ queryName, queryValue, limit, page: products.prevPage, order, baseURL: 'http:localhost:8080/api/products' })}`
+      ? `${getPageLink({ queryName, queryValue, limit, order, page: products.prevPage, baseURL })}`
       : ''
     const nextLink = products.hasNextPage
-      ? `${getPageLink({ queryName, queryValue, limit, page: products.nextPage, order, baseURL: 'http:localhost:8080/api/products' })}`
+      ? `${getPageLink({ queryName, queryValue, limit, order, page: products.nextPage, baseURL })}`
       : ''
-    const response = {
-      status: 'success',
+
+    response = {
+      success: true,
+      status: 200,
       payload: products.docs,
       totalPages: products.totalPages,
       prevPage: products.prevPage,
@@ -42,80 +44,148 @@ const get = async (req, res) => {
       hasPrevPage: products.hasPrevPage,
       hasNextPage: products.hasNextPage,
       prevLink,
-      nextLink
+      nextLink,
+      user,
+      error: ''
     }
-    return res.status(200).json({ message: 'Products found', data: response })
   } catch (err) {
-    const response = {
-      status: 'error',
+    response = {
+      success: false,
+      status: 404,
       payload: [],
-      totalPages: 0,
-      prevPage: 0,
-      nextPage: 0,
-      hasPrevPage: false,
-      hasNextPage: false,
-      prevLink: null,
-      nextLink: null
+      error: err.message
     }
-    return res.status(500).json({ message: err.message, data: response })
   }
+  return response
 }
 
-const getById = async (req, res) => {
+const getById = async (req) => {
+  let response
   try {
     const product = await productManager.findById(req.params.pid)
     if (product) {
-      return res.json({ message: 'Product found', product })
+      response = {
+        success: true,
+        status: 200,
+        payload: product,
+        error: ''
+      }
     } else {
-      return res.status(404).json({ message: 'Product not found' })
+      response = {
+        success: false,
+        status: 404,
+        payload: {}
+      }
     }
   } catch (err) {
     if (err instanceof ValidationError) {
-      return res.status(400).json({ message: err.message })
+      response = {
+        success: false,
+        status: 400,
+        payload: {},
+        error: err.message
+      }
     }
-    return res.status(500).json({ message: err.message })
+    response = {
+      success: false,
+      status: 500,
+      payload: {},
+      error: err.message
+    }
   }
+  return response
 }
 
-const addOne = async (req, res) => {
+const addOne = async (req) => {
+  let response
   const product = req.body
   try {
     const newProduct = await productManager.create(product)
     req.io.emit('new_product', newProduct)
-    return res.status(201).json({ message: 'Product added', product: newProduct })
+    response = {
+      success: true,
+      status: 200,
+      payload: newProduct,
+      error: ''
+    }
   } catch (err) {
     if (err instanceof ValidationError) {
-      return res.status(400).json({ message: err.message })
+      response = {
+        success: false,
+        status: 400,
+        payload: {},
+        error: err.message
+      }
     }
-    return res.status(500).json({ message: err.message })
+    response = {
+      success: false,
+      status: 500,
+      payload: {},
+      error: err.message
+    }
   }
+  return response
 }
 
-const updateOne = async (req, res) => {
+const updateOne = async (req) => {
+  let response
   const product = req.body
   try {
     await productManager.updateOne(req.params.pid, product)
     req.io.emit('product_updated', { id: req.params.pid, product })
-    return res.json({ message: 'Product updated' })
+    response = {
+      success: true,
+      status: 200,
+      payload: {},
+      error: ''
+    }
   } catch (err) {
     if (err instanceof ItemNotFound) {
-      return res.status(404).json({ message: err.message })
+      response = {
+        success: false,
+        status: 404,
+        payload: {},
+        error: err.message
+      }
     }
-    return res.status(500).json({ message: err.message })
+    response = {
+      success: false,
+      status: 500,
+      payload: {},
+      error: err.message
+    }
   }
+  return response
 }
 
-const deleteOne = async (req, res) => {
+const deleteOne = async (req) => {
+  let response
   try {
     await productManager.deleteOne(req.params.pid)
     req.io.emit('product_deleted', req.params.pid)
-    return res.status(204).json({ message: `Product width id ${req.params.pid} removed correctly` })
+    response = {
+      success: true,
+      status: 204,
+      payload: {},
+      error: ''
+    }
   } catch (err) {
     if (err instanceof ItemNotFound) {
-      return res.status(404).json({ message: err.message })
+      response = {
+        success: false,
+        status: 404,
+        payload: {},
+        error: err.message
+      }
     }
-    return res.status(500).json({ message: err.message })
+    response = {
+      success: false,
+      status: 500,
+      payload: {},
+      error: err.message
+    }
   }
+  return response
 }
 
 export { get, getById, addOne, updateOne, deleteOne }

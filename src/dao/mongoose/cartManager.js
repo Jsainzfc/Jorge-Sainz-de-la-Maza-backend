@@ -74,7 +74,7 @@ class CartManager {
   // Might throw an instance of ValidationError if either cart of product are not found
   // Might throw an instance of MongooseError if there is any problem accessing the database
   async removeProduct ({ cartId, productId }) {
-    const products = await this.getCartProductsById(cartId)
+    const products = await this.findById(cartId)
     const index = this.#getProductIndex({ products, productId })
     if (index >= 0) {
       products.splice(index, 1)
@@ -100,4 +100,4 @@ class CartManager {
   }
 }
 
-export { CartManager }
+export default CartManager

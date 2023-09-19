@@ -28,8 +28,8 @@ app.set('views', join(__dirname, '/views'))
 app.set('view engine', 'handlebars')
 
 // Set express to read body and query params and set static files directory
-app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use('/static', express.static(join(__dirname + '/public')))
 

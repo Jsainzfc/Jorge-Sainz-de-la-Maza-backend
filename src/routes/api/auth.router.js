@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import passport from 'passport'
 import { githubLogin, login } from '../../controllers/auth.controller.js'
+import UserDTO from '../../dao/DTOs/user.dto.js'
 
 const router = Router()
 
@@ -14,7 +15,7 @@ router.get('/github/callback', passport.authenticate('github', { failureRedirect
 router.post('/login', login)
 
 router.get('/current', (req, res) => {
-  res.send({ status: 'Success', payload: req.user })
+  res.send({ status: 'Success', payload: new UserDTO(req.user) })
 })
 
 export default router
