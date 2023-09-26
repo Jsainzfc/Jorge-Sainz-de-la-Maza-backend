@@ -4,6 +4,7 @@ import { isAuth } from '../middlewares/auth-middleware.js'
 import { getById, getTotal } from '../controllers/carts.controller.js'
 import { get, getById as getProductById } from '../controllers/products.controller.js'
 import ProductDTO from '../dao/DTOs/product.dto.js'
+import { create } from '../controllers/tickets.controller.js'
 
 const router = Router()
 
@@ -142,6 +143,23 @@ router.get('/chat', isAuth, async (req, res) => {
     title: 'Chat',
     user: req.user
   })
+})
+
+router.get('/checkout/:cid', isAuth, async (req, res) => {
+  try {
+    const response = await create(req)
+    if (response.success) {
+      res.render('thanks', {
+        title: 'Thanks for your purchase',
+        ticket: response.payload,
+        user: req.user
+      })
+    } else {
+      return res.status(response.status).json(response)
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
 })
 
 export default router

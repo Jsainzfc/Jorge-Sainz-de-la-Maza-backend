@@ -188,4 +188,25 @@ const deleteOne = async (req) => {
   return response
 }
 
-export { get, getById, addOne, updateOne, deleteOne }
+const getStock = async (id) => {
+  let response
+  const product = await productManager.findById(id)
+  if (product) {
+    response = {
+      success: true,
+      status: 204,
+      payload: product.stock,
+      error: ''
+    }
+  } else {
+    response = {
+      success: false,
+      status: 500,
+      payload: {},
+      error: 'Error'
+    }
+  }
+  return response
+}
+
+export { get, getById, addOne, updateOne, deleteOne, getStock }

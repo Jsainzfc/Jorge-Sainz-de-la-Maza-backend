@@ -5,6 +5,7 @@ import CategoryMongoManager from './mongoose/categoryManager.js'
 import CartFileManager from './fs/cartManager.js'
 import ProductFileManager from './fs/productManager.js'
 import { config } from '../config/config.js'
+import {TicketManager as TicketMongoManager} from './mongoose/ticketManager.js'
 
 class ManagerFactory {
   static getManagerInstance (name) {
@@ -17,6 +18,8 @@ class ManagerFactory {
         return CategoryMongoManager
       case 'users':
         return UserMongoManager
+      case 'tickets':
+        return TicketMongoManager
     }
   }
 }
@@ -25,3 +28,4 @@ export const ProductManager = ManagerFactory.getManagerInstance('products')
 export const CategoryManager = ManagerFactory.getManagerInstance('categories')
 export const CartManager = ManagerFactory.getManagerInstance('carts')
 export const UserManager = ManagerFactory.getManagerInstance('users')
+export const TicketManager = ManagerFactory.getManagerInstance('tickets')

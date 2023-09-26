@@ -17,7 +17,7 @@ class ProductManager {
   // Validate that all compulsory fields are correct and code is not existing already.
   // Throws instances of ValidationError if some problem is detected.
   // Might throw MongooseError if there is any issue reading products for validating code
-  async #validateFields ({ code, title, description, price, stock, thumbnails, status }) {
+  async #validateFields ({ code, title, description, price, stock, thumbnails, status, update }) {
     if (!(code && title && description && price && stock)) {
       throw new NotAllFields('Not all fields included.')
     }
@@ -25,7 +25,7 @@ class ProductManager {
     if (isNaN(stock)) throw new InvalidField('Stock must be a number')
     if (status && status !== 'true' && status !== 'false') throw new InvalidField('Status can only be true or false')
     if (thumbnails && !Array.isArray(thumbnails)) throw new InvalidField('Thumbnails should be an array')
-    if (await this.#codeExists(code)) {
+    if (!update && await this.#codeExists(code)) {
       throw new InvalidField('Code already exists.')
     }
   }
@@ -34,7 +34,7 @@ class ProductManager {
   // Might throw instances of ValidationError if some value is not valid.
   // Might throw MongooseError if there is any issue reading products for validating code or adding the new product.
   async create ({ code, title, description, price, stock, thumbnails, status, categories }) {
-    await this.#validateFields({ code, title, description, price, stock, thumbnails, status })
+    await this.#validateFields({ code, title, description, price, stock, thumbnails, status, update: false })
     try {
       const product = await productModel.create({
         code,
@@ -136,7 +136,8 @@ class ProductManager {
       price: newProduct.price,
       stock: newProduct.stock,
       thumbnails: newProduct.thumbnails,
-      status: newProduct.status
+      status: newProduct.status,
+      update: true
     })
 
     try {
