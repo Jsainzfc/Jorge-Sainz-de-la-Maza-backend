@@ -11,8 +11,7 @@ router.post('/signup', passport.authenticate('signup', { failureRedirect: '/fail
 })
 
 router.get('/failedsignup', async (req, res) => {
-  console.log('Failed Strategy')
-  res.send.status(404).json({ message: 'Failed' })
+  res.status(404).json({ message: 'User already exists' })
 })
 
 router.get('/login', (_, res) => res.render('login'))

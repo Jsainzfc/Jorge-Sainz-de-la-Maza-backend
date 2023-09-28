@@ -202,3 +202,9 @@ La vista de productos tendrá en una parte de arriba de la página el mensaje �
 Se presionará el botón de logout y se destruirá la sesión, notando cómo nos redirige a login.
 Se ingresarán las credenciales específicas de admin indicadas en las diapositivas, el login debe redirigir correctamente y mostrar en los datos del rol: “admin” haciendo referencia a la correcta gestión de roles. 
 Se revisará que el admin NO viva en base de datos, sino que sea una validación que se haga de manera interna en el código.
+
+## Ejecución
+El programa se podrá ejecutar en los siguientes entornos:
+npm run dev -> Entorno de desarollo
+npm run production -> Entorno de producción
+

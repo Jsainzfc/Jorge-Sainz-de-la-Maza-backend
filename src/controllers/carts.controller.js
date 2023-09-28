@@ -44,7 +44,7 @@ const create = async () => {
 const addOne = async () => {
   let response
   try {
-    const id = create()
+    const id = await create()
     response = {
       success: true,
       status: 200,
