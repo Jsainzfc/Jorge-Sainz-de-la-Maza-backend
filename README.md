@@ -208,3 +208,5 @@ El programa se podrá ejecutar en los siguientes entornos:
 npm run dev -> Entorno de desarollo
 npm run production -> Entorno de producción
 
+## Manejo de errores
+El manejo de errores se ha realizado mediante la instanciación de diferentes clases de errores que se transforman en diferentes respuestas por parte del servidor
