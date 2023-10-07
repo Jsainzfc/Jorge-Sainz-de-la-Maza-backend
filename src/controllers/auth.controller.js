@@ -28,7 +28,7 @@ const login = async (req, res) => {
       message: token
     })
   } catch (error) {
-    console.log(error)
+    req.logger.error(error)
     res.status(500).send({
       status: 'failure',
       error

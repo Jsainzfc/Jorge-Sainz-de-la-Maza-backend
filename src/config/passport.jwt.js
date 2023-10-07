@@ -5,7 +5,6 @@ const JWTStrategy = jwt.Strategy
 const ExtractJWT = jwt.ExtractJwt
 
 const handler = async (token, done) => {
-  console.log('4')
   try {
     if (!authToken(token)) {
       done(null, false, 'El token es inválido')
@@ -18,7 +17,6 @@ const handler = async (token, done) => {
 }
 
 const extractor = (req) => {
-  console.log('5')
   if (!req) return null
   if (!req.cookies) return null
 

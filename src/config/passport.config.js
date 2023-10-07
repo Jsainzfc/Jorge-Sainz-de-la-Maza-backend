@@ -19,7 +19,7 @@ const signup = async (req, email, password, done) => {
     const user = await getByEmail(email)
 
     if (user) {
-      console.log('User already exists')
+      req.logger.info('User already exists')
       return done(null, false)
     }
 
@@ -45,7 +45,6 @@ const signup = async (req, email, password, done) => {
 }
 
 const login = async (username, password, done) => {
-  console.log('HOLA')
   try {
     const user = await getByEmail(username)
     if (!user) {
