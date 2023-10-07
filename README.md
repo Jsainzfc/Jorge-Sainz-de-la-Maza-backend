@@ -73,6 +73,9 @@ Se han añadido estrategias de login mediante passport, incluyendo un login a tr
 ## Alcance clase 24
 Se han refactorizado las estrategias de autenticación mediante el uso de Session.
 
+## Alcance clase 34
+Añadido un logger y un endpoint para el testeo de los logs: /loggerTest
+
 ## Estructura
 El código está dentro de la carpeta src.
 La carpeta database recoge unas bases de datos, ahora en desuso, para el uso de filesystem en carritos y productos.

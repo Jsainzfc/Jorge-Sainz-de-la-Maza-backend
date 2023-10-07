@@ -6,15 +6,12 @@ const userManager = new UserManager()
 
 const login = async (req, res) => {
   const { email, password } = req.body
-  console.log(email, password)
 
   try {
     const user = await userManager.getByEmail(email)
 
-    console.log(password, user)
-
     if (!user || !isValidPassword(password, user?.password)) {
-      console.log('no coincide password')
+      req.logger.error('Password not matching')
       return res.status(401).send({
         status: 'failure',
         error: 'Failed login'

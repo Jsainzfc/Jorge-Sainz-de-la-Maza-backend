@@ -6,7 +6,6 @@ import CategoriesRoutes from './api/categories.router.js'
 import AuthRoutes from './api/auth.router.js'
 import LoginRoutes from './login.router.js'
 import MockinProductsRoutes from './api/fake.products.router.js'
-import errorHandler from '../middlewares/errors/index.js'
 
 const api = Router()
 api.use('/products', ProductRoutes)
@@ -14,7 +13,6 @@ api.use('/carts', CartRoutes)
 api.use('/categories', CategoriesRoutes)
 api.use('/auth', AuthRoutes)
 api.use('/mockingproducts', MockinProductsRoutes)
-api.use(errorHandler)
 
 const home = Router()
 home.use('/', HomeRoutes)

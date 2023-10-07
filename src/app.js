@@ -13,12 +13,14 @@ import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import { init } from './config/passport.config.js'
 import cors from 'cors'
+import { addLogger } from './logger/index.js'
 
 const MONGOURI = `mongodb+srv://${config.mongouser}:${config.mongopassword}@coderhouse.wp11tre.mongodb.net/?retryWrites=true&w=majority`
 mongoose.connect(MONGOURI) // Connect with the mongodb database
 
 // Initialize express, http and web socket servers
 const app = express()
+app.use(addLogger)
 const server = http.createServer(app)
 const io = new Server(server)
 

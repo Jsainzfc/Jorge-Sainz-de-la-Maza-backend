@@ -3,7 +3,7 @@ function isAuth (req, res, next) {
     next()
     return
   }
-
+  req.logger.warning('User not logged accessing')
   res.redirect('/login')
 }
 

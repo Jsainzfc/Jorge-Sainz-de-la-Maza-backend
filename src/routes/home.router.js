@@ -162,4 +162,14 @@ router.get('/checkout/:cid', isAuth, async (req, res) => {
   }
 })
 
+router.get('/loggerTest', (req, res) => {
+  req.logger.fatal('This is a fatal log')
+  req.logger.error('This is a error log')
+  req.logger.warning('This is a warning log')
+  req.logger.info('This is a info log')
+  req.logger.debug('This is a debug log')
+  req.logger.http('This is a http log')
+  res.send('This is a route for testing the logger')
+})
+
 export default router
