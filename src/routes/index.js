@@ -6,6 +6,7 @@ import CategoriesRoutes from './api/categories.router.js'
 import AuthRoutes from './api/auth.router.js'
 import LoginRoutes from './login.router.js'
 import MockinProductsRoutes from './api/fake.products.router.js'
+import MailRoutes from './mailing.router.js'
 
 const api = Router()
 api.use('/products', ProductRoutes)
@@ -17,5 +18,6 @@ api.use('/mockingproducts', MockinProductsRoutes)
 const home = Router()
 home.use('/', HomeRoutes)
 home.use('/', LoginRoutes)
+home.use('/', MailRoutes)
 
 export { api, home }

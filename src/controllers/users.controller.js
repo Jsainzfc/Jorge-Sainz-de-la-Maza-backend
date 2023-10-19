@@ -3,27 +3,31 @@ import { UserManager } from '../dao/factory.js'
 const userManager = new UserManager()
 
 const getAll = async () => {
-  return userManager.getAll()
+  return await userManager.getAll()
 }
 
 const getById = async (id) => {
-  return userManager.getById()
+  return await userManager.getById()
 }
 
 const getByEmail = async (email) => {
-  return userManager.getByEmail(email)
+  return await userManager.getByEmail(email)
 }
 
 const create = async (user) => {
-  return userManager.create(user)
+  return await userManager.create(user)
 }
 
 const save = async (id, user) => {
-  return userManager.save(id, user)
+  return await userManager.save(id, user)
 }
 
 const remove = async (id) => {
-  userManager.delete(id)
+  await userManager.delete(id)
 }
 
-export { getAll, getById, getByEmail, create, save, remove }
+const resetPassword = async (id, password) => {
+  return await userManager.resetPassword(id, password)
+}
+
+export { getAll, getById, getByEmail, create, save, remove, resetPassword }
