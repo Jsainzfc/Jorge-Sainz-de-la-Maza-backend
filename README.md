@@ -1,4 +1,4 @@
-# Entrega clase 21
+# Entrega clase 37 - Tercera práctica integradora
 
 ## Alcance clase 2
 Se ha creado una clase Product con un constructor que inicializa todas las variables necesarias al valor introducido al crear una instancia.
@@ -75,6 +75,13 @@ Se han refactorizado las estrategias de autenticación mediante el uso de Sessio
 
 ## Alcance clase 34
 Añadido un logger y un endpoint para el testeo de los logs: /loggerTest
+
+## Alcance clase 37
+Añadidos nuevos endpoints para gestionar products: /manage, /addProduct, /editProduct/:pid.
+Añadido owner al modelo de producto.
+Añadido rol 'premium' a los users. Un usuario premium puede modificar sus propios productos. Un usuario admin puede modificar todos los productos.
+Un usuario premium no puede añadir al carrito sus propios productos.
+Se puede cambiar el rol de un user a premium con la ruta /api/users/premium/:uid
 
 ## Estructura
 El código está dentro de la carpeta src.

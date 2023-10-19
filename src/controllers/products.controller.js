@@ -98,9 +98,9 @@ const getById = async (req) => {
 
 const addOne = async (req) => {
   let response
-  const product = req.body
+  const { product, user } = req.body
   try {
-    const newProduct = await productManager.create(product)
+    const newProduct = await productManager.create(product, user)
     req.io.emit('new_product', newProduct)
     response = {
       success: true,
@@ -129,9 +129,9 @@ const addOne = async (req) => {
 
 const updateOne = async (req) => {
   let response
-  const product = req.body
+  const product = req.body.product
   try {
-    await productManager.updateOne(req.params.pid, product)
+    await productManager.updateOne(req.params.pid, product, req.body.user)
     req.io.emit('product_updated', { id: req.params.pid, product })
     response = {
       success: true,
@@ -140,6 +140,7 @@ const updateOne = async (req) => {
       error: ''
     }
   } catch (err) {
+    req.logger.error(err.message)
     if (err instanceof ItemNotFound) {
       response = {
         success: false,
@@ -161,7 +162,7 @@ const updateOne = async (req) => {
 const deleteOne = async (req) => {
   let response
   try {
-    await productManager.deleteOne(req.params.pid)
+    await productManager.deleteOne(req.params.pid, req.body.user)
     req.io.emit('product_deleted', req.params.pid)
     response = {
       success: true,

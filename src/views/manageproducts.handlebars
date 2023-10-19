@@ -1,8 +1,9 @@
 <h1 class="center-text">Lista de productos:</h1>
 <span style="display:none" aria-hidden="true" data-cart="{{user.cart}}" id="cart_id"></span>
+<a class="button" style="width: auto; font-weight: 600;" href="http://localhost:8080/addproducts">Add new product</a>
 <ul class="products container">
     {{#each products}}
-    <li class='product flex__col product-{{this._id}}' data-stock='{{this.stock}}'>
+    <li class='product flex__col flex--center' data-id="{{this._id}}">
         <a href="http://localhost:8080/buyproduct/{{this._id}}" class="flex__col product__info">
             {{#if this.thumbnails}}
             <img class='product__info--img' alt='Imagen de producto de {{this.title}}' src='{{this.thumbnails.[0]}}' />
@@ -12,13 +13,9 @@
             <p class='product__info--title'>{{this.title}}</p>
             <p class='product__info--price' >{{this.price}}€</p>
         </a>
-        <div class="itemCount flex__col flex--center">
-            <div class="itemCount__quantity flex">
-                <button class="minusOne itemCount__quantity--button">-</button>
-                <span class="itemCount__quantity--amount amount-{{this._id}}">1</span>
-                <button id="{{this._id}}" class="plusOne itemCount__quantity--button">+</button>
-            </div>
-            <button id ="{{this._id}}" class="itemCount__add-to-cart cart-{{this._id}}">Add to Cart</button>
+        <div class="itemCount flex flex--center">
+            <a class="button" style="text-align: center; font-family: 'Arial', sans-serif" href="http://localhost:8080/editProduct/{{this._id}}">Edit</a>
+            <button id="{{this._id}}" class="remove">Remove</button>
         </div>
     </li>
     {{/each}}
@@ -33,4 +30,4 @@
     {{/if}}
 </div>
 {{/if}}
-<script src="/static/js/addProduct.js"></script>
+<script src="/static/js/manageProducts.js"></script>

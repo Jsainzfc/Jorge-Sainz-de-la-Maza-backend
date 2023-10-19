@@ -162,6 +162,77 @@ router.get('/checkout/:cid', isAuth, async (req, res) => {
   }
 })
 
+router.get('/manage', isAuth, async (req, res) => {
+  if (req.session.user.role !== 'admin' | 'premium') {
+    req.logger.warning('Not admin trying to access')
+    return res.redirect('/login')
+  }
+  try {
+    const response = await get({ user: req.user, baseURL: 'http://localhost:8080/manage' })
+    if (response.success) {
+      return res.render('manageproducts', {
+        title: 'Manage Products',
+        products: response.payload,
+        pagination: response.totalPages > 1,
+        hasPrevPage: response.hasPrevPage,
+        hasNextPage: response.hasNextPage,
+        prevLink: response.prevLink,
+        nextLink: response.nextLink,
+        user: response.user
+      })
+    } else {
+      req.logger.error(response.error)
+      return res.status(response.status).json({ message: response.error })
+    }
+  } catch (err) {
+    req.logger.error(err.message)
+    return res.status(500).json({ message: err.message })
+  }
+})
+
+router.get('/editproduct/:pid', isAuth, async (req, res) => {
+  if (req.session.user.role !== 'admin' | 'premium') {
+    req.logger.warning('Not admin trying to access')
+    return res.redirect('/login')
+  }
+  try {
+    const response = await getProductById(req)
+    if (response.success) {
+      return res.render('editproduct', {
+        title: 'Edit Product',
+        productId: response.payload._id,
+        productTitle: response.payload.title,
+        description: response.payload.description,
+        code: response.payload.code,
+        price: response.payload.price,
+        status: response.payload.status,
+        thumbnails: response.payload.thumbnails,
+        stock: response.payload.stock,
+        email: req.session.user.email,
+        role: req.session.user.role
+      })
+    } else {
+      req.logger.error(response.error)
+      return res.status(response.status).json({ message: response.error })
+    }
+  } catch (err) {
+    req.logger.error(err.message)
+    return res.status(500).json({ message: err.message })
+  }
+})
+
+router.get('/addProduct', async (req, res) => {
+  if (req.session.user.role !== 'admin' | 'premium') {
+    req.logger.warning('Not admin trying to access')
+    return res.redirect('/login')
+  }
+  return res.render('addproduct', {
+    title: 'Add Product',
+    email: req.session.user.email,
+    role: req.session.user.role
+  })
+})
+
 router.get('/loggerTest', (req, res) => {
   req.logger.fatal('This is a fatal log')
   req.logger.error('This is a error log')

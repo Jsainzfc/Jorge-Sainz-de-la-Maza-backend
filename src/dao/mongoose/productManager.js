@@ -33,7 +33,7 @@ class ProductManager {
   // Creates a new product in the database.
   // Might throw instances of ValidationError if some value is not valid.
   // Might throw MongooseError if there is any issue reading products for validating code or adding the new product.
-  async create ({ code, title, description, price, stock, thumbnails, status, categories }) {
+  async create ({ code, title, description, price, stock, thumbnails, status, categories }, user) {
     await this.#validateFields({ code, title, description, price, stock, thumbnails, status, update: false })
     try {
       const product = await productModel.create({
@@ -44,7 +44,8 @@ class ProductManager {
         stock: Number(stock),
         thumbnails,
         status: Boolean(status),
-        categories: categories ?? []
+        categories: categories ?? [],
+        owner: user?.email ?? 'admin'
       })
       return product
     } catch (err) {
@@ -114,9 +115,12 @@ class ProductManager {
   // Might throw instances of ValidationError if any new field is not correct
   // Might throw instances of MongooseError if there is any error updating the database
   // Might throw instance of ItemNotFound if product is not found in the database
-  async updateOne (id, { code, title, description, price, stock, thumbnails, status, categories }) {
+  async updateOne (id, { code, title, description, price, stock, thumbnails, status, categories }, user) {
     const product = await productModel.findById(id)
     if (!product) throw new ItemNotFound('Product not found')
+
+    if (user.role !== 'admin' | 'premium') throw new ValidationError('User not allowed')
+    if (user.role === 'premium' && user.email !== product.owner) throw new ValidationError('User not allowed')
 
     const newProduct = {
       code: code ?? product.code,
@@ -150,8 +154,11 @@ class ProductManager {
   // Deletes one product from the database
   // Might throw instances of MongooseError if there is any error updating the database
   // Might throw instance of ProductNotFound if product is not found in the database
-  async deleteOne (id) {
+  async deleteOne (id, user) {
     try {
+      const product = await productModel.findById(id)
+      if (user.role !== 'admin' | 'premium') throw new ValidationError('User not allowed')
+      if (user.role === 'premium' && user.email !== product.owner) throw new ValidationError('User not allowed')
       const { deletedCount } = await productModel.deleteOne({ _id: id })
       if (deletedCount !== 1) {
         throw new ItemNotFound('Product not found')

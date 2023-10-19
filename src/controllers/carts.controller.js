@@ -1,7 +1,8 @@
 import { InvalidField, NotEnoughStock, ValidationError } from '../errors/index.js'
-import { CartManager } from '../dao/factory.js'
+import { CartManager, ProductManager } from '../dao/factory.js'
 
 const cartManager = new CartManager()
+const productManager = new ProductManager()
 
 const getById = async (req) => {
   let response
@@ -66,6 +67,17 @@ const addProduct = async (req) => {
   let response
   try {
     const { cid, pid } = req.params
+    if (req.session.user.role === 'premium') {
+      const product = productManager.findById(cid)
+      if (product.owner === req.session.user.email) {
+        response = {
+          success: false,
+          status: 401,
+          payload: {},
+          error: 'Cannot add to cart your own product'
+        }
+      }
+    }
     const products = await cartManager.updateOne({ id: cid, productId: pid, quantity: 1 })
     req.io.emit('cart_updated', { cid, products })
     response = {

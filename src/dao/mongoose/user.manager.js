@@ -25,19 +25,17 @@ class UserManager {
       return
     }
 
-    const {
-      email,
-      firstname,
-      lastname,
-      age
-    } = user
+    const newUser = {
+      firstname: user.firstname ?? existing.firstname,
+      lastname: user.lastname ?? existing.lastname,
+      email: user.email ?? existing.email,
+      password: user.password ?? existing.password,
+      role: user.role ?? existing.role,
+      age: user.age ?? existing.age,
+      cart: user.cart ?? existing.cart
+    }
 
-    existing.email = email
-    existing.firstname = firstname
-    existing.lastname = lastname
-    existing.age = age
-
-    await existing.updateOne({ _id: id }, existing)
+    await userModel.updateOne({ _id: id }, newUser)
   }
 
   async delete (id) {

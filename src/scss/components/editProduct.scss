@@ -1,0 +1,23 @@
+.editProduct {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 600px;
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  input {
+    background: rgba(255, 195, 78, 0.2);
+    padding: 10px;
+    border-radius: 24px;
+    border: 1px solid black;
+
+    &[type="number"] {
+      width: 100%;
+    }
+  }
+}

@@ -24,7 +24,8 @@ const productSchema = new mongoose.Schema({
         ref: 'categories'
       }],
     default: []
-  }
+  },
+  owner: String
 })
 
 productSchema.plugin(mongoosePaginate)

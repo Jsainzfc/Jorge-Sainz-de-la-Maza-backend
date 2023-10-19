@@ -1,0 +1,46 @@
+<h1 style="padding: 50px 0">Edit product</h1>
+<span style="display:none" aria-hidden="true"></span>
+<div class="container flex__col flex--center">
+  <form class="edit" data-email="{{email}}" data-role="{{role}}" data-productId="{{productId}}">
+    <fieldset class="form-item">
+      <label>Title</label>
+      <input id="title" type="text" name="title" value="{{productTitle}}" required="true">
+    </fieldset>
+    <fieldset class="form-item">
+      <label>Code</label>
+      <input id="code" type="text" name="code" value="{{code}}" required="true">
+    </fieldset>
+    <fieldset class="form-item">
+      <label>Description</label>
+      <input id="description" name="description" value="{{description}}" required="true">
+    </fieldset>
+    <fieldset class="form-item">
+      <label>Price (€)</label>
+      <input id="price" type="number" name="title" value="{{price}}" required="true">
+    </fieldset>
+    <fieldset>
+      <label>Status:</label>
+      <select id="status" name="status">
+        {{#if status}}
+        <option value="true" selected="selected">Active</option>
+        <option value="false">Not Active</option>
+        {{else}}
+        <option value="true">Active</option>
+        <option value="false" selected="selected">Not Active</option>
+        {{/if}}
+      </select>
+    </fieldset>
+    <fieldset class="form-item">
+      <label>Stock</label>
+      <input id="stock" type="number" name="title" value="{{stock}}" required="true">
+    </fieldset>
+    <fieldset id="thumbnails" class="form-item">
+      <label>Thumbnails</label>
+      {{#each thumbnails}}
+        <input type="text" name="title" value="{{this}}">
+      {{/each}}
+    </fieldset>
+    <input type="Submit" value="Send" class="button">
+  </form>
+</div>
+<script src="/static/js/manageOneProduct.js"></script>

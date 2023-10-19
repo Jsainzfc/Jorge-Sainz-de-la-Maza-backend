@@ -51,7 +51,7 @@ const login = async (username, password, done) => {
       console.log("User doesn't exists")
       return done(null, false)
     }
-    if (!isValidPassword(user.password, password)) return done(null, false)
+    if (!isValidPassword(password, user.password)) return done(null, false)
     return done(null, user)
   } catch (err) {
     return done(err)

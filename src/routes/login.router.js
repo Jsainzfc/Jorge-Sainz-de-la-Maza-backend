@@ -30,7 +30,10 @@ router.get('/failedsignup', async (req, res) => {
   res.status(404).json({ message: 'User already exists' })
 })
 
-router.get('/login', (_, res) => res.render('login'))
+router.get('/login', (req, res) => {
+  if (!req.session.user) return res.render('login')
+  return res.redirect('/')
+})
 router.post('/login', passport.authenticate('login', { failureRedirect: 'failedlogin' }), async (req, res) => {
   if (!req.user) return res.status(400).json({ message: 'Invalid Credentials' })
   req.session.user = {
@@ -39,7 +42,7 @@ router.post('/login', passport.authenticate('login', { failureRedirect: 'failedl
     role: req.user.role,
     email: req.user.email
   }
-  res.json({ message: 'User logged', payload: req.user })
+  res.redirect('/')
 })
 router.get('/failedlogin', (req, res) => {
   res.status(400).json({ message: 'Failed login' })
@@ -104,7 +107,10 @@ router.post('/password-recovery', async (req, res) => {
     req.logger.error(err.message)
     req.logger.error('user not found when recovering password')
   }
-  return res.status(200).send('If user exists, a recovery email has been sent')
+  return res.render('login', {
+    title: 'Log in',
+    error: 'If user exists, recovery link has been sent'
+  })
 })
 
 const tokenValid = async (token, passwordResetToken) => {
@@ -165,8 +171,7 @@ router.post('/passwordReset', async (req, res) => {
       })
     }
     const user = getById(id)
-    const newPass = hashPassword(password)
-    if (isValidPassword(newPass, user.password)) {
+    if (isValidPassword(password, user.password)) {
       res.render('passwordreset', {
         title: 'Reset your password',
         token,
@@ -174,8 +179,11 @@ router.post('/passwordReset', async (req, res) => {
         error: 'Password must be different'
       })
     }
-    await resetPassword(id, newPass)
-    res.status(200).json({ message: 'Password updated' })
+    await resetPassword(id, hashPassword(password))
+    return res.render('login', {
+      title: 'Log in',
+      error: 'Password updated'
+    })
   } catch (e) {
     req.logger.error(e.message)
     res.render('passwordrecovery', {

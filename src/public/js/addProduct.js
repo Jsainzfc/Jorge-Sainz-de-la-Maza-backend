@@ -29,7 +29,7 @@ document.querySelectorAll('.itemCount__add-to-cart').forEach(button => {
     const id = button.id
     const quantity = document.querySelector(`.amount-${id}`)
     try {
-      const response = await fetch(`http://localhost:8080/api/carts/${cartId}/product/${id}`, {
+      const response = await fetch(`${window.location.origin}/api/carts/${cartId}/product/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ document.querySelectorAll('.itemCount__add-to-cart').forEach(button => {
           icon: 'success',
           title: 'Ok',
           text: 'Product added to cart',
-          footer: `<a href='http://localhost:8080/cart/${cartId}'>See cart</a>`
+          footer: `<a href='${config.clienturl}/cart/${cartId}'>See cart</a>`
         })
       } else {
         const { message } = await response.json()
