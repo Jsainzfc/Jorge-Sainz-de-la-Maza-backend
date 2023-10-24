@@ -1,19 +1,15 @@
 import { Router } from 'express'
 import passport from 'passport'
 import { isAuth } from '../middlewares/auth-middleware.js'
-import { passwordRecovery, getPasswordRecovery, getPasswordReset, passwordReset, logout, failedLogin, login, getLogin } from '../controllers/login.controller.js'
+import { passwordRecovery, getPasswordRecovery, getPasswordReset, passwordReset, logout, failedLogin, login, getLogin, signup, failedSignup, getSingUp } from '../controllers/login.controller.js'
 
 const router = Router()
 
-router.get('/signup', (_, res) => res.render('signup'))
+router.get('/signup', getSingUp)
 
-router.post('/signup', passport.authenticate('signup', { failureRedirect: '/failedsignup' }), async (req, res) => {
-  res.json({ message: 'User registered' })
-})
+router.post('/signup', passport.authenticate('signup', { failureRedirect: '/failedsignup' }), signup)
 
-router.get('/failedsignup', async (req, res) => {
-  res.status(404).json({ message: 'User already exists' })
-})
+router.get('/failedsignup', failedSignup)
 
 router.get('/login', getLogin)
 
