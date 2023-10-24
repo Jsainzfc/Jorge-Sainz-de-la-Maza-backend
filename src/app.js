@@ -14,6 +14,8 @@ import passport from 'passport'
 import { init } from './config/passport.config.js'
 import cors from 'cors'
 import { addLogger } from './logger/index.js'
+import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUiExpress from 'swagger-ui-express'
 
 const MONGOURI = `mongodb+srv://${config.mongouser}:${config.mongopassword}@coderhouse.wp11tre.mongodb.net/?retryWrites=true&w=majority`
 mongoose.connect(MONGOURI) // Connect with the mongodb database
@@ -21,6 +23,21 @@ mongoose.connect(MONGOURI) // Connect with the mongodb database
 // Initialize express, http and web socket servers
 const app = express()
 app.use(addLogger)
+console.log(__dirname)
+
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: 'Coderhouse backend documentation',
+      description: 'API needed for the work of an ecommerce project.'
+    }
+  },
+  apis: [join(__dirname + '/docs/**/*.yaml')]
+}
+const specs = swaggerJsdoc(swaggerOptions)
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+
 const server = http.createServer(app)
 const io = new Server(server)
 
