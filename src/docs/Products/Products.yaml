@@ -4,11 +4,181 @@ paths:
       summary: Get all products from the database
       tags:
         - Products
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Number of products you want to be shown
+          default: 10
+          required: false
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Page you want to query
+          default: 1
+          required: false
+        - in: query
+          name: sort
+          schema:
+            type: boolean
+          description: If true, products are ordered ascendent by price, else, descendent
+          required: false
+        - in: query
+          name: queryName
+          schema:
+            type: string
+          description: Name of the property you want to filter by
+          required: false
+        - in: query
+          name: queryValue
+          schema:
+            type: string
+          description: Value of the property (queryName) you want to filter by
+          required: false
       responses:
         "200":
           description: All products from the database were successfully retrieved
-        "500": 
-          description: Internal server error, usually caused by a defect in the query or a connection error with the database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/getResponse'
+        "500":
+          description: Internal server error, might be caused by an incorrect query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/getResponse'
+    
+    post:
+      summary: Add a new product to the database
+      tags:
+        - Products
+      requestBody:
+        description: Body of the query containing a new product and the issuing user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/addProduct'
+      responses:
+        "200":
+          description: All products from the database were successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
+        "400":
+          description: Validation error. Something wrong in the query.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
+        "500":
+          description: Internal server error, might be caused by an incorrect query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
+
+  /api/products/{pid}:
+    get:
+      summary: Get one product from its Id
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id of the product to get
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Product found retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
+        "400":
+          description: Validation error. Something wrong in the query.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
+        "404":
+          description: Product cannot be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
+        "500":
+          description: Internal server error, might be caused by an incorrect query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
+    put:
+      summary: Get one product from its Id
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id of the product to get
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
+        "404":
+          description: Product cannot be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
+        "500":
+          description: Internal server error, might be caused by an incorrect query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
+    delete:
+      summary: Get one product from its Id
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id of the product to get
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Product deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
+        "404":
+          description: Product cannot be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
+        "500":
+          description: Internal server error, might be caused by an incorrect query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/addResponse'
 
 components:
   schemas:
@@ -19,24 +189,24 @@ components:
           type: ObjectId
           description: Autogenerated mongo Id
         title:
-          type: String
+          type: string
           description: Title of the product
         code:
-          type: String
+          type: string
           description: Unique identifier of the product
         description:
-          type: String
+          type: string
           description: Description of the product
         price:
           type: integer
           description: Price of the products
         status:
-          type: Boolean
+          type: boolean
           description: Tag indicating if the product is available for buying (true) or not (false)
         thumbnails:
           type: array
           items:
-            type: String
+            type: string
             description: Url of a thumbnail of the product
         stock:
           type: integer
@@ -44,10 +214,10 @@ components:
         categories:
           type: array
           items:
-            $ref: '#/components/schemas/Category'
+            type: string
             description: Category to which the product belongs
         owner:
-          type: String
+          type: string
           description: Email of the creator of the product or 'admin'
       example:
         _id: ObjectId('64ca19e37ac4cdefe4d1eb4b')
@@ -60,3 +230,77 @@ components:
         stock: 5
         categories: ["freebies"]
         owner: "jsainzfc@gmail.com"
+
+  responses: 
+    getResponse:
+      type: object
+      properties:
+        success: 
+          type: boolean
+          description: True if result of the query is ok
+        status: 
+          type: integer
+          description: Code of the response
+        payload: 
+          type: array
+          items:
+            $ref: '#components/schemas/Product'
+        totalPages: 
+          type: integer
+          description: Total number of results pages
+        prevPage: 
+          type: string
+          description: string describing the previous page if existing
+        nextPage: 
+          type: string
+          description: string describing the next page if existing
+        hasPrevPage: 
+          type: boolean
+          description: True if previous page exists
+        hasNextPage: 
+          type: boolean
+          description: True if next page exists
+        prevLink: 
+          type: string
+          description: Link to the previous results page if exists
+        nextLink: 
+          type: string
+          description: Link to the next results page if exists
+        user: 
+          type: object
+          description: Current active user
+        error: 
+          type: string
+          description: Error message
+
+    addResponse:
+      type: object
+      description: response of the add a product query
+      properties:
+        success: 
+          type: boolean
+          description: True if query result is ok
+        status: 
+          type: integer
+          description: status code of the response
+        payload:
+          type: object
+          description: New product created if everything is ok
+          $ref: '#components/schemas/Product'
+        error:
+          type: string
+          description: Error message if something went wrong
+
+  requestBodies:
+    addProduct:
+      type: object
+      properties:
+        product: 
+          type: object
+          description: Product to be added
+          $ref: '#components/schemas/Product'
+        user:
+          type: string
+          description: Mail of the issuing user
+
+

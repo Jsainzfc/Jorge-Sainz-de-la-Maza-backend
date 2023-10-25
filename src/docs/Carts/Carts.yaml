@@ -1,0 +1,297 @@
+paths:
+  /api/carts:
+    post:
+      summary: Create a new cart
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Cart created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "500":
+          description: Product deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+
+  /api/carts/{cid}:
+    get:
+      summary: Get a cart by its id
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: id of the cart
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Cart found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "404":
+          description: Cart not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "500":
+          description: Internal server error, might be caused by an incorrect query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+
+    put:
+      summary: Update a cart with the products in the body
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: id of the cart
+        schema:
+          type: string
+      requestBody:
+        description: Body of the query containing products and the issuing user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/products'
+      responses:
+        "200":
+          description: Cart updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "404":
+          description: Cart not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "500":
+          description: Internal server error, might be caused by an incorrect query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+
+    delete:
+      summary: Delete all of the products from one cart
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: id of the cart
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Cart deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "404":
+          description: Cart not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "500":
+          description: Internal server error, might be caused by an incorrect query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Add one item to the cart
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: id of the cart
+        schema:
+          type: string
+      - name: pid
+        in: path
+        required: true
+        description: id of the product
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Product added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "400":
+          description: Product not added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "401":
+          description: Action not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "404":
+          description: Cart or product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "500":
+          description: Internal server error, might be caused by an incorrect query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+
+    put:
+      summary: Update carts items with the ones in the body of the query
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: id of the cart
+        schema:
+          type: string
+      - name: pid
+        in: path
+        required: true
+        description: id of the product
+        schema:
+          type: string
+      requestBody:
+        description: Body of the query containing the quantity
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  description: amount of products to add
+      responses:
+        "200":
+          description: Product added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "400":
+          description: Product not added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "500":
+          description: Internal server error, might be caused by an incorrect query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+
+    delete:
+      summary: Delete one product from the cart
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: id of the cart
+        schema:
+          type: string
+      - name: pid
+        in: path
+        required: true
+        description: id of the product
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Product removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "404":
+          description: Product or cart not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+        "500":
+          description: Internal server error, might be caused by an incorrect query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/basicResponse'
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Autogenerated mongo Id
+        products:
+          type: array
+          description: products in the cart
+          items:
+            $ref: '#components/schemas/Product'
+
+  responses:
+    basicResponse:
+      type: object
+      properties:
+        success: 
+          type: boolean
+          description: True if query result is ok
+        status: 
+          type: integer
+          description: status code of the response
+        payload:
+          type: object
+        error:
+          type: string
+          description: Error message if something went wrong
+
+  requestBodies:
+    products:
+      type: array
+      items:
+        $ref: '#components/schemas/Product'

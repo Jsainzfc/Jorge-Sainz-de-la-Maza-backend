@@ -9,7 +9,7 @@ router.post('/', addOne)
 
 router.post('/:cid/product/:pid', addProduct)
 
-router.delete('/:cid/products/:pid', removeProduct)
+router.delete('/:cid/product/:pid', removeProduct)
 
 router.put('/:cid', addProducts)
 

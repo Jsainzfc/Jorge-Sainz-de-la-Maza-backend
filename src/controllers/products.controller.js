@@ -51,7 +51,7 @@ const get = async ({ queryName, queryValue, limit, page, order, user, baseURL })
   } catch (err) {
     response = {
       success: false,
-      status: 404,
+      status: 500,
       payload: [],
       error: err.message
     }

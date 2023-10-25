@@ -6,7 +6,7 @@ trashIcons.forEach(trash => {
   trash.addEventListener('click', async () => {
     const id = trash.dataset.id
     try {
-      const response = await fetch(`http://localhost:8080/api/carts/${cartId}/products/${id}`, {
+      const response = await fetch(`http://localhost:8080/api/carts/${cartId}/product/${id}`, {
         method: 'DELETE'
       })
       const { products, total } = await response.json()
