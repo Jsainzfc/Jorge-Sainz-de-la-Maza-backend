@@ -1,4 +1,4 @@
-# Entrega clase 37 - Tercera práctica integradora
+# Entrega clase 39 - Documentación API
 
 ## Alcance clase 2
 Se ha creado una clase Product con un constructor que inicializa todas las variables necesarias al valor introducido al crear una instancia.
@@ -83,6 +83,9 @@ Añadido rol 'premium' a los users. Un usuario premium puede modificar sus propi
 Un usuario premium no puede añadir al carrito sus propios productos.
 Se puede cambiar el rol de un user a premium con la ruta /api/users/premium/:uid
 
+## Alcance clase 39
+Se ha documentado el módulo de productos y de carrito de la API mediante swagger. Se puede ver en el endpoint /apidocs.
+
 ## Estructura
 El código está dentro de la carpeta src.
 La carpeta database recoge unas bases de datos, ahora en desuso, para el uso de filesystem en carritos y productos.
@@ -108,50 +111,6 @@ El servidor de express y el socket están en el archivo app.js, pero el socket s
 Las vistas de handlebars están enla carpeta views.
 El archivo utils.js está en desuso en este momento. Proporciona la ruta para la conexión del filesystem.
 La carpeta public proporciona el lado cliente de los websockets así como estilados para las diferentes vistas de handlebars. También incluye lógica para la gestión de compra de productos y de carrito.
-
-## Endpoints de la api de products:
-
-### GET /api/products/?limit=x&page=y&sort=true&queryName=a&queryValue=b
-Retorna todos los productos de la base de datos hasta un límite = x (si no se incluye se considera 10).
-Si limite es superior al máximo de productos disponibles en la base de datos devuelve todos los productos disponibles.
-Page es la página de visionado (si no se incluye es 1). Si no hay más que una página se ignora.
-Sort decide si se ordena por precio. Si es true se ordena ascendente si es false descendente. Si no se incluye no se ordena.
-queryName y queryValue permite establecer un filtro para productos donde queryName = queryValue.
-
-### GET /api/products/:pid
-Retorna el producto con id = pid.
-
-### POST /api/products/
-Añade el producto del cuerpo de la petición a la base de datos.
-
-### PUT /api/products/:pid
-Actualiza el product con el id = pid de la base de datos con la información del cuerpo de la petición.
-
-### DELETE /api/products/:pid
-Elimina el producto con id = pid de la base de datos.
-
-## Endpoints de la api de carts:
-
-### POST /api/carts/
-Crea un carrito sin productos. 
-
-### GET /api/carts/:cid
-Retorna los productos del carrito con id = cid.
-
-### POST /api/carts/:cid/product/:pid
-Añade un item del producto con id = pid al carrito con id = cid.
-
-### DELETE /api/carts/:cid/product/:pid
-Elimina por completo el item del producto con id pid del carrito con id = cid.
-
-### PUT /api/carts/:cid
-Actualiza el carrito con id = cid con los productos en el cuerpo de la petición.
-
-### PUT /api/carts/:cid/product/:pid
-Actualiza el carrito con id = cid con el producto con id = pid y la cantidad que incluya el cuerpo de la petición o 1 si no incluye cantidad.
-
-### DELETE /api/carts/:cid
-Elimina todos los productos del carrito con id = cid.
 
 ## Endpoints de la api de categories:
 
