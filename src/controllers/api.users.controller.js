@@ -15,4 +15,16 @@ const updateToPremium = async (req, res) => {
   }
 }
 
-export { updateToPremium }
+const deleteByEmail = async (req, res) => {
+  const { email } = req.body
+  try {
+    console.log(Date.now())
+    await userManager.deleteByEmail(email)
+    console.log(Date.now())
+    return res.status(200).json({ message: 'User deleted' })
+  } catch (err) {
+    return res.status(500)
+  }
+}
+
+export { updateToPremium, deleteByEmail }

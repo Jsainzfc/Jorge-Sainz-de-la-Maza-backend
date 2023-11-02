@@ -23,7 +23,7 @@ class ProductManager {
     }
     if (isNaN(price)) throw new InvalidField('Price must be a number')
     if (isNaN(stock)) throw new InvalidField('Stock must be a number')
-    if (status && status !== 'true' && status !== 'false') throw new InvalidField('Status can only be true or false')
+    if (status && status !== true && status !== false) throw new InvalidField('Status can only be true or false')
     if (thumbnails && !Array.isArray(thumbnails)) throw new InvalidField('Thumbnails should be an array')
     if (!update && await this.#codeExists(code)) {
       throw new InvalidField('Code already exists.')
@@ -45,7 +45,7 @@ class ProductManager {
         thumbnails,
         status: Boolean(status),
         categories: categories ?? [],
-        owner: user?.email ?? 'admin'
+        owner: user ?? 'admin'
       })
       return product
     } catch (err) {

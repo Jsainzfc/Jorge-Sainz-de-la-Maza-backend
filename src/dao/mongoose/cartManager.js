@@ -24,11 +24,11 @@ class CartManager {
   // Might throw an instance of Mongoose Error if there is any problem calling mongoose
   async findById (id) {
     try {
-      const { products } = await cartModel.findById(id).lean().populate('products.product')
-      if (products) {
-        return products
+      const response = await cartModel.findById(id).lean().populate('products.product')
+      if (response) {
+        return response.products
       } else {
-        throw InvalidField('Cart not found.')
+        throw new InvalidField('Cart not found.')
       }
     } catch (err) {
       throw new MongooseError(err.message)
@@ -48,7 +48,7 @@ class CartManager {
         throw new NotEnoughStock('Insufficient stock')
       }
     } else {
-      const { stock } = productModel.findById(productId)
+      const { stock } = await productModel.findById(productId)
       if (quantity > stock) {
         throw new NotEnoughStock('Insufficient stock')
       }
@@ -92,6 +92,7 @@ class CartManager {
   // Updates the products of a cart with the one received
   // Might throw an instance of ValidationError if cart is not found
   async updateCartWithProducts ({ cartId, products }) {
+    console.log(products)
     try {
       await cartModel.updateOne({ _id: cartId }, { products })
     } catch (err) {

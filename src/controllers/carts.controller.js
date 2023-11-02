@@ -67,7 +67,7 @@ const addProduct = async (req) => {
   let response
   try {
     const { cid, pid } = req.params
-    if (req.session.user.role === 'premium') {
+    if (req.session.user?.role === 'premium') {
       const product = productManager.findById(cid)
       if (product.owner === req.session.user.email) {
         response = {
@@ -87,6 +87,7 @@ const addProduct = async (req) => {
       error: ''
     }
   } catch (err) {
+    console.log(err.message)
     if (err instanceof NotEnoughStock) {
       response = {
         success: false,

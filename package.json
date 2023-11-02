@@ -5,11 +5,12 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "node src/testing/testing.js",
+    "test": "mocha test/backend.supertest.js",
     "watch-sass": "sass --watch src/scss/style.scss src/public/css/style.css",
     "dev": "nodemon -L src/app.js",
     "start": "node src/app.js",
-    "production": "node src/app.js --mode production"
+    "production": "node src/app.js --mode production",
+    "test-env": "nodemon -L src/app.js --mode testing"
   },
   "keywords": [],
   "author": "Jorge Sainz de la Maza",
@@ -52,9 +53,12 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.1.0",
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
     "node-sass": "^9.0.0",
     "nodemon": "^3.0.1",
     "sass": "^1.64.2",
-    "standard": "^17.1.0"
+    "standard": "^17.1.0",
+    "supertest": "^6.3.3"
   }
 }

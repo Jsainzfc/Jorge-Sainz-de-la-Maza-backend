@@ -50,6 +50,14 @@ class UserManager {
     await userModel.deleteOne({ _id: id })
   }
 
+  async deleteByEmail (email) {
+    try {
+      await userModel.deleteOne({ email })
+    } catch (err) {
+      throw new Error('Something went wrong')
+    }
+  }
+
   async resetPassword (id, password) {
     const user = await this.getById(id)
     if (!user) throw new ValidationError('User not found')

@@ -6,12 +6,16 @@ program.option('--mode <mode>', 'Environment', 'development')
 program.parse()
 
 dotenv.config({
-  path: program.opts().mode === 'development' ? './.env.development' : './.env.production'
+  path: program.opts().mode === 'development'
+    ? './.env.development'
+    : program.opts().mode === 'testing'
+      ? './.env.test'
+      : './.env.production'
 })
 
 export const config = {
-  mongouser: process.env.MONGOUSER,
-  mongopassword: process.env.MONGOPASSWORD,
+  mongodb: process.env.MONGODB,
+  mongotestdb: process.env.MONGOTESTDB,
   port: process.env.PORT,
   cookiesecret: process.env.COOKIESECRET,
   adminmail: process.env.ADMINMAIL,

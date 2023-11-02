@@ -17,6 +17,7 @@ const signup = async (req, email, password, done) => {
 
   try {
     const user = await getByEmail(email)
+    console.log(user)
 
     if (user) {
       req.logger.info('User already exists')
@@ -31,7 +32,7 @@ const signup = async (req, email, password, done) => {
       password: hashPassword(inputUser.password),
       role: 'user',
       age: inputUser.age,
-      cart
+      cart: cart.payload
     })
 
     return done(null, {

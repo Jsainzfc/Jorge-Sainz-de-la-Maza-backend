@@ -1,7 +1,8 @@
 import { ItemNotFound, ValidationError } from '../errors/index.js'
-import { ProductManager } from '../dao/factory.js'
+import { ProductManager, UserManager } from '../dao/factory.js'
 
 const productManager = new ProductManager()
+const userManager = new UserManager()
 
 const getPageLink = ({ baseURL, queryName, queryValue, limit, order, page }) => {
   let finalURL = baseURL + '?'
@@ -131,7 +132,8 @@ const updateOne = async (req) => {
   let response
   const product = req.body.product
   try {
-    await productManager.updateOne(req.params.pid, product, req.body.user)
+    const user = await userManager.getByEmail(req.body.user)
+    await productManager.updateOne(req.params.pid, product, user)
     req.io.emit('product_updated', { id: req.params.pid, product })
     response = {
       success: true,
@@ -162,7 +164,8 @@ const updateOne = async (req) => {
 const deleteOne = async (req) => {
   let response
   try {
-    await productManager.deleteOne(req.params.pid, req.body.user)
+    const user = await userManager.getByEmail(req.body.user)
+    await productManager.deleteOne(req.params.pid, user)
     req.io.emit('product_deleted', req.params.pid)
     response = {
       success: true,

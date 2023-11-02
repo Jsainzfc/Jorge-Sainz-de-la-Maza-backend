@@ -17,8 +17,7 @@ import { addLogger } from './logger/index.js'
 import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUiExpress from 'swagger-ui-express'
 
-const MONGOURI = `mongodb+srv://${config.mongouser}:${config.mongopassword}@coderhouse.wp11tre.mongodb.net/?retryWrites=true&w=majority`
-mongoose.connect(MONGOURI) // Connect with the mongodb database
+mongoose.connect(config.mongodb) // Connect with the mongodb database
 
 // Initialize express, http and web socket servers
 const app = express()
@@ -59,7 +58,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   store: MongoStore.create({
-    mongoUrl: MONGOURI,
+    mongoUrl: config.mongodb,
     ttl: 60 * 60
   })
 }))

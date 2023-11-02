@@ -1,3 +1,6 @@
 [31mfatal[39m: This is a fatal log
 [31merror[39m: This is a error log
 [33mwarning[39m: This is a warning log
+[31merror[39m: Status can only be true or false
+[31merror[39m: Status can only be true or false
+[33mwarning[39m: User not logged accessing
