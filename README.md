@@ -86,6 +86,11 @@ Se puede cambiar el rol de un user a premium con la ruta /api/users/premium/:uid
 ## Alcance clase 39
 Se ha documentado el módulo de productos y de carrito de la API mediante swagger. Se puede ver en el endpoint /apidocs.
 
+## Alcance clase 44
+Se ha añadido un endpoint para subir archivos /uploadDocuments. Este llama con POST al endpoint /api/users/premium/:uid/documents que sube los archivos al user (modelo actualizado).
+Si los archivos son imágenes, deja subir los que se quiera. Si son documentación, solo deja subir uno y reemplaza si ya existe.
+Subida de archivos implementada con multer.
+
 ## Estructura
 El código está dentro de la carpeta src.
 La carpeta database recoge unas bases de datos, ahora en desuso, para el uso de filesystem en carritos y productos.

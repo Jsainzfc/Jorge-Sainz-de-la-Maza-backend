@@ -30,4 +30,8 @@ const resetPassword = async (id, password) => {
   return await userManager.resetPassword(id, password)
 }
 
-export { getAll, getById, getByEmail, create, save, remove, resetPassword }
+const updateLastConnection = async (id) => {
+  await userManager.updateLastConnection(id)
+}
+
+export { getAll, getById, getByEmail, create, save, remove, resetPassword, updateLastConnection }

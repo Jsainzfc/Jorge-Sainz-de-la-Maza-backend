@@ -17,7 +17,6 @@ const signup = async (req, email, password, done) => {
 
   try {
     const user = await getByEmail(email)
-    console.log(user)
 
     if (user) {
       req.logger.info('User already exists')
@@ -32,7 +31,8 @@ const signup = async (req, email, password, done) => {
       password: hashPassword(inputUser.password),
       role: 'user',
       age: inputUser.age,
-      cart: cart.payload
+      cart: cart.payload,
+      lastConnection: Date.now()
     })
 
     return done(null, {
@@ -49,7 +49,6 @@ const login = async (username, password, done) => {
   try {
     const user = await getByEmail(username)
     if (!user) {
-      console.log("User doesn't exists")
       return done(null, false)
     }
     if (!isValidPassword(password, user.password)) return done(null, false)

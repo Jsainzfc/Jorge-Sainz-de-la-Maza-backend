@@ -1,4 +1,4 @@
-import { getByEmail, getById, resetPassword } from '../controllers/users.controller.js'
+import { getByEmail, getById, resetPassword, updateLastConnection } from '../controllers/users.controller.js'
 import { getByUserId, create, deleteOne } from '../controllers/token.controller.js'
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
@@ -16,12 +16,11 @@ const transport = nodemailer.createTransport({
 })
 
 const logout = (req, res) => {
+  updateLastConnection(req.session.user.id)
   res.clearCookie('user')
 
   req.session.destroy((err) => {
-    if (err) {
-      return res.redirect('/error')
-    }
+    req.logger.error(err)
     req.session.user = null
     res.render('login')
   })
@@ -170,8 +169,10 @@ const login = async (req, res) => {
     firstName: req.user.firstName,
     lastName: req.user.lastName,
     role: req.user.role,
-    email: req.user.email
+    email: req.user.email,
+    id: req.user._id.toString()
   }
+  updateLastConnection(req.session.user.id)
   res.redirect('/')
 }
 

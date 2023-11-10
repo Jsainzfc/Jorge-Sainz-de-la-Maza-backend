@@ -1,0 +1,29 @@
+<div class="flex__col login">
+  <h3 class="center-text">Upload documents</h3>
+  <form action="/api/users/premium/{{id}}/documents/" method="post" enctype="multipart/form-data" class="flex__col">
+    <label for="profile-picture">Profile Picture</label>
+    <input id="profile-picture" type="file" class="form-control-file" name="profile-picture" multiple>
+
+    <label for="product-picture">Product Picture</label>
+    <input id="product-picture" type="file" class="form-control-file" name="product-picture" multiple>
+
+    <label for="identification">Identification</label>
+    <input id="identification" type="file" class="form-control-file" name="identification" multiple>
+
+    <label for="address">Address</label>
+    <input id="address" type="file" class="form-control-file" name="address">
+
+    <label for="account">Account</label>
+    <input id="account" type="file" class="form-control-file" name="account">
+
+    {{#if success}}
+      <span class="login__error" style="color: green">{{message}}</span>
+    {{else}}
+      {{#if message}}
+      <span class="login__error">{{message}}</span>
+      {{/if}}
+    {{/if}}
+    
+    <button>Enter</button>
+  </form>
+</div>

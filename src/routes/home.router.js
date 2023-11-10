@@ -221,7 +221,7 @@ router.get('/editproduct/:pid', isAuth, async (req, res) => {
   }
 })
 
-router.get('/addProduct', async (req, res) => {
+router.get('/addProduct', isAuth, async (req, res) => {
   if (req.session.user.role !== 'admin' | 'premium') {
     req.logger.warning('Not admin trying to access')
     return res.redirect('/login')
@@ -230,6 +230,20 @@ router.get('/addProduct', async (req, res) => {
     title: 'Add Product',
     email: req.session.user.email,
     role: req.session.user.role
+  })
+})
+
+router.get('/upload', isAuth, async (req, res) => {
+  return res.render('upload', {
+    title: 'Upload files',
+    id: req.session.user.id
+  })
+})
+
+router.get('/uploadDocuments', isAuth, async (req, res) => {
+  return res.render('uploadDocuments', {
+    title: 'Upload your documents',
+    id: req.session.user.id
   })
 })
 

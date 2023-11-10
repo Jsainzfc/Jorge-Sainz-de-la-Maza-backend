@@ -28,7 +28,8 @@ const auth = async (accessToken, refreshToken, profile, done) => {
         password: '',
         role: 'user',
         age: '',
-        cart
+        cart,
+        lastConnection: Date.now()
       })
       user = _user._doc
     }
