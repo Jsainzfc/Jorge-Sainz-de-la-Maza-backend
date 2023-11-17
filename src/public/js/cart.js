@@ -6,7 +6,7 @@ trashIcons.forEach(trash => {
   trash.addEventListener('click', async () => {
     const id = trash.dataset.id
     try {
-      const response = await fetch(`http://localhost:8080/api/carts/${cartId}/product/${id}`, {
+      const response = await fetch(`/api/carts/${cartId}/product/${id}`, {
         method: 'DELETE'
       })
       const { products, total } = await response.json()
@@ -26,7 +26,7 @@ trashIcons.forEach(trash => {
 
 document.querySelector('.empty').addEventListener('click', async () => {
   try {
-    await fetch(`http://localhost:8080/api/carts/${cartId}`, {
+    await fetch(`/api/carts/${cartId}`, {
       method: 'DELETE'
     })
     itemList.innerHTML = `

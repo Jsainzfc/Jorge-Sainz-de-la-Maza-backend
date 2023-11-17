@@ -7,7 +7,7 @@ products.forEach((product) => {
 
   remove.addEventListener('click', async () => {
     try {
-      const response = await fetch(`${window.location.origin}/api/products/${id}`, {
+      const response = await fetch(`/api/products/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

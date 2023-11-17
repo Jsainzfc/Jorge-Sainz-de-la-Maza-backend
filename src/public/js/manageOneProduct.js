@@ -20,7 +20,7 @@ form.addEventListener('submit', async (event) => {
   let response
   try {
     if (form.classList.contains('edit')) {
-      response = await fetch(`${window.location.origin}/api/products/${productid}`, {
+      response = await fetch(`/api/products/${productid}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ form.addEventListener('submit', async (event) => {
         })
       })
     } else {
-      response = await fetch(`${window.location.origin}/api/products/`, {
+      response = await fetch('/api/products/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

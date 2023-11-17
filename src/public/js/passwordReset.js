@@ -10,7 +10,7 @@ form.addEventListener('submit', async () => {
   if (password.value !== passwordRepeat.value) {
     passwordRepeat.setCustomValidity('Passwords must match')
   } else {
-    const response = await fetch(`http://localhost:8080/passwordReset?token=${token}&id=${id}`, {
+    const response = await fetch(`/passwordReset?token=${token}&id=${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ form.addEventListener('submit', async () => {
         icon: 'success',
         title: 'Ok',
         text: 'Password change successful',
-        footer: '<a href=\'http://localhost:8080/login\'>Go back to login</a>'
+        footer: '<a href=\'/login\'>Go back to login</a>'
       })
     } else {
       const { message } = await response.json()
