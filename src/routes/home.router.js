@@ -5,6 +5,7 @@ import { getById, getTotal } from '../controllers/carts.controller.js'
 import { get, getById as getProductById } from '../controllers/products.controller.js'
 import ProductDTO from '../dao/DTOs/product.dto.js'
 import { create } from '../controllers/tickets.controller.js'
+import { getAllData } from '../controllers/users.controller.js'
 
 const router = Router()
 
@@ -145,9 +146,10 @@ router.get('/chat', isAuth, async (req, res) => {
   })
 })
 
-router.get('/checkout/:cid', isAuth, async (req, res) => {
+router.post('/checkout/:cid', isAuth, async (req, res) => {
   try {
     const response = await create(req)
+    console.log(response)
     if (response.success) {
       res.render('thanks', {
         title: 'Thanks for your purchase',
@@ -245,6 +247,42 @@ router.get('/uploadDocuments', isAuth, async (req, res) => {
     title: 'Upload your documents',
     id: req.session.user.id
   })
+})
+
+router.get('/users', isAuth, async (req, res) => {
+  if (req.session.user.role !== 'admin') {
+    return res.redirect('/login')
+  }
+  try {
+    const users = await getAllData()
+    return res.render('users', {
+      title: 'Users',
+      users
+    })
+  } catch (err) {
+    req.logger.error(err.message)
+    return res.redirect('/')
+  }
+})
+
+router.get('/checkout/:cid', isAuth, async (req, res) => {
+  try {
+    const response = await getById(req)
+    if (response.success) {
+      const total = await getTotal({ id: req.params.cid })
+      res.render('checkout', {
+        title: 'Checkout',
+        id: req.params.cid,
+        products: response.payload,
+        user: req.user,
+        total
+      })
+    } else {
+      return res.status(response.status).json(response)
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
 })
 
 router.get('/loggerTest', (req, res) => {

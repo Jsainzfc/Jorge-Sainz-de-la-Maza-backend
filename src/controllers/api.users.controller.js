@@ -1,4 +1,6 @@
 import { UserManager } from '../dao/factory.js'
+import { transport } from '../utils.js'
+import { getAll, getAllData } from './users.controller.js'
 
 const userManager = new UserManager()
 
@@ -24,11 +26,30 @@ const updateToPremium = async (req, res) => {
   }
 }
 
-const deleteByEmail = async (req, res) => {
-  const { email } = req.body
+const deleteInactive = async (req, res) => {
+  const TWODAYS = 2 * 24 * 60 * 60 * 1000
   try {
-    await userManager.deleteByEmail(email)
-    return res.status(200).json({ message: 'User deleted' })
+    const users = await getAll()
+    if (users.length > 0) {
+      for (const user in users) {
+        if ((Date.now().valueOf() - user.lastConnection.valueOf()) > TWODAYS) {
+          await transport.sendMail({
+            from: 'Jorge Sainz <jsainzfc@gmail.com>',
+            to: `${user.email}`,
+            subject: 'Pass recovery',
+            html: `
+              <div>
+                <h1>Account deleted</h1>
+                <p>We are sorry to informed you but your account has been deleted because of being inactive</p>
+              </div>
+            `,
+            attachments: []
+          })
+          await userManager.delete(user._id)
+        }
+      }
+    }
+    return res.json({ message: 'Users cleaned' })
   } catch (err) {
     return res.status(500)
   }
@@ -72,4 +93,23 @@ const uploadDocuments = async (req, res) => {
   }
 }
 
-export { updateToPremium, deleteByEmail, uploadDocuments }
+const getUsers = async (_, res) => {
+  try {
+    const users = await getAllData()
+    return res.status(200).json({ payload: users })
+  } catch (err) {
+    return res.status(500).json({ error: err.message })
+  }
+}
+
+const deleteById = async (req, res) => {
+  const { id } = req.params
+  try {
+    await userManager.delete(id)
+    res.status(204).json({ message: 'User removed' })
+  } catch (err) {
+    return res.status(500).json({ error: err.message })
+  }
+}
+
+export { updateToPremium, deleteInactive, uploadDocuments, getUsers, deleteById }

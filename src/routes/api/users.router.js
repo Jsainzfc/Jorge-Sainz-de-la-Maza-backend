@@ -1,8 +1,10 @@
 import { Router } from 'express'
-import { deleteByEmail, updateToPremium, uploadDocuments } from '../../controllers/api.users.controller.js'
+import { deleteById, deleteInactive, getUsers, updateToPremium, uploadDocuments } from '../../controllers/api.users.controller.js'
 import { uploader } from '../../utils.js'
 
 const router = Router()
+
+router.get('/', getUsers)
 
 router.get('/premium/:uid', updateToPremium)
 
@@ -18,6 +20,8 @@ router.post(
   uploadDocuments
 )
 
-router.delete('/', deleteByEmail)
+router.delete('/', deleteInactive)
+
+router.delete('/:id', deleteById)
 
 export default router

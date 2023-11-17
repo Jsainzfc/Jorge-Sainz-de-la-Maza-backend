@@ -41,7 +41,7 @@ document.querySelectorAll('.itemCount__add-to-cart').forEach(button => {
           icon: 'success',
           title: 'Ok',
           text: 'Product added to cart',
-          footer: `<a href='${config.clienturl}/cart/${cartId}'>See cart</a>`
+          footer: `<a href='${window.location.origin}/cart/${cartId}'>See cart</a>`
         })
       } else {
         const { message } = await response.json()

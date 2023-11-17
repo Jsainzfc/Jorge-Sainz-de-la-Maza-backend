@@ -18,7 +18,6 @@ form.addEventListener('submit', async (event) => {
   })
   const stock = form.querySelector('#stock').value
   let response
-  console.log(form.classList.contains('edit'))
   try {
     if (form.classList.contains('edit')) {
       response = await fetch(`${window.location.origin}/api/products/${productid}`, {

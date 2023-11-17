@@ -1,0 +1,14 @@
+<h1>List of users</h1>
+<ul class="users container">
+  {{#each users}}
+  <li class="user-card id-{{this.id}}"
+    <h3>Name: {{this.firstname}}</h3>
+    <p>Email: {{this.email}}</p>
+    <p>Role: {{this.role}}</p>
+    <form data-id="{{this.id}}" class="deleteUser">
+      <input type="submit" class="button" value="Delete user" />
+    </form>
+  </li>
+  {{/each}}
+</ul>
+<script src="/static/js/users.js"></script>

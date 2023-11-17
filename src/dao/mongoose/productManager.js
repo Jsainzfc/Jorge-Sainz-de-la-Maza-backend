@@ -163,6 +163,7 @@ class ProductManager {
       if (deletedCount !== 1) {
         throw new ItemNotFound('Product not found')
       }
+      return product.owner
     } catch (err) {
       throw new MongooseError(err.message)
     }

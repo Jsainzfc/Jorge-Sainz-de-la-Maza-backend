@@ -6,6 +6,14 @@ const getAll = async () => {
   return await userManager.getAll()
 }
 
+const getAllData = async () => {
+  const users = await getAll()
+  const usersData = users.map(({ firstname, email, role, _id }) => {
+    return { firstname, email, role, id: _id }
+  })
+  return usersData
+}
+
 const getById = async (id) => {
   return await userManager.getById()
 }
@@ -34,4 +42,4 @@ const updateLastConnection = async (id) => {
   await userManager.updateLastConnection(id)
 }
 
-export { getAll, getById, getByEmail, create, save, remove, resetPassword, updateLastConnection }
+export { getAll, getAllData, getById, getByEmail, create, save, remove, resetPassword, updateLastConnection }

@@ -2,18 +2,9 @@ import { getByEmail, getById, resetPassword, updateLastConnection } from '../con
 import { getByUserId, create, deleteOne } from '../controllers/token.controller.js'
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
-import nodemailer from 'nodemailer'
 import { config } from '../config/config.js'
 import { hashPassword, isValidPassword } from '../utils/password.utils.js'
-
-const transport = nodemailer.createTransport({
-  service: 'gmail',
-  port: 587,
-  auth: {
-    user: 'jsainzfc@gmail.com',
-    pass: config.mailpass
-  }
-})
+import { transport } from '../utils.js'
 
 const logout = (req, res) => {
   updateLastConnection(req.session.user.id)
@@ -21,7 +12,6 @@ const logout = (req, res) => {
 
   req.session.destroy((err) => {
     req.logger.error(err)
-    req.session.user = null
     res.render('login')
   })
 }
@@ -170,7 +160,8 @@ const login = async (req, res) => {
     lastName: req.user.lastName,
     role: req.user.role,
     email: req.user.email,
-    id: req.user._id.toString()
+    id: req.user._id.toString(),
+    cart: req.user.cart.toString()
   }
   updateLastConnection(req.session.user.id)
   res.redirect('/')

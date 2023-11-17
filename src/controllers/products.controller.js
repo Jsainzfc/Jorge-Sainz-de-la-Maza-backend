@@ -1,5 +1,6 @@
 import { ItemNotFound, ValidationError } from '../errors/index.js'
 import { ProductManager, UserManager } from '../dao/factory.js'
+import { transport } from '../utils.js'
 
 const productManager = new ProductManager()
 const userManager = new UserManager()
@@ -165,7 +166,26 @@ const deleteOne = async (req) => {
   let response
   try {
     const user = await userManager.getByEmail(req.body.user)
-    await productManager.deleteOne(req.params.pid, user)
+    const owner = await productManager.deleteOne(req.params.pid, user)
+    const userOwner = await userManager.getByEmail(owner)
+    if (userOwner.role === 'premium') {
+      try {
+        await transport.sendMail({
+          from: 'Jorge Sainz <jsainzfc@gmail.com>',
+          to: `${userOwner}`,
+          subject: 'Product removed',
+          html: `
+            <div>
+              <p>Your product with id ${req.params.pid} has been removed by ${req.body.user}</p>
+            </div>
+          `,
+          attachments: []
+        })
+      } catch (err) {
+        req.logger.error(err.message)
+        req.logger.error('Error sending deletion email')
+      }
+    }
     req.io.emit('product_deleted', req.params.pid)
     response = {
       success: true,

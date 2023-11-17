@@ -1,9 +1,20 @@
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 import multer from 'multer'
+import nodemailer from 'nodemailer'
+import { config } from './config/config.js'
 
 const __filename = fileURLToPath(import.meta.url)
 export const __dirname = dirname(__filename)
+
+export const transport = nodemailer.createTransport({
+  service: 'gmail',
+  port: 587,
+  auth: {
+    user: 'jsainzfc@gmail.com',
+    pass: config.mailpass
+  }
+})
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

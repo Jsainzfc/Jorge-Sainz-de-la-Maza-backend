@@ -90,6 +90,6 @@ app.use('/', (req, res, next) => {
   next()
 }, home)
 
-server.listen(config.port, () => {
+server.listen(process.env.PORT || config.port, () => {
   console.log(`Express Server listening at http://localhost:${config.port}`)
 })

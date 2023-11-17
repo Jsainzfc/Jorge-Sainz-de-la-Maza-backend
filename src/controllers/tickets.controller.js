@@ -13,48 +13,60 @@ const getTotal = ({ products }) => {
 }
 
 const create = async (req) => {
-  let response = await getCartById(req)
-  if (response.success) {
-    const products = response.payload
-    const finalProducts = []
-    for (let i = 0; i < products.length; i++) {
-      const item = products[i]
-      response = await getStock(item.product._id)
-      if (response.success) {
-        const amount = response.payload < item.quantity ? response.payload : item.quantity
-        finalProducts.push({
-          id: item.product._id,
-          amount,
-          price: item.product.price
-        })
-        if (item.quantity - amount === 0) {
-          products.splice(i, 1)
+  let response
+  try {
+    response = await getCartById(req)
+    if (response.success) {
+      const products = response.payload
+      const finalProducts = []
+      for (let i = 0; i < products.length; i++) {
+        const item = products[i]
+        response = await getStock(item.product._id)
+        if (response.success) {
+          const amount = response.payload < item.quantity ? response.payload : item.quantity
+          finalProducts.push({
+            id: item.product._id,
+            amount,
+            price: item.product.price
+          })
+          if (item.quantity - amount === 0) {
+            products.splice(i, 1)
+          }
+          const updatedProduct = { ...item.product, stock: item.product.stock - item.quantity }
+          await productManager.updateOne(item.product._id, updatedProduct, { role: 'admin' }) // We fake an update from an admin user as this is only updating because of a buy
         }
-        const updatedProduct = { ...item.product, stock: item.product.stock - item.quantity }
-        await productManager.updateOne(item.product._id, updatedProduct)
       }
-    }
-    if (finalProducts.length === 0) {
+      console.log(finalProducts)
+      if (finalProducts.length === 0) {
+        response = {
+          success: false,
+          status: 400,
+          payload: {},
+          error: 'Not enough stock'
+        }
+      }
+      cartManager.updateCartWithProducts({ cartId: req.params.cid, products })
+      const ticket = {
+        code: v4(),
+        createdAt: Date(),
+        purchaser: req.session.user.email,
+        amount: getTotal({ products: finalProducts })
+      }
+      const id = await ticketManager.create({ ticket })
       response = {
-        success: false,
-        status: 400,
-        payload: {},
-        error: 'Not enough stock'
+        success: true,
+        status: 200,
+        payload: { id, ticket },
+        error: ''
       }
     }
-    cartManager.updateCartWithProducts({ cartId: req.params.cid, products })
-    const ticket = {
-      code: v4(),
-      createdAt: Date(),
-      purchaser: req.user.name,
-      amount: getTotal({ products: finalProducts })
-    }
-    const id = await ticketManager.create({ ticket })
+  } catch (err) {
+    req.logger.error(err.message)
     response = {
-      success: true,
-      status: 200,
-      payload: { id, ticket },
-      error: ''
+      success: false,
+      status: 500,
+      payload: {},
+      error: 'Something went wrong'
     }
   }
   return response

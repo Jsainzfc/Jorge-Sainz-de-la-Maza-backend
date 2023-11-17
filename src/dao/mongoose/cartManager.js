@@ -63,6 +63,7 @@ class CartManager {
   // Might throw an instance of MongooseError if there is any problem accessing the database
   async getTotal ({ id }) {
     const products = await this.findById(id)
+    console.log(products)
     if (products.length === 0) {
       return 0
     } else {
