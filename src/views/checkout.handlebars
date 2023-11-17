@@ -16,7 +16,7 @@
   <ul class="cart__items flex__col">
       {{#each products}}
       <li class="item-{{this.product._id}} flex">
-        <a href="http://localhost:8080/buyproduct/{{this.product._id}}" class="flex cart-item">
+        <a href="/buyproduct/{{this.product._id}}" class="flex cart-item">
             {{#if this.product.thumbnails}}
             <img class='cart-item__img' alt='Imagen de producto de {{this.product.title}}' src='{{this.product.thumbnails.[0]}}' />
             {{else}}

@@ -4,7 +4,7 @@
 <ul class="products container">
     {{#each products}}
     <li class='product flex__col flex--center' data-id="{{this._id}}">
-        <a href="http://localhost:8080/buyproduct/{{this._id}}" class="flex__col product__info">
+        <a href="/buyproduct/{{this._id}}" class="flex__col product__info">
             {{#if this.thumbnails}}
             <img class='product__info--img' alt='Imagen de producto de {{this.title}}' src='{{this.thumbnails.[0]}}' />
             {{else}}
